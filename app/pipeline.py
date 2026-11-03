@@ -19,9 +19,10 @@ MAX_ATTEMPTS = 3
 
 
 def handle_message(gmail: Gmail, message_id: str) -> None:
-    event = db.start_event(message_id)
+    event = db.start_event(message_id, max_attempts=MAX_ATTEMPTS)
     if event is None:
-        gmail.add_label(message_id, PROCESSED_LABEL)
+        if db.is_event_completed(message_id, max_attempts=MAX_ATTEMPTS):
+            gmail.add_label(message_id, PROCESSED_LABEL)
         return
     try:
         status, result = process(gmail, message_id)
@@ -42,6 +43,9 @@ def process(gmail: Gmail, message_id: str) -> tuple[str, dict]:
     reason = skip_reason(message, headers, gmail.address)
     if reason:
         return "skipped", {"reason": reason}
+
+    if "SPAM" in message.get("labelIds", []):
+        gmail.unmark_spam(message_id)
 
     sender = parseaddr(headers.get("from", ""))[1]
     ticket_id = db.upsert_ticket(message["threadId"], sender, headers.get("subject", ""))

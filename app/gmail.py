@@ -38,10 +38,18 @@ class Gmail:
     def list_new_message_ids(self, max_results: int = 10) -> list[str]:
         response = self.users.messages().list(
             userId="me",
-            q=f"in:inbox -label:{PROCESSED_LABEL}",
+            q=f"-label:{PROCESSED_LABEL} -label:SENT -label:DRAFT -label:TRASH",
+            includeSpamTrash=True,
             maxResults=max_results,
         ).execute()
         return [message["id"] for message in response.get("messages", [])]
+
+    def unmark_spam(self, message_id: str) -> None:
+        self.users.messages().modify(
+            userId="me",
+            id=message_id,
+            body={"removeLabelIds": ["SPAM"], "addLabelIds": ["INBOX"]},
+        ).execute()
 
     def get_message(self, message_id: str) -> dict:
         return self.users.messages().get(userId="me", id=message_id, format="full").execute()
@@ -50,9 +58,16 @@ class Gmail:
         return self.users.threads().get(userId="me", id=thread_id, format="full").execute()
 
     def add_label(self, message_id: str, name: str) -> None:
-        self.users.messages().modify(
-            userId="me", id=message_id, body={"addLabelIds": [self.label_ids[name]]}
-        ).execute()
+        if name in self.label_ids:
+            self.users.messages().modify(
+                userId="me", id=message_id, body={"addLabelIds": [self.label_ids[name]]}
+            ).execute()
+
+    def remove_label(self, message_id: str, name: str) -> None:
+        if name in self.label_ids:
+            self.users.messages().modify(
+                userId="me", id=message_id, body={"removeLabelIds": [self.label_ids[name]]}
+            ).execute()
 
     def is_escalated(self, thread: dict) -> bool:
         label_id = self.label_ids[ESCALATED_LABEL]

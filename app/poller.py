@@ -12,8 +12,11 @@ logger = logging.getLogger("poller")
 def poll_once() -> int:
     gmail = Gmail()
     message_ids = gmail.list_new_message_ids()
+    if message_ids:
+        logger.info("Found %d unprocessed message(s): %s", len(message_ids), message_ids)
     for message_id in message_ids:
         try:
+            logger.info("Processing message %s", message_id)
             handle_message(gmail, message_id)
         except Exception:
             # One bad email must not stop the loop.

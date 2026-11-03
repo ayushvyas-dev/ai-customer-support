@@ -36,7 +36,10 @@ htmlcov/
 
 # Node & dashboard build artifacts
 node_modules/
+dashboard/node_modules/
+dashboard/.next/
 dashboard/dist/
+dashboard/out/
 
 # OS and editor files
 .DS_Store
