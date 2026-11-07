@@ -40,33 +40,33 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center bg-neutral-50/50 p-4">
+    <div className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center bg-[#F5F5F5]/40 p-4">
       <div className="w-full max-w-md">
         <div className="mb-6 text-center">
-          <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-black text-white shadow-xs">
+          <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-[#111111] text-white border border-[#111111]">
             <ShieldCheck className="h-5 w-5" />
           </div>
-          <h1 className="text-xl font-bold tracking-tight text-neutral-900">
+          <h1 className="text-xl font-bold tracking-tight text-[#111111]">
             Customer Support Automation
           </h1>
-          <p className="text-xs text-neutral-500 mt-1">
+          <p className="text-xs text-[#6B7280] mt-1">
             Admin console for AI email triage, tickets, and knowledge base
           </p>
         </div>
 
-        <Card className="border-neutral-200 shadow-sm bg-white">
+        <Card className="border-[#E5E7EB] bg-white">
           <form onSubmit={handleSubmit}>
             <CardHeader className="space-y-1 pb-4">
-              <CardTitle className="text-base font-semibold">Dashboard Login</CardTitle>
-              <CardDescription className="text-xs">
+              <CardTitle className="text-base font-semibold text-[#111111]">Dashboard Login</CardTitle>
+              <CardDescription className="text-xs text-[#6B7280]">
                 Enter your credentials to access the support admin center.
               </CardDescription>
             </CardHeader>
 
             <CardContent className="space-y-4">
               {error && (
-                <div className="flex items-center space-x-2 rounded-md border border-neutral-300 bg-neutral-100 p-3 text-xs text-neutral-900">
-                  <AlertCircle className="h-4 w-4 shrink-0 text-neutral-800" />
+                <div className="flex items-center space-x-2 rounded-md border border-[#E5E7EB] bg-[#F5F5F5] p-3 text-xs text-[#111111]">
+                  <AlertCircle className="h-4 w-4 shrink-0 text-[#111111]" />
                   <span>{error}</span>
                 </div>
               )}
@@ -74,7 +74,7 @@ export default function LoginPage() {
               <div className="space-y-1.5">
                 <label
                   htmlFor="username"
-                  className="text-xs font-medium text-neutral-700 flex items-center space-x-1"
+                  className="text-xs font-medium text-[#333333] flex items-center space-x-1"
                 >
                   <User className="h-3 w-3" />
                   <span>Username</span>
@@ -94,7 +94,7 @@ export default function LoginPage() {
               <div className="space-y-1.5">
                 <label
                   htmlFor="password"
-                  className="text-xs font-medium text-neutral-700 flex items-center space-x-1"
+                  className="text-xs font-medium text-[#333333] flex items-center space-x-1"
                 >
                   <Lock className="h-3 w-3" />
                   <span>Password</span>
@@ -108,7 +108,7 @@ export default function LoginPage() {
                   autoComplete="current-password"
                   className="h-9"
                 />
-                <p className="text-[11px] text-neutral-400">
+                <p className="text-[11px] text-[#6B7280]">
                   Configured via DASHBOARD_USERNAME and DASHBOARD_PASSWORD in .env
                 </p>
               </div>
@@ -117,7 +117,7 @@ export default function LoginPage() {
             <CardFooter className="pt-2">
               <Button
                 type="submit"
-                className="w-full bg-black text-white hover:bg-neutral-800 h-9 text-xs font-semibold"
+                className="w-full bg-[#111111] text-white hover:bg-[#222222] border border-[#111111] h-9 text-xs font-semibold"
                 disabled={loading}
               >
                 {loading ? (
@@ -139,4 +139,3 @@ export default function LoginPage() {
     </div>
   );
 }
-

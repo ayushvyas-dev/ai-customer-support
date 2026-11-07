@@ -35,11 +35,11 @@ export function Dialog({ open, onOpenChange, children }: DialogProps) {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity"
+        className="fixed inset-0 bg-[#111111]/40 backdrop-blur-xs transition-opacity"
         onClick={() => onOpenChange(false)}
       />
       {/* Dialog container */}
-      <div className="relative z-50 w-full max-w-2xl overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-xl animate-in fade-in-0 zoom-in-95 duration-150 max-h-[90vh] flex flex-col">
+      <div className="relative z-50 w-full max-w-2xl overflow-hidden rounded-lg border border-[#E5E7EB] bg-white shadow-xl animate-in fade-in-0 zoom-in-95 duration-150 max-h-[90vh] flex flex-col">
         {children}
       </div>
     </div>
@@ -58,7 +58,7 @@ export function DialogHeader({
   return (
     <div
       className={cn(
-        "flex items-center justify-between border-b border-neutral-100 px-6 py-4",
+        "flex items-center justify-between border-b border-[#E5E7EB] px-6 py-4 bg-[#F5F5F5]/40",
         className
       )}
     >
@@ -66,7 +66,7 @@ export function DialogHeader({
       {onClose && (
         <button
           onClick={onClose}
-          className="rounded-md p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-black transition-colors"
+          className="rounded-md p-1.5 text-[#6B7280] hover:bg-[#E5E7EB] hover:text-[#111111] transition-colors"
         >
           <X className="h-4 w-4" />
           <span className="sr-only">Close</span>
@@ -84,7 +84,7 @@ export function DialogTitle({
   children: React.ReactNode;
 }) {
   return (
-    <h2 className={cn("text-base font-semibold text-black", className)}>
+    <h2 className={cn("text-base font-semibold text-[#111111]", className)}>
       {children}
     </h2>
   );
@@ -98,7 +98,7 @@ export function DialogDescription({
   children: React.ReactNode;
 }) {
   return (
-    <p className={cn("text-xs text-neutral-500", className)}>{children}</p>
+    <p className={cn("text-xs text-[#6B7280]", className)}>{children}</p>
   );
 }
 
@@ -110,7 +110,7 @@ export function DialogContent({
   children: React.ReactNode;
 }) {
   return (
-    <div className={cn("p-6 overflow-y-auto flex-1 text-sm", className)}>
+    <div className={cn("p-6 overflow-y-auto flex-1 text-sm text-[#333333]", className)}>
       {children}
     </div>
   );
@@ -126,7 +126,7 @@ export function DialogFooter({
   return (
     <div
       className={cn(
-        "flex items-center justify-end space-x-2 border-t border-neutral-100 bg-neutral-50 px-6 py-3",
+        "flex items-center justify-end space-x-2 border-t border-[#E5E7EB] bg-[#F5F5F5]/40 px-6 py-3",
         className
       )}
     >
@@ -134,4 +134,3 @@ export function DialogFooter({
     </div>
   );
 }
-

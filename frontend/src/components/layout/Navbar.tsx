@@ -41,11 +41,11 @@ export function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-neutral-200 bg-white/95 backdrop-blur-xs">
+    <header className="sticky top-0 z-40 w-full border-b border-[#E5E7EB] bg-white">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6">
         <div className="flex items-center space-x-6">
-          <Link href="/events" className="flex items-center space-x-2 font-bold tracking-tight text-black text-sm">
-            <span className="flex h-6 w-6 items-center justify-center rounded-sm bg-black text-white text-xs font-black">
+          <Link href="/events" className="flex items-center space-x-2 font-bold tracking-tight text-[#111111] text-sm">
+            <span className="flex h-6 w-6 items-center justify-center rounded-sm bg-[#111111] text-white text-xs font-black">
               AI
             </span>
             <span>CUSTOMER SUPPORT</span>
@@ -62,8 +62,8 @@ export function Navbar() {
                   className={cn(
                     "flex items-center space-x-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
                     isActive
-                      ? "bg-black text-white"
-                      : "text-neutral-600 hover:bg-neutral-100 hover:text-black"
+                      ? "bg-[#111111] text-white"
+                      : "text-[#6B7280] hover:bg-[#F5F5F5] hover:text-[#111111]"
                   )}
                 >
                   <Icon className="h-3.5 w-3.5" />
@@ -75,8 +75,8 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center space-x-3">
-          <div className="flex items-center space-x-1.5 text-xs text-neutral-500 border border-neutral-200 rounded-md px-2 py-1 bg-neutral-50">
-            <ShieldCheck className="h-3.5 w-3.5 text-black" />
+          <div className="flex items-center space-x-1.5 text-xs text-[#333333] border border-[#E5E7EB] rounded-md px-2.5 py-1 bg-[#F5F5F5]">
+            <ShieldCheck className="h-3.5 w-3.5 text-[#111111]" />
             <span className="font-mono">{user || "admin"}</span>
           </div>
 
@@ -84,7 +84,7 @@ export function Navbar() {
             variant="ghost"
             size="sm"
             onClick={logout}
-            className="text-xs text-neutral-600 hover:text-black hover:bg-neutral-100 h-8 px-2.5"
+            className="text-xs text-[#6B7280] hover:text-[#111111] hover:bg-[#F5F5F5] border border-transparent hover:border-[#E5E7EB] h-8 px-2.5 transition-colors"
           >
             <LogOut className="mr-1.5 h-3.5 w-3.5" />
             Logout
@@ -93,7 +93,7 @@ export function Navbar() {
       </div>
 
       {/* Mobile nav */}
-      <div className="flex md:hidden border-t border-neutral-100 px-4 py-2 space-x-2 bg-neutral-50">
+      <div className="flex md:hidden border-t border-[#E5E7EB] px-4 py-2 space-x-2 bg-[#F5F5F5]">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname.startsWith(item.href);
@@ -102,10 +102,10 @@ export function Navbar() {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex-1 flex items-center justify-center space-x-1 rounded py-1 text-xs font-medium",
+                "flex-1 flex items-center justify-center space-x-1 rounded py-1 text-xs font-medium transition-colors",
                 isActive
-                  ? "bg-black text-white"
-                  : "text-neutral-600 hover:bg-neutral-200"
+                  ? "bg-[#111111] text-white"
+                  : "text-[#6B7280] hover:bg-[#E5E7EB] hover:text-[#111111]"
               )}
             >
               <Icon className="h-3 w-3" />
@@ -117,4 +117,3 @@ export function Navbar() {
     </header>
   );
 }
-

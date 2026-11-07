@@ -10,11 +10,9 @@ import { formatDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -35,9 +33,7 @@ import {
   Trash2,
   RefreshCw,
   Folder,
-  FileText,
   Clock,
-  Check,
   AlertCircle,
 } from "lucide-react";
 
@@ -156,11 +152,11 @@ export default function KnowledgeBasePage() {
       {/* Top Header */}
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-xl font-bold tracking-tight text-neutral-900 flex items-center space-x-2">
-            <BookOpen className="h-5 w-5" />
+          <h1 className="text-xl font-bold tracking-tight text-[#111111] flex items-center space-x-2">
+            <BookOpen className="h-5 w-5 text-[#111111]" />
             <span>Knowledge Base</span>
           </h1>
-          <p className="text-xs text-neutral-500 mt-1">
+          <p className="text-xs text-[#6B7280] mt-1">
             Grounded documentation, company policies, and FAQs that guide the AI support agent responses.
           </p>
         </div>
@@ -171,7 +167,7 @@ export default function KnowledgeBasePage() {
             size="sm"
             onClick={fetchKnowledgeBase}
             disabled={loading}
-            className="h-8 text-xs font-medium"
+            className="h-8 text-xs font-medium border-[#E5E7EB] bg-white text-[#111111] hover:bg-[#F5F5F5] hover:border-[#D1D5DB]"
           >
             <RefreshCw className={`mr-1.5 h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`} />
             Refresh
@@ -180,7 +176,7 @@ export default function KnowledgeBasePage() {
           <Button
             size="sm"
             onClick={handleOpenCreate}
-            className="h-8 text-xs font-medium bg-black text-white hover:bg-neutral-800"
+            className="h-8 text-xs font-medium bg-[#111111] text-white hover:bg-[#222222] border border-[#111111]"
           >
             <Plus className="mr-1.5 h-3.5 w-3.5" />
             Add Entry
@@ -195,8 +191,8 @@ export default function KnowledgeBasePage() {
             onClick={() => setActiveSection("all")}
             className={`rounded-md px-3 py-1.5 text-xs font-medium capitalize transition-colors ${
               activeSection === "all"
-                ? "bg-black text-white"
-                : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 hover:text-black"
+                ? "bg-[#111111] text-white border border-[#111111]"
+                : "bg-[#F5F5F5] text-[#6B7280] border border-[#E5E7EB] hover:bg-[#E5E7EB] hover:text-[#111111]"
             }`}
           >
             All Sections
@@ -207,8 +203,8 @@ export default function KnowledgeBasePage() {
               onClick={() => setActiveSection(sec)}
               className={`rounded-md px-3 py-1.5 text-xs font-medium capitalize transition-colors ${
                 activeSection === sec
-                  ? "bg-black text-white"
-                  : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 hover:text-black"
+                  ? "bg-[#111111] text-white border border-[#111111]"
+                  : "bg-[#F5F5F5] text-[#6B7280] border border-[#E5E7EB] hover:bg-[#E5E7EB] hover:text-[#111111]"
               }`}
             >
               {sec}
@@ -217,12 +213,12 @@ export default function KnowledgeBasePage() {
         </div>
 
         <div className="relative w-full sm:w-80">
-          <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-neutral-400" />
+          <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-[#9CA3AF]" />
           <Input
             placeholder="Search articles, policies, headings..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="h-8 pl-8 text-xs"
+            className="h-8 pl-8 text-xs border-[#E5E7EB] bg-white text-[#111111] placeholder:text-[#9CA3AF] focus-visible:border-[#111111]"
           />
         </div>
       </div>
@@ -230,8 +226,8 @@ export default function KnowledgeBasePage() {
       {/* Content Grid */}
       {loading && items.length === 0 ? (
         <div className="flex h-48 items-center justify-center">
-          <div className="flex items-center space-x-2 text-xs text-neutral-500">
-            <div className="h-4 w-4 animate-spin rounded-full border border-black border-t-transparent" />
+          <div className="flex items-center space-x-2 text-xs text-[#6B7280]">
+            <div className="h-4 w-4 animate-spin rounded-full border border-[#111111] border-t-transparent" />
             <span>Loading knowledge base...</span>
           </div>
         </div>
@@ -240,38 +236,38 @@ export default function KnowledgeBasePage() {
           {items.map((item) => (
             <Card
               key={item.id}
-              className="border-neutral-200 hover:border-neutral-300 transition-colors flex flex-col justify-between"
+              className="border-[#E5E7EB] bg-white hover:border-[#D1D5DB] transition-colors flex flex-col justify-between"
             >
               <CardHeader className="p-4 pb-2">
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="inline-flex items-center space-x-1 rounded bg-neutral-100 px-2 py-0.5 text-[11px] font-mono uppercase text-neutral-700">
+                  <span className="inline-flex items-center space-x-1 rounded bg-[#F5F5F5] border border-[#E5E7EB] px-2 py-0.5 text-[11px] font-mono uppercase text-[#333333]">
                     <Folder className="h-3 w-3" />
                     <span>{item.section}</span>
                   </span>
-                  <span className="text-[11px] font-mono text-neutral-400 flex items-center space-x-1">
+                  <span className="text-[11px] font-mono text-[#6B7280] flex items-center space-x-1">
                     <Clock className="h-3 w-3" />
                     <span>{formatDate(item.updated_at)}</span>
                   </span>
                 </div>
-                <CardTitle className="text-sm font-semibold line-clamp-1 text-neutral-900">
+                <CardTitle className="text-sm font-semibold line-clamp-1 text-[#111111]">
                   {item.title}
                 </CardTitle>
               </CardHeader>
 
               <CardContent className="p-4 pt-1 flex-1">
-                <p className="text-xs text-neutral-600 line-clamp-4 whitespace-pre-wrap leading-relaxed font-sans">
+                <p className="text-xs text-[#4B5563] line-clamp-4 whitespace-pre-wrap leading-relaxed font-sans">
                   {item.content}
                 </p>
               </CardContent>
 
-              <CardFooter className="p-4 pt-2 border-t border-neutral-100 flex items-center justify-between bg-neutral-50/50">
-                <span className="font-mono text-[11px] text-neutral-400">ID #{item.id}</span>
+              <CardFooter className="p-4 pt-2 border-t border-[#E5E7EB] flex items-center justify-between bg-[#F5F5F5]/40">
+                <span className="font-mono text-[11px] text-[#6B7280]">ID #{item.id}</span>
                 <div className="flex items-center space-x-1">
                   <Button
-                    variant="ghost"
+                    variant="outline"
                     size="sm"
                     onClick={() => handleOpenEdit(item)}
-                    className="h-7 px-2 text-xs hover:bg-neutral-200"
+                    className="h-7 px-2 text-xs border-[#E5E7EB] bg-white text-[#111111] hover:bg-[#F5F5F5]"
                   >
                     <Edit2 className="h-3 w-3 mr-1" />
                     Edit
@@ -281,7 +277,7 @@ export default function KnowledgeBasePage() {
                     size="sm"
                     disabled={deletingId === item.id}
                     onClick={() => handleDelete(item.id)}
-                    className="h-7 px-2 text-xs text-neutral-600 hover:text-black hover:bg-neutral-200"
+                    className="h-7 px-2 text-xs text-[#6B7280] hover:text-[#111111] hover:bg-[#E5E7EB]"
                   >
                     <Trash2 className="h-3 w-3 mr-1" />
                     Delete
@@ -292,14 +288,14 @@ export default function KnowledgeBasePage() {
           ))}
         </div>
       ) : (
-        <Card className="border-neutral-200 p-12 text-center">
-          <BookOpen className="mx-auto h-8 w-8 text-neutral-400 mb-2" />
-          <h3 className="text-sm font-semibold text-neutral-900">No entries found</h3>
-          <p className="text-xs text-neutral-500 mt-1 max-w-sm mx-auto">
+        <Card className="border-[#E5E7EB] bg-white p-12 text-center">
+          <BookOpen className="mx-auto h-8 w-8 text-[#9CA3AF] mb-2" />
+          <h3 className="text-sm font-semibold text-[#111111]">No entries found</h3>
+          <p className="text-xs text-[#6B7280] mt-1 max-w-sm mx-auto">
             No knowledge base entries matched your filter. You can add new policies or seed the knowledge base.
           </p>
           <div className="mt-4">
-            <Button size="sm" onClick={handleOpenCreate} className="h-8 text-xs bg-black text-white">
+            <Button size="sm" onClick={handleOpenCreate} className="h-8 text-xs bg-[#111111] text-white hover:bg-[#222222] border border-[#111111]">
               <Plus className="mr-1.5 h-3.5 w-3.5" />
               Create First Entry
             </Button>
@@ -321,14 +317,14 @@ export default function KnowledgeBasePage() {
 
           <DialogContent className="space-y-4">
             {errorMsg && (
-              <div className="flex items-center space-x-2 rounded-md border border-neutral-300 bg-neutral-100 p-2.5 text-xs text-neutral-900">
-                <AlertCircle className="h-4 w-4 shrink-0 text-neutral-800" />
+              <div className="flex items-center space-x-2 rounded-md border border-[#E5E7EB] bg-[#F5F5F5] p-2.5 text-xs text-[#111111]">
+                <AlertCircle className="h-4 w-4 shrink-0 text-[#111111]" />
                 <span>{errorMsg}</span>
               </div>
             )}
 
             <div className="space-y-1">
-              <label className="text-xs font-medium text-neutral-700">Section Name</label>
+              <label className="text-xs font-medium text-[#333333]">Section Name</label>
               <Input
                 placeholder="e.g. shipping, returns, warranty"
                 value={formSection}
@@ -336,13 +332,13 @@ export default function KnowledgeBasePage() {
                 required
                 className="h-8 text-xs font-mono"
               />
-              <p className="text-[11px] text-neutral-400">
+              <p className="text-[11px] text-[#6B7280]">
                 Common sections: shipping, returns, order_status, warranties, products
               </p>
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-medium text-neutral-700">Title / Topic</label>
+              <label className="text-xs font-medium text-[#333333]">Title / Topic</label>
               <Input
                 placeholder="e.g. Return Window & Eligibility"
                 value={formTitle}
@@ -353,7 +349,7 @@ export default function KnowledgeBasePage() {
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-medium text-neutral-700">Content / Policy Details</label>
+              <label className="text-xs font-medium text-[#333333]">Content / Policy Details</label>
               <Textarea
                 rows={6}
                 placeholder="Write detailed instructions, rules, or answers for the AI agent..."
@@ -371,7 +367,7 @@ export default function KnowledgeBasePage() {
               variant="outline"
               size="sm"
               onClick={() => setEditorOpen(false)}
-              className="h-8 text-xs"
+              className="h-8 text-xs border-[#E5E7EB] text-[#111111] hover:bg-[#F5F5F5]"
             >
               Cancel
             </Button>
@@ -379,7 +375,7 @@ export default function KnowledgeBasePage() {
               type="submit"
               size="sm"
               disabled={saving}
-              className="h-8 text-xs bg-black text-white hover:bg-neutral-800"
+              className="h-8 text-xs bg-[#111111] text-white hover:bg-[#222222] border border-[#111111]"
             >
               {saving ? "Saving..." : editingItem ? "Update Entry" : "Save Entry"}
             </Button>
@@ -389,4 +385,3 @@ export default function KnowledgeBasePage() {
     </div>
   );
 }
-
