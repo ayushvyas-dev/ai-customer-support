@@ -1,9 +1,14 @@
 import logging
 import sys
+from pathlib import Path
+
+# Add backend directory to sys.path
+sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 from app import db
 from app.config import settings
 from app.gmail import Gmail
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("setup_gmail_watch")

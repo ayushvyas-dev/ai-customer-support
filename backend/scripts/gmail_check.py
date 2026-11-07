@@ -1,4 +1,11 @@
+import sys
+from pathlib import Path
+
+# Add backend directory to sys.path
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+
 from app.gmail import Gmail, get_body, get_headers
+
 
 gmail = Gmail()
 print("Connected as", gmail.address)

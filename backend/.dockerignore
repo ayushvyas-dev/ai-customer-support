@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+credentials.json
+.git/
+.gitignore
+uv.lock
+tests/
+playground/
+

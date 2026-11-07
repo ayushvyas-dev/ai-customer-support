@@ -2,6 +2,10 @@
 
 An automated customer support agent for **Nexa Mobile** powered by **LangChain**, **LangGraph**, and **Supabase pgvector RAG**, triggered in real-time via **Gmail Cloud Pub/Sub webhooks**.
 
+The project is cleanly separated into two independent folders:
+- **`backend/`**: FastAPI API server, LangGraph agentic RAG pipeline, pgvector similarity store, Gmail integration, and scripts. Ready for Docker / Render deployment.
+- **`frontend/`**: Next.js 16 dashboard for auditing pipeline events, viewing tickets, and managing knowledge base articles. Ready for Vercel / Render deployment.
+
 ---
 
 ## Architecture
@@ -28,61 +32,72 @@ Gmail Inbox ──(push)──> Google Cloud Pub/Sub ──(HTTP POST)──> Fa
 
 ---
 
-## Prerequisites
+## Project Structure
 
-- **Python 3.14** (or 3.13+)
-- **Node.js 18+** & npm (for dashboard)
-- **Supabase PostgreSQL** with `pgvector` enabled
-- **Google Cloud Console**:
-  - Gmail API enabled
-  - Cloud Pub/Sub API enabled
-  - OAuth 2.0 Credentials with `https://www.googleapis.com/auth/gmail.modify` scope
-- **Groq API Key** (`GROQ_API_KEY`)
-- **Google Gemini API Key** (`GEMINI_API_KEY`)
+```
+ai-customer-support/
+├── backend/
+│   ├── app/                     # FastAPI app, AI pipeline, DB, vectorstore, Gmail webhook
+│   ├── evals/                   # Golden email evaluation benchmark suite
+│   ├── knowledge_base/          # Markdown reference policies and product specs
+│   ├── playground/              # Interactive CLI testing scripts
+│   ├── scripts/                 # Watch setup, OAuth helpers, KB seeder
+│   ├── supabase/                # SQL migrations (pgvector, tables)
+│   ├── Dockerfile               # Production Docker container definition for backend
+│   ├── .dockerignore
+│   ├── requirements.txt         # Pinned python dependencies
+│   └── .env.example
+├── frontend/                    # Next.js 16 App Router dashboard
+│   ├── src/
+│   ├── package.json
+│   └── .env.example
+├── spec.md                      # Architecture and endpoint specifications
+└── README.md
+```
 
 ---
 
 ## Getting Started
 
-### 1. Environment Configuration
-
-Copy the example environment file and fill in your keys:
+### 1. Backend Setup & Run
 
 ```bash
+cd backend
+
+# Create virtual environment & install dependencies
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+# Configure environment variables
 cp .env.example .env
-```
+# Edit .env with your Google OAuth, Supabase, Groq, and Gemini keys
 
-Key variables in `.env`:
-- `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REFRESH_TOKEN`
-- `DATABASE_URL` (Supabase PostgreSQL pooler/direct connection string)
-- `GROQ_API_KEY`, `GEMINI_API_KEY`
-- `GCP_PROJECT_ID`, `PUBSUB_TOPIC` (e.g., `projects/your-project-id/topics/gmail-notifications`)
-- `DASHBOARD_USERNAME`, `DASHBOARD_PASSWORD`
+# (First-Time Only) Seed and vectorize knowledge base into Supabase pgvector
+python scripts/seed_knowledge_base.py
 
-### 2. Seed & Vectorize Knowledge Base
-
-Before running, populate the PostgreSQL tables and generate vector embeddings:
-
-```bash
-.venv/bin/python scripts/seed_knowledge_base.py
-```
-
-### 3. Start the FastAPI Backend
-
-```bash
-.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+# Start FastAPI server
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 - **Interactive API Documentation**: [http://localhost:8000/docs](http://localhost:8000/docs)
 - **Health check**: [http://localhost:8000/health](http://localhost:8000/health)
 
-### 4. Start the Next.js Dashboard
+### 2. Frontend Dashboard Setup & Run
 
-In a separate terminal:
+In another terminal:
 
 ```bash
-cd dashboard
+cd frontend
+
+# Install dependencies
 npm install
+
+# Configure environment
+cp .env.example .env
+# Default points to NEXT_PUBLIC_API_URL=http://localhost:8000
+
+# Start Next.js development server
 npm run dev
 ```
 
@@ -95,17 +110,19 @@ Open [http://localhost:3000](http://localhost:3000) to view:
 
 ## Gmail Webhook Setup (Live Push Mode)
 
-1. **Expose local port for development**:
+1. **Expose backend port for local development**:
    ```bash
-   ngrok http 8000
+   cloudflared tunnel --url http://localhost:8000
+   # or: ngrok http 8000
    ```
-2. **Configure Cloud Pub/Sub**:
+2. **Configure Cloud Pub/Sub in GCP Console**:
    - Create topic `gmail-notifications`.
    - Grant `gmail-api-push@system.gserviceaccount.com` the **Pub/Sub Publisher** role on the topic.
-   - Create a **Push Subscription** with endpoint URL: `https://<your-ngrok-domain>/webhook/gmail`.
+   - Create a **Push Subscription** with endpoint URL: `https://<your-public-url>/webhook/gmail`.
 3. **Register Gmail Watch**:
    ```bash
-   .venv/bin/python scripts/setup_gmail_watch.py
+   cd backend
+   python scripts/setup_gmail_watch.py
    ```
 
 ---
@@ -115,10 +132,11 @@ Open [http://localhost:3000](http://localhost:3000) to view:
 Test the complete agentic pipeline without sending emails:
 
 ```bash
+cd backend
+
 # Single sample query
-.venv/bin/python playground/try_pipeline.py
+python playground/try_pipeline.py
 
-# 20-email golden test suite
-.venv/bin/python -m evals.run_evals
+# 20-email golden test benchmark suite
+python -m evals.run_evals
 ```
-

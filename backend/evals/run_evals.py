@@ -1,8 +1,14 @@
 import logging
+import sys
 from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
+
+# Add backend directory to sys.path
+sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 from app.ai.decide import decide
 from evals.golden_emails import GOLDEN_EMAILS
+
 
 logging.basicConfig(level=logging.WARNING)
 

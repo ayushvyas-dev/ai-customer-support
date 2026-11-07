@@ -1,7 +1,13 @@
+import sys
 from pathlib import Path
+
+# Add backend directory to sys.path
+BASE_DIR = Path(__file__).resolve().parents[1]
+sys.path.append(str(BASE_DIR))
 
 from app import db
 from app.vectorstore import reindex_all
+
 
 
 def parse(path: Path) -> list[tuple[str, str, str]]:
@@ -15,7 +21,7 @@ def parse(path: Path) -> list[tuple[str, str, str]]:
 
 print("Seeding knowledge base SQL rows...")
 with db.connect() as conn:
-    for path in sorted(Path("knowledge_base").glob("*.md")):
+    for path in sorted((BASE_DIR / "knowledge_base").glob("*.md")):
         rows = parse(path)
         for section, title, content in rows:
             conn.execute(
