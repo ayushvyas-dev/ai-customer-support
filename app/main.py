@@ -10,8 +10,14 @@ from pydantic import BaseModel
 
 from app import db
 from app.config import settings
+from app.gmail import Gmail
+from app.vectorstore import index_knowledge_base_entry, reindex_all
+from app.webhook import router as webhook_router
 
 app = FastAPI(title="AI customer support")
+
+# Include Gmail Webhook Router
+app.include_router(webhook_router)
 
 # CORS middleware for Next.js frontend
 app.add_middleware(
@@ -221,6 +227,16 @@ def create_or_update_knowledge_base_entry(
         title=entry.title.strip(),
         content=entry.content.strip(),
     )
+    # Reindex this entry in pgvector
+    try:
+        index_knowledge_base_entry(
+            kb_id=entry_id,
+            section=entry.section.strip(),
+            title=entry.title.strip(),
+            content=entry.content.strip(),
+        )
+    except Exception as e:
+        pass
     return {"id": entry_id, "status": "saved"}
 
 
@@ -240,6 +256,16 @@ def update_knowledge_base_entry(
         content=entry.content.strip(),
         entry_id=entry_id,
     )
+    # Reindex this entry in pgvector
+    try:
+        index_knowledge_base_entry(
+            kb_id=saved_id,
+            section=entry.section.strip(),
+            title=entry.title.strip(),
+            content=entry.content.strip(),
+        )
+    except Exception as e:
+        pass
     return {"id": saved_id, "status": "updated"}
 
 
@@ -252,3 +278,52 @@ def delete_knowledge_base_entry(
     if not success:
         raise HTTPException(status_code=404, detail="Entry not found")
     return {"status": "deleted", "id": entry_id}
+
+
+# Gmail Watch Management Endpoints
+
+
+@app.post("/api/gmail/watch")
+def setup_gmail_watch(
+    username: Annotated[str, Depends(verify_token)],
+) -> dict:
+    if not settings.pubsub_topic:
+        raise HTTPException(
+            status_code=400,
+            detail="PUBSUB_TOPIC not configured in environment",
+        )
+    gmail = Gmail()
+    res = gmail.setup_watch(topic_name=settings.pubsub_topic)
+    history_id = res.get("historyId")
+    expiration = res.get("expiration")
+    if history_id and expiration:
+        db.upsert_watch_state(history_id, expiration)
+    return res
+
+
+@app.get("/api/gmail/watch/status")
+def get_gmail_watch_status(
+    username: Annotated[str, Depends(verify_token)],
+) -> dict:
+    state = db.get_watch_state()
+    if not state:
+        return {"status": "not_configured", "active": False}
+    curr_time_ms = int(time.time() * 1000)
+    exp = int(state.get("expiration") or 0)
+    return {
+        "status": "configured",
+        "active": exp > curr_time_ms,
+        "history_id": state.get("history_id"),
+        "expiration": exp,
+        "expires_in_hours": max(0, int((exp - curr_time_ms) / (1000 * 3600))),
+        "updated_at": str(state.get("updated_at")),
+    }
+
+
+@app.post("/api/knowledge-base/reindex")
+def reindex_kb(
+    username: Annotated[str, Depends(verify_token)],
+) -> dict:
+    count = reindex_all()
+    return {"status": "reindexed", "chunks": count}
+

@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from app import db
+from app.vectorstore import reindex_all
 
 
 def parse(path: Path) -> list[tuple[str, str, str]]:
@@ -12,6 +13,7 @@ def parse(path: Path) -> list[tuple[str, str, str]]:
     return entries
 
 
+print("Seeding knowledge base SQL rows...")
 with db.connect() as conn:
     for path in sorted(Path("knowledge_base").glob("*.md")):
         rows = parse(path)
@@ -25,3 +27,7 @@ with db.connect() as conn:
                 (section, title, content),
             )
         print(f"{path.stem}: {len(rows)} entries")
+
+print("\nGenerating and updating vector embeddings in Supabase pgvector...")
+chunks = reindex_all()
+print(f"Knowledge base successfully seeded and vectorized ({chunks} embedding chunks).")

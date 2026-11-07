@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Literal, TypedDict
 
 from pydantic import BaseModel, Field
 
@@ -17,7 +17,20 @@ class Classification(BaseModel):
 
 class Issue(BaseModel):
     product: Literal["smartphone", "accessories"]
-    problem: Literal["slow-charging", "battery-drain", "safety-hazard", "display-issue", "camera-issue", "performance-lag", "connectivity-issue", "physical-damage", "not-turning-on", "missing-accessory", "damaged-accessory", "incompatible-accessory"]
+    problem: Literal[
+        "slow-charging",
+        "battery-drain",
+        "safety-hazard",
+        "display-issue",
+        "camera-issue",
+        "performance-lag",
+        "connectivity-issue",
+        "physical-damage",
+        "not-turning-on",
+        "missing-accessory",
+        "damaged-accessory",
+        "incompatible-accessory",
+    ]
     model: str | None = None
     order_number: str | None = None
     purchase_date: str | None = None
@@ -45,3 +58,41 @@ class Decision(BaseModel):
     reply: str
     reason: str
     proposed_action: str | None = None
+
+
+class SupportState(TypedDict, total=False):
+    # Inputs
+    thread_text: str
+    has_attachments: bool
+    message_id: str
+    thread_id: str
+    sender_email: str
+    subject: str
+
+    # Classification
+    section: str
+    language: str
+    needs_human: bool
+    classification_reason: str
+    acknowledgement: str
+
+    # RAG / Retrieval
+    customer_query: str
+    retrieved_docs: list[str]
+    docs_relevant: bool
+
+    # Agent Generation
+    reply: str
+    reasoning: str
+    enough_information: bool
+    promises_an_action: bool
+    issue: dict | None
+
+    # Decision Output
+    action: Literal["reply", "escalate"]
+    escalation_reason: str | None
+    proposed_action: str | None
+
+    # Control Flow
+    retry_count: int
+    max_retries: int

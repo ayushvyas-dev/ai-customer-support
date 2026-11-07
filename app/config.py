@@ -10,9 +10,14 @@ class Settings(BaseSettings):
     google_client_secret: str
     google_refresh_token: str
     database_url: str
-    classifier_model: str = "groq:openai/gpt-oss-120b"
-    agent_model: str = "google:gemini-3.5-flash-lite"
-    poll_interval_seconds: int = 60
+    groq_api_key: str = ""
+    gemini_api_key: str = ""
+    classifier_model: str = "openai/gpt-oss-120b"
+    agent_model: str = "gemini-2.5-flash"
+    embedding_model: str = "models/gemini-embedding-001"
+    gcp_project_id: str = ""
+    pubsub_topic: str = ""
+    webhook_url: str = ""
     dashboard_username: str = "admin"
     dashboard_password: str = ""
 

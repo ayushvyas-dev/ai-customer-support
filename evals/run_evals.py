@@ -1,45 +1,71 @@
-from dataclasses import dataclass
-
-import nest_asyncio
-from pydantic_evals import Case, Dataset
-from pydantic_evals.evaluators import Evaluator, EvaluatorContext
-
-nest_asyncio.apply()
+import logging
+from concurrent.futures import ThreadPoolExecutor
 
 from app.ai.decide import decide
-from app.ai.schemas import Decision
 from evals.golden_emails import GOLDEN_EMAILS
 
-
-@dataclass
-class SectionMatches(Evaluator):
-    def evaluate(self, ctx: EvaluatorContext) -> bool:
-        return ctx.output.section == ctx.expected_output["section"]
+logging.basicConfig(level=logging.WARNING)
 
 
-@dataclass
-class ActionMatches(Evaluator):
-    def evaluate(self, ctx: EvaluatorContext) -> bool:
-        return ctx.output.action == ctx.expected_output["action"]
+def run_single_eval(case: dict) -> dict:
+    name = case["name"]
+    email_text = case["email"]
+    expected_section = case["section"]
+    expected_action = case["action"]
+
+    try:
+        decision = decide(email_text)
+        actual_section = decision.section
+        actual_action = decision.action
+
+        section_match = actual_section == expected_section
+        action_match = actual_action == expected_action
+
+        return {
+            "name": name,
+            "passed": section_match and action_match,
+            "section_match": section_match,
+            "action_match": action_match,
+            "expected": f"({expected_section}, {expected_action})",
+            "actual": f"({actual_section}, {actual_action})",
+            "reason": decision.reason[:80] if decision.reason else "",
+        }
+    except Exception as e:
+        return {
+            "name": name,
+            "passed": False,
+            "section_match": False,
+            "action_match": False,
+            "expected": f"({expected_section}, {expected_action})",
+            "actual": f"ERROR: {e}",
+            "reason": str(e),
+        }
 
 
-def run_pipeline(email: str) -> Decision:
-    return decide(email)
+def main():
+    print(f"Running golden email evaluation suite on {len(GOLDEN_EMAILS)} test cases...\n")
+    results = []
 
+    # Run evaluations with thread pool
+    with ThreadPoolExecutor(max_workers=3) as executor:
+        for res in executor.map(run_single_eval, GOLDEN_EMAILS):
+            results.append(res)
+            status_icon = "PASS" if res["passed"] else "FAIL"
+            print(
+                f"[{status_icon:4}] {res['name']:<35} | Expected: {res['expected']:<25} | Actual: {res['actual']}"
+            )
 
-dataset = Dataset(
-    name="golden-emails",
-    cases=[
-        Case(
-            name=case["name"],
-            inputs=case["email"],
-            expected_output={"section": case["section"], "action": case["action"]},
-        )
-        for case in GOLDEN_EMAILS
-    ],
-    evaluators=[SectionMatches(), ActionMatches()],
-)
+    total = len(results)
+    passed = sum(1 for r in results if r["passed"])
+    section_accuracy = sum(1 for r in results if r["section_match"]) / total * 100
+    action_accuracy = sum(1 for r in results if r["action_match"]) / total * 100
+
+    print("\n" + "=" * 80)
+    print(f"Evaluation Summary: {passed}/{total} fully passed ({passed/total*100:.1f}%)")
+    print(f"Section Classification Accuracy: {section_accuracy:.1f}%")
+    print(f"Action (reply/escalate) Accuracy: {action_accuracy:.1f}%")
+    print("=" * 80)
+
 
 if __name__ == "__main__":
-    report = dataset.evaluate_sync(run_pipeline, max_concurrency=4)
-    report.print(include_input=False, include_output=True, include_durations=False)
+    main()

@@ -87,6 +87,52 @@ class Gmail:
             userId="me", body={"raw": raw, "threadId": message["threadId"]}
         ).execute()
 
+    def get_profile(self) -> dict:
+        return self.users.getProfile(userId="me").execute()
+
+    def setup_watch(self, topic_name: str, label_ids: list[str] | None = None) -> dict:
+        """Register Gmail push notifications with Cloud Pub/Sub topic."""
+        body: dict = {"topicName": topic_name}
+        if label_ids:
+            body["labelIds"] = label_ids
+        return self.users.watch(userId="me", body=body).execute()
+
+    def stop_watch(self) -> None:
+        """Stop push notifications."""
+        self.users.stop(userId="me").execute()
+
+    def list_history(self, start_history_id: int | str) -> list[str]:
+        """Fetch newly added message IDs since start_history_id using history.list."""
+        new_message_ids: list[str] = []
+        page_token = None
+        while True:
+            params: dict = {
+                "userId": "me",
+                "startHistoryId": str(start_history_id),
+                "historyTypes": ["messageAdded"],
+            }
+            if page_token:
+                params["pageToken"] = page_token
+
+            try:
+                res = self.users.history().list(**params).execute()
+            except Exception:
+                break
+
+            for record in res.get("history", []):
+                for msg_added in record.get("messagesAdded", []):
+                    msg = msg_added.get("message", {})
+                    msg_id = msg.get("id")
+                    if msg_id and msg_id not in new_message_ids:
+                        new_message_ids.append(msg_id)
+
+            page_token = res.get("nextPageToken")
+            if not page_token:
+                break
+
+        return new_message_ids
+
+
 
 def get_headers(message: dict) -> dict[str, str]:
     return {h["name"].lower(): h["value"] for h in message["payload"].get("headers", [])}

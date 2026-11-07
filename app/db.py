@@ -313,3 +313,29 @@ def delete_knowledge_base_entry(entry_id: int) -> bool:
     with connect() as conn:
         result = conn.execute("delete from knowledge_base where id = %s", (entry_id,))
         return result.rowcount > 0
+
+
+# Gmail Watch State helpers
+
+
+def get_watch_state() -> dict | None:
+    with connect() as conn:
+        return conn.execute(
+            "select id, history_id, expiration, updated_at from gmail_watch_state where id = 1"
+        ).fetchone()
+
+
+def upsert_watch_state(history_id: int | str, expiration: int | str) -> None:
+    with connect() as conn:
+        conn.execute(
+            """
+            insert into gmail_watch_state (id, history_id, expiration, updated_at)
+            values (1, %s, %s, now())
+            on conflict (id) do update
+            set history_id = excluded.history_id,
+                expiration = excluded.expiration,
+                updated_at = now()
+            """,
+            (int(history_id), int(expiration)),
+        )
+

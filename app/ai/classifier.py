@@ -1,4 +1,7 @@
-from pydantic_ai import Agent
+import os
+
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_groq import ChatGroq
 
 from app.ai.schemas import Classification
 from app.config import settings
@@ -32,8 +35,27 @@ say that a colleague will review their request and get back within one business 
 Never mention AI.
 """
 
-classifier = Agent(settings.classifier_model, output_type=Classification, instructions=INSTRUCTIONS)
+
+def get_classifier_chain():
+    api_key = settings.groq_api_key or os.environ.get("GROQ_API_KEY", "")
+    llm = ChatGroq(
+        model=settings.classifier_model,
+        temperature=0.0,
+        api_key=api_key,
+    )
+    structured_llm = llm.with_structured_output(Classification)
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            ("system", INSTRUCTIONS),
+            ("human", "{thread}"),
+        ]
+    )
+    return prompt | structured_llm
 
 
 def classify(thread: str) -> Classification:
-    return classifier.run_sync(thread).output
+    chain = get_classifier_chain()
+    result = chain.invoke({"thread": thread})
+    if isinstance(result, Classification):
+        return result
+    return Classification.model_validate(result)
