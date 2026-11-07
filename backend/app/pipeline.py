@@ -12,7 +12,7 @@ from app.gmail import (
     get_headers,
     has_attachments,
 )
-from app.guards import skip_reason
+from app.guards import mask_pii, skip_reason
 
 logger = logging.getLogger(__name__)
 MAX_ATTEMPTS = 3
@@ -49,7 +49,8 @@ def process(gmail: Gmail, message_id: str) -> tuple[str, dict]:
 
     sender = parseaddr(headers.get("from", ""))[1]
     ticket_id = db.upsert_ticket(message["threadId"], sender, headers.get("subject", ""))
-    db.save_message(ticket_id, message_id, "in", sender, get_body(message))
+    inbound_body = mask_pii(get_body(message))
+    db.save_message(ticket_id, message_id, "in", sender, inbound_body)
 
     thread = gmail.get_thread(message["threadId"])
     if gmail.is_escalated(thread):
