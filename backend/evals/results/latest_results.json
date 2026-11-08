@@ -1,0 +1,127 @@
+{
+  "summary": {
+    "timestamp": "2026-11-08T13:50:16.720723",
+    "total": 5,
+    "passed": 4,
+    "failed": 1,
+    "pass_rate": 80.0,
+    "section_accuracy": 100.0,
+    "action_accuracy": 80.0,
+    "phrases_compliance": 80.0,
+    "mock": false,
+    "categories": {
+      "answer_accuracy": {
+        "total": 5,
+        "passed": 4,
+        "failed": 1
+      }
+    }
+  },
+  "results": [
+    {
+      "id": "eval-001",
+      "name": "nexa-one-specs-and-price",
+      "category": "answer_accuracy",
+      "passed": true,
+      "section_match": true,
+      "action_match": true,
+      "phrases_match": true,
+      "expected": {
+        "section": "smartphone",
+        "action": "reply"
+      },
+      "actual": {
+        "section": "smartphone",
+        "action": "reply"
+      },
+      "reply_preview": "Hello Anil,\n\nThank you for your interest in the Nexa One! It is priced at Rs. 24,999.\n\nKey features include:\n- 8GB LPDDR...",
+      "reason": "The customer asked for the key features and price of the Nexa One. The 'Product lineup and specifications' section provides all the requested details for the Nexa One model, including its price, RAM, storage, display, camera, battery, and charging capabilities.",
+      "errors": []
+    },
+    {
+      "id": "eval-002",
+      "name": "nexa-one-pro-specs-and-display-refresh",
+      "category": "answer_accuracy",
+      "passed": true,
+      "section_match": true,
+      "action_match": true,
+      "phrases_match": true,
+      "expected": {
+        "section": "smartphone",
+        "action": "reply"
+      },
+      "actual": {
+        "section": "smartphone",
+        "action": "reply"
+      },
+      "reply_preview": "Hello Lena,\n\nThe Nexa One Pro features 12GB LPDDR5 RAM and 256GB UFS internal storage. Its 6.7-inch Quad HD+ AMOLED disp...",
+      "reason": "The customer asked for the RAM, storage, display refresh rate, and price of the Nexa One Pro. This information was found in the 'Product lineup and specifications' section of the knowledge base, specifically under the Nexa One Pro details.",
+      "errors": []
+    },
+    {
+      "id": "eval-003",
+      "name": "nexa-lite-specs-and-pricing",
+      "category": "answer_accuracy",
+      "passed": true,
+      "section_match": true,
+      "action_match": true,
+      "phrases_match": true,
+      "expected": {
+        "section": "smartphone",
+        "action": "reply"
+      },
+      "actual": {
+        "section": "smartphone",
+        "action": "reply"
+      },
+      "reply_preview": "Hello Rahul,\n\nThe Nexa Lite is an excellent choice for an affordable smartphone! It costs \u20b914,999. It features 6GB RAM, ...",
+      "reason": "The customer asked for the specifications and price of the Nexa Lite. I used the 'Product lineup and specifications' section to retrieve the price (\u20b914,999), RAM (6GB), internal storage (128GB), display (6.5-inch FHD+ LCD, 90Hz), camera (50MP AI dual), battery (5000mAh), and charging (18W fast charging).",
+      "errors": []
+    },
+    {
+      "id": "eval-004",
+      "name": "in-the-box-charger-inquiry",
+      "category": "answer_accuracy",
+      "passed": false,
+      "section_match": true,
+      "action_match": false,
+      "phrases_match": false,
+      "expected": {
+        "section": "accessories",
+        "action": "reply"
+      },
+      "actual": {
+        "section": "accessories",
+        "action": "escalate"
+      },
+      "reply_preview": "Hi Chloe, thank you for reaching out to Nexa Mobile. A colleague will review your question and get back to you within on...",
+      "reason": "The customer is asking if a wall charger is included with the Nexa One. The provided knowledge base contains information about charger compatibility and available accessories, but it does not explicitly state what items are included in the retail box for any Nexa smartphone model. Therefore, there is not enough information to answer the customer's question directly.",
+      "errors": [
+        "Missing required phrase: 'not included'",
+        "Missing required phrase: 'USB-C'",
+        "Missing required phrase: 'cable'",
+        "Missing required phrase: 'separately'"
+      ]
+    },
+    {
+      "id": "eval-005",
+      "name": "all-models-5g-and-dual-sim",
+      "category": "answer_accuracy",
+      "passed": true,
+      "section_match": true,
+      "action_match": true,
+      "phrases_match": true,
+      "expected": {
+        "section": "smartphone",
+        "action": "reply"
+      },
+      "actual": {
+        "section": "smartphone",
+        "action": "reply"
+      },
+      "reply_preview": "Hello David,\n\nYes, all three Nexa smartphone models \u2013 the Nexa Lite, Nexa One, and Nexa One Pro \u2013 support Sub-6GHz 5G ne...",
+      "reason": "The 'Product lineup and specifications' section states that 'All Nexa smartphone models feature: Sub-6GHz 5G network connectivity with Dual SIM Dual Standby (DSDV via dual nano-SIM slots).'",
+      "errors": []
+    }
+  ]
+}

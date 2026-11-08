@@ -1,0 +1,14 @@
+.venv/
+.venv_new/
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+credentials.json
+dashboard/
+.git/
+.gitignore
+uv.lock
+tests/
+playground/
+
