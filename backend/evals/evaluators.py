@@ -2,6 +2,7 @@
 """
 
 from typing import Any
+import re
 
 
 def evaluate_section(actual_section: str, expected_section: str) -> bool:
@@ -24,15 +25,22 @@ def evaluate_key_phrases(
     prohibited_phrases: list[str],
 ) -> tuple[bool, list[str]]:
     """Verify presence of required phrases and absence of prohibited phrases."""
-    reply_lower = (reply or "").lower()
+    reply_text = reply or ""
     errors = []
 
     for req in required_phrases:
-        if req.lower() not in reply_lower:
+        pattern = re.compile(re.escape(req), re.IGNORECASE)
+        if not pattern.search(reply_text):
             errors.append(f"Missing required phrase: '{req}'")
 
     for proh in prohibited_phrases:
-        if proh.lower() in reply_lower:
+        # Use word boundaries for single-token phrases like 'AI' so words like 'repair' or 'email' aren't falsely flagged
+        if re.match(r"^\w+$", proh):
+            pattern = re.compile(rf"\b{re.escape(proh)}\b", re.IGNORECASE)
+        else:
+            pattern = re.compile(re.escape(proh), re.IGNORECASE)
+
+        if pattern.search(reply_text):
             errors.append(f"Contains prohibited phrase: '{proh}'")
 
     return len(errors) == 0, errors

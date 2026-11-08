@@ -14,11 +14,15 @@ import argparse
 import json
 import logging
 import sys
+from dotenv import load_dotenv
 
-# Ensure backend root is in sys.path
+# Ensure backend root is in sys.path and load environment variables
 BACKEND_DIR = Path(__file__).resolve().parents[1]
 if str(BACKEND_DIR) not in sys.path:
     sys.path.append(str(BACKEND_DIR))
+
+load_dotenv(BACKEND_DIR / ".env")
+load_dotenv()
 
 from evals.evaluators import evaluate_case
 
