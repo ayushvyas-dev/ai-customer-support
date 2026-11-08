@@ -24,12 +24,43 @@ class Settings(BaseSettings):
     gemini_api_key: str = ""
     classifier_model: str = "openai/gpt-oss-120b"
     agent_model: str = "gemini-2.5-flash"
+    agent_model01: str = ""
+    agent_model02: str = ""
+    agent_model03: str = ""
+    agent_model04: str = ""
     embedding_model: str = "models/gemini-embedding-001"
     gcp_project_id: str = ""
     pubsub_topic: str = ""
     webhook_url: str = ""
     dashboard_username: str = "admin"
     dashboard_password: str = ""
+
+    def get_agent_models(self) -> list[str]:
+        """Return the prioritized list of models for the agent (primary + fallback models)."""
+        models: list[str] = []
+
+        # Check explicit sequential models (agent_model01, agent_model02, ...)
+        for val in [
+            self.agent_model01,
+            self.agent_model02,
+            self.agent_model03,
+            self.agent_model04,
+        ]:
+            if val and val.strip() and val.strip() not in models:
+                models.append(val.strip())
+
+        # Check agent_model (supports single model or comma-separated list)
+        if self.agent_model and self.agent_model.strip():
+            for m in self.agent_model.split(","):
+                m_clean = m.strip()
+                if m_clean and m_clean not in models:
+                    models.append(m_clean)
+
+        # Fallback default if none provided
+        if not models:
+            models = ["gemini-2.5-flash"]
+
+        return models
 
 
 settings = Settings()
