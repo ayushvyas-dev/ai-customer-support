@@ -53,12 +53,29 @@ Nexa Mobile Support
 
 def get_agent_llm():
     api_key = settings.gemini_api_key or os.environ.get("GEMINI_API_KEY", "")
-    return ChatGoogleGenerativeAI(
-        model=settings.agent_model,
-        temperature=0.1,
-        google_api_key=api_key,
-        api_version="v1beta",
+    models = settings.get_agent_models()
+
+    llms = [
+        ChatGoogleGenerativeAI(
+            model=m,
+            temperature=0.1,
+            google_api_key=api_key,
+            api_version="v1beta",
+        )
+        for m in models
+    ]
+
+    if len(llms) == 1:
+        return llms[0]
+
+    primary_llm = llms[0]
+    fallback_llms = llms[1:]
+    logger.info(
+        "Configured agent LLM with primary model '%s' and fallbacks %s",
+        models[0],
+        models[1:],
     )
+    return primary_llm.with_fallbacks(fallback_llms)
 
 
 # --- Node Definitions ---
