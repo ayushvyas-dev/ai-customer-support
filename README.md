@@ -1,4 +1,13 @@
-# AI Customer Support Agent
+# Nexa Mobile — AI Customer Support Agent
+
+[![Live Frontend](https://img.shields.io/badge/Frontend-Vercel-black?style=for-the-badge&logo=vercel)](https://ai-customer-support-coral-eight.vercel.app)
+[![Live Backend](https://img.shields.io/badge/Backend-Render-46E3B7?style=for-the-badge&logo=render&logoColor=black)](https://ai-customer-support-jp8w.onrender.com)
+[![API Docs](https://img.shields.io/badge/FastAPI-Swagger_Docs-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://ai-customer-support-jp8w.onrender.com/docs)
+
+> 🌐 **Live Deployments:**
+> - **Frontend Dashboard:** [https://ai-customer-support-coral-eight.vercel.app](https://ai-customer-support-coral-eight.vercel.app)
+> - **Backend API:** [https://ai-customer-support-jp8w.onrender.com](https://ai-customer-support-jp8w.onrender.com)
+> - **API Docs & Health:** [https://ai-customer-support-jp8w.onrender.com/docs](https://ai-customer-support-jp8w.onrender.com/docs) \| [https://ai-customer-support-jp8w.onrender.com/health](https://ai-customer-support-jp8w.onrender.com/health)
 
 An enterprise-ready, automated email customer support system for **Nexa Mobile**, built with **FastAPI**, **LangChain**, **LangGraph**, and **Supabase (PostgreSQL + pgvector)**. Incoming customer queries received in Gmail trigger real-time Google Cloud Pub/Sub push webhooks, routing threads through an agentic RAG workflow with rigorous safety guardrails and policy enforcement.
 
@@ -191,7 +200,7 @@ cp backend/.env.example backend/.env
 | `GOOGLE_REFRESH_TOKEN` | OAuth Refresh Token with Gmail read/send scopes | `1//04xxxx` |
 | `GCP_PROJECT_ID` | Google Cloud Project ID | `nexa-mobile-support` |
 | `PUBSUB_TOPIC` | Pub/Sub Topic receiving Gmail notifications | `projects/nexa-mobile-support/topics/gmail-notifications` |
-| `WEBHOOK_URL` | Public webhook URL receiving push requests | `https://api.yourdomain.com/webhook/gmail` |
+| `WEBHOOK_URL` | Public webhook URL receiving push requests | `https://ai-customer-support-jp8w.onrender.com/webhook/gmail` |
 | `DASHBOARD_USERNAME` | Username for accessing the frontend dashboard | `admin` |
 | `DASHBOARD_PASSWORD` | Password for dashboard session tokens | `your-secure-password` |
 
