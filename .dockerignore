@@ -1,0 +1,43 @@
+# Root .dockerignore
+
+# Dependencies and virtual environments
+**/node_modules/
+**/.venv/
+**/venv/
+**/env/
+
+# Python caches
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+
+# Next.js and frontend build artifacts
+frontend/.next/
+frontend/out/
+
+# Environment files and secrets
+**/.env
+**/.env.*
+!**/.env.example
+**/credentials.json
+**/token.json
+**/client_secret*.json
+
+# Version control
+.git/
+.gitignore
+
+# Cache, logs, and coverage
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+**/.coverage
+**/htmlcov/
+**/*.log
+
+# OS & IDE metadata
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
