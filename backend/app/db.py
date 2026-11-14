@@ -339,3 +339,217 @@ def upsert_watch_state(history_id: int | str, expiration: int | str) -> None:
             (int(history_id), int(expiration)),
         )
 
+
+# Enterprise Agentic CRM & ERP helpers
+
+
+def upsert_customer(
+    email: str,
+    name: str,
+    loyalty_tier: str = "standard",
+    churn_risk_score: float = 0.1,
+) -> int:
+    with connect() as conn:
+        row = conn.execute(
+            """
+            insert into customers (email, name, loyalty_tier, churn_risk_score)
+            values (%s, %s, %s, %s)
+            on conflict (email) do update
+            set name = excluded.name,
+                loyalty_tier = excluded.loyalty_tier,
+                churn_risk_score = excluded.churn_risk_score
+            returning id
+            """,
+            (email.strip().lower(), name, loyalty_tier, churn_risk_score),
+        ).fetchone()
+        return row["id"]
+
+
+def get_customer(email: str) -> dict | None:
+    with connect() as conn:
+        return conn.execute(
+            "select id, email, name, loyalty_tier, churn_risk_score, created_at from customers where email = %s",
+            (email.strip().lower(),),
+        ).fetchone()
+
+
+def upsert_order(
+    order_id: str,
+    customer_email: str,
+    purchase_date: str,
+    model: str,
+    status: str = "delivered",
+    serial_number: str | None = None,
+    carrier: str | None = None,
+    tracking_number: str | None = None,
+    warranty_end_date: str | None = None,
+) -> str:
+    with connect() as conn:
+        row = conn.execute(
+            """
+            insert into orders (
+                order_id, customer_email, purchase_date, model, status,
+                serial_number, carrier, tracking_number, warranty_end_date
+            )
+            values (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            on conflict (order_id) do update
+            set status = excluded.status,
+                carrier = coalesce(excluded.carrier, orders.carrier),
+                tracking_number = coalesce(excluded.tracking_number, orders.tracking_number),
+                warranty_end_date = coalesce(excluded.warranty_end_date, orders.warranty_end_date)
+            returning order_id
+            """,
+            (
+                order_id.strip().upper(),
+                customer_email.strip().lower(),
+                purchase_date,
+                model,
+                status,
+                serial_number,
+                carrier,
+                tracking_number,
+                warranty_end_date,
+            ),
+        ).fetchone()
+        return row["order_id"]
+
+
+def get_order(order_id: str, customer_email: str | None = None) -> dict | None:
+    with connect() as conn:
+        if customer_email:
+            return conn.execute(
+                """
+                select order_id, customer_email, purchase_date, model, status,
+                       serial_number, carrier, tracking_number, warranty_end_date, created_at
+                from orders
+                where order_id = %s and customer_email = %s
+                """,
+                (order_id.strip().upper(), customer_email.strip().lower()),
+            ).fetchone()
+        return conn.execute(
+            """
+            select order_id, customer_email, purchase_date, model, status,
+                   serial_number, carrier, tracking_number, warranty_end_date, created_at
+            from orders
+            where order_id = %s
+            """,
+            (order_id.strip().upper(),),
+        ).fetchone()
+
+
+def add_order_item(
+    order_id: str,
+    sku: str,
+    title: str,
+    unit_price_cents: int,
+    is_accessory: bool = False,
+) -> int:
+    with connect() as conn:
+        row = conn.execute(
+            """
+            insert into order_items (order_id, sku, title, unit_price_cents, is_accessory)
+            values (%s, %s, %s, %s, %s)
+            returning id
+            """,
+            (order_id.strip().upper(), sku, title, unit_price_cents, is_accessory),
+        ).fetchone()
+        return row["id"]
+
+
+def get_order_items(order_id: str) -> list[dict]:
+    with connect() as conn:
+        return conn.execute(
+            """
+            select id, order_id, sku, title, unit_price_cents, is_accessory
+            from order_items
+            where order_id = %s
+            order by id asc
+            """,
+            (order_id.strip().upper(),),
+        ).fetchall()
+
+
+def create_rma_record(
+    rma_id: str,
+    order_id: str,
+    customer_email: str,
+    status: str,
+    reason: str,
+    return_label_url: str,
+) -> str:
+    with connect() as conn:
+        row = conn.execute(
+            """
+            insert into rma_requests (rma_id, order_id, customer_email, status, reason, return_label_url)
+            values (%s, %s, %s, %s, %s, %s)
+            on conflict (rma_id) do update
+            set status = excluded.status, return_label_url = excluded.return_label_url
+            returning rma_id
+            """,
+            (
+                rma_id.strip().upper(),
+                order_id.strip().upper(),
+                customer_email.strip().lower(),
+                status,
+                reason,
+                return_label_url,
+            ),
+        ).fetchone()
+        return row["rma_id"]
+
+
+def get_rma(rma_id: str) -> dict | None:
+    with connect() as conn:
+        return conn.execute(
+            """
+            select rma_id, order_id, customer_email, status, reason, return_label_url, created_at
+            from rma_requests
+            where rma_id = %s
+            """,
+            (rma_id.strip().upper(),),
+        ).fetchone()
+
+
+def create_approval(
+    thread_id: str,
+    action_type: str,
+    payload: dict,
+    proposed_reply: str | None = None,
+) -> str:
+    with connect() as conn:
+        row = conn.execute(
+            """
+            insert into approvals (thread_id, action_type, payload, status, proposed_reply)
+            values (%s, %s, %s, 'pending', %s)
+            returning id::text
+            """,
+            (thread_id, action_type, Jsonb(payload), proposed_reply),
+        ).fetchone()
+        return str(row["id"])
+
+
+def get_pending_approvals() -> list[dict]:
+    with connect() as conn:
+        return conn.execute(
+            """
+            select id::text, thread_id, action_type, payload, status, proposed_reply, created_at
+            from approvals
+            where status = 'pending'
+            order by created_at desc
+            """
+        ).fetchall()
+
+
+def resolve_approval(approval_id: str, status: str, resolved_by: str) -> bool:
+    with connect() as conn:
+        result = conn.execute(
+            """
+            update approvals
+            set status = %s, resolved_at = now(), resolved_by = %s
+            where id = %s::uuid and status = 'pending'
+            """,
+            (status, resolved_by, approval_id),
+        )
+        return result.rowcount > 0
+
+
