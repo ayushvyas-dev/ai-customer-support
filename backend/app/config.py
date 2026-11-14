@@ -23,6 +23,7 @@ class Settings(BaseSettings):
     groq_api_key: str = ""
     gemini_api_key: str = ""
     classifier_model: str = "openai/gpt-oss-120b"
+    evaluator_model: str = "openai/gpt-oss-120b"
     agent_model: str = "gemini-2.5-flash"
     agent_model01: str = ""
     agent_model02: str = ""
