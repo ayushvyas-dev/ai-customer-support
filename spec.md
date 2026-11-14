@@ -580,8 +580,8 @@ Define automated tier authorization logic:
   - Return exception requests outside the 30-day window.
   - Safety hazard reports (swelling, fire, smoke).
 
-- [ ] Implement `evaluate_action_policy(tool_name: str, args: dict, order: dict) -> PolicyDecision` in `app/ai/policies.py`
-- [ ] Write unit tests verifying Tier 1 vs Tier 2 classification
+- [x] Implement `evaluate_action_policy(tool_name: str, args: dict, order: dict) -> PolicyDecision` in `app/ai/policies.py`
+- [x] Write unit tests verifying Tier 1 vs Tier 2 classification
 
 ### Task 10.2: LangGraph `interrupt()` & Postgres Checkpointing
 **Files:**
@@ -595,8 +595,8 @@ Define automated tier authorization logic:
   - Insert record into `approvals` table with status `pending`.
   - Save ticket status as `awaiting_approval`.
 
-- [ ] Wire checkpointer into `support_graph.compile(checkpointer=checkpointer)`
-- [ ] Verify graph state pauses when a refund tool is invoked and stores the pending checkpoint in PostgreSQL
+- [x] Wire checkpointer into `support_graph.compile(checkpointer=checkpointer)`
+- [x] Verify graph state pauses when a refund tool is invoked and stores the pending checkpoint in PostgreSQL
 
 ### Task 10.3: Supervisor Approval REST Endpoints
 **Files:**
@@ -610,9 +610,9 @@ Add API routes for supervisor intervention:
 - `POST /api/approvals/{approval_id}/reject` — resume graph execution with `Command(resume={"approved": False, "reason": feedback})`.
 - On resumption, agent completes execution, logs approval in audit history, and dispatches the approved reply via Gmail.
 
-- [ ] Add endpoints to `backend/app/main.py`
-- [ ] Connect resumption logic to `pipeline.py` / `support_graph`
-- [ ] Test approve/reject cycle via FastAPI test client
+- [x] Add endpoints to `backend/app/main.py`
+- [x] Connect resumption logic to `pipeline.py` / `support_graph`
+- [x] Test approve/reject cycle via FastAPI test client
 
 ### Task 10.4: Frontend Supervisor Approval Dashboard UI
 **Files:**
@@ -626,9 +626,9 @@ Build a supervisor review interface in the Next.js dashboard:
 - Action buttons: "Approve & Send", "Reject Action", "Edit Draft & Approve".
 - Real-time badge counter indicating pending supervisor actions.
 
-- [ ] Create API client functions in `frontend/src/lib/approvals.ts`
-- [ ] Build `ApprovalQueue.tsx` with Tailwind and Lucide icons
-- [ ] Add approval tab to main dashboard view
+- [x] Create API client functions in `frontend/src/lib/approvals.ts`
+- [x] Build `ApprovalQueue.tsx` with Tailwind and Lucide icons
+- [x] Add approval tab to main dashboard view
 
 ---
 

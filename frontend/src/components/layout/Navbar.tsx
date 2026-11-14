@@ -34,6 +34,11 @@ export function Navbar() {
       icon: Ticket,
     },
     {
+      label: "Approvals",
+      href: "/approvals",
+      icon: ShieldCheck,
+    },
+    {
       label: "Knowledge Base",
       href: "/knowledge-base",
       icon: BookOpen,

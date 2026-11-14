@@ -3,16 +3,19 @@ from app.ai.schemas import Decision, SupportState
 from app.guards import DEFAULT_ESCALATION_ACKNOWLEDGEMENT
 
 
-def decide(thread: str, has_attachments: bool = False) -> Decision:
+def decide(thread: str, has_attachments: bool = False, thread_id: str | None = None) -> Decision:
     """Run the LangGraph Agentic RAG pipeline for one email thread."""
+    t_id = thread_id or "default_thread"
     initial_state: SupportState = {
         "thread_text": thread,
         "has_attachments": has_attachments,
+        "thread_id": t_id,
         "retry_count": 0,
         "max_retries": 2,
     }
 
-    final_state = support_graph.invoke(initial_state)
+    config = {"configurable": {"thread_id": t_id}}
+    final_state = support_graph.invoke(initial_state, config=config)
 
     action = final_state.get("action", "reply")
     section = final_state.get("section", "other")

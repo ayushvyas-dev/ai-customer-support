@@ -93,7 +93,7 @@ export function removeToken(): void {
   document.cookie = "support_token=; path=/; max-age=0";
 }
 
-async function request<T>(
+export async function request<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {

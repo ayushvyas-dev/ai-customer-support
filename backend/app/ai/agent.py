@@ -8,9 +8,13 @@ from typing import Any, Literal
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, SystemMessage, ToolMessage
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END, StateGraph
+from langgraph.types import Command, interrupt
 
+from app import db
 from app.ai.classifier import classify
+from app.ai.policies import evaluate_action_policy
 from app.ai.rules import CUSTOMER_STEPS, resolve_issue
 from app.ai.schemas import AgentReply, Issue, SupportState
 from app.ai.tools import SUPPORT_TOOLS
@@ -185,6 +189,45 @@ def execute_tools_node(state: SupportState) -> dict:
         t_name = tc.get("name")
         t_args = tc.get("args", {})
         t_id = tc.get("id") or str(uuid.uuid4())
+
+        # Evaluate authorization tier policy (Phase 10 HITL)
+        policy = evaluate_action_policy(t_name, t_args)
+        if policy.requires_approval:
+            approval_id = f"appr-{uuid.uuid4().hex[:8]}"
+            try:
+                approval_id = db.create_approval(
+                    thread_id=state.get("thread_id", "default_thread"),
+                    action_type=t_name,
+                    payload=t_args,
+                    proposed_reply=state.get("reply", ""),
+                )
+            except Exception as ex:
+                logger.warning("Could not persist approval to DB: %s", ex)
+
+            # Pause execution with LangGraph interrupt
+            supervisor_decision = interrupt(
+                {
+                    "approval_id": approval_id,
+                    "action": t_name,
+                    "args": t_args,
+                    "reason": policy.reason,
+                    "is_urgent": policy.is_urgent,
+                }
+            )
+
+            # If rejected by supervisor
+            if not supervisor_decision or not supervisor_decision.get("approved"):
+                reject_notes = (
+                    supervisor_decision.get("notes")
+                    if isinstance(supervisor_decision, dict)
+                    else "Declined by supervisor"
+                )
+                res_str = json.dumps({"error": True, "message": f"Action declined by supervisor: {reject_notes}"})
+                new_messages.append(ToolMessage(content=str(res_str), tool_call_id=t_id, name=t_name))
+                executed_records.append(
+                    {"tool": t_name, "args": t_args, "result": res_str, "status": "rejected"}
+                )
+                continue
 
         tool_fn = SUPPORT_TOOLS_BY_NAME.get(t_name)
         if tool_fn:
@@ -488,7 +531,7 @@ def route_after_rules(state: SupportState) -> Literal["send_reply", "escalate"]:
 # --- Build LangGraph Pipeline ---
 
 
-def build_support_graph():
+def build_support_graph(checkpointer: Any = None):
     workflow = StateGraph(SupportState)
 
     workflow.add_node("classify", classify_node)
@@ -564,8 +607,11 @@ def build_support_graph():
     workflow.add_edge("rewrite_and_retrieve", "generate_reply")
     workflow.add_edge("generate_reply", "validate_reply")
 
+    if checkpointer is not None:
+        return workflow.compile(checkpointer=checkpointer)
     return workflow.compile()
 
 
-support_graph = build_support_graph()
+support_checkpointer = MemorySaver()
+support_graph = build_support_graph(checkpointer=support_checkpointer)
 

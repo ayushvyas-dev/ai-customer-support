@@ -327,3 +327,62 @@ def reindex_kb(
     count = reindex_all()
     return {"status": "reindexed", "chunks": count}
 
+
+# Human-in-the-Loop (HITL) Supervisor Approval Endpoints
+
+
+class ApprovalDecisionRequest(BaseModel):
+    reviewer: str = "supervisor"
+    notes: str | None = None
+    edited_reply: str | None = None
+
+
+@app.get("/api/approvals/pending")
+def list_pending_approvals(
+    username: Annotated[str, Depends(verify_token)],
+) -> list[dict]:
+    """Retrieve all pending actions awaiting supervisor review."""
+    try:
+        rows = db.get_pending_approvals()
+        return [dict(r) for r in rows]
+    except Exception as e:
+        return []
+
+
+@app.post("/api/approvals/{approval_id}/approve")
+def approve_action(
+    approval_id: str,
+    body: ApprovalDecisionRequest,
+    username: Annotated[str, Depends(verify_token)],
+) -> dict:
+    """Approve a pending high-stakes action and resume agent execution."""
+    from app.pipeline import resume_approval_flow
+
+    res = resume_approval_flow(
+        approval_id=approval_id,
+        approved=True,
+        reviewer=username or body.reviewer,
+        edited_reply=body.edited_reply,
+        notes=body.notes,
+    )
+    return {"status": "approved", "approval_id": approval_id, "result": res}
+
+
+@app.post("/api/approvals/{approval_id}/reject")
+def reject_action(
+    approval_id: str,
+    body: ApprovalDecisionRequest,
+    username: Annotated[str, Depends(verify_token)],
+) -> dict:
+    """Reject a pending high-stakes action and resume agent execution with decline feedback."""
+    from app.pipeline import resume_approval_flow
+
+    res = resume_approval_flow(
+        approval_id=approval_id,
+        approved=False,
+        reviewer=username or body.reviewer,
+        notes=body.notes or "Declined by supervisor",
+    )
+    return {"status": "rejected", "approval_id": approval_id, "result": res}
+
+

@@ -57,7 +57,11 @@ def process(gmail: Gmail, message_id: str) -> tuple[str, dict]:
         # A colleague owns this thread until they remove the needs-human label.
         return "skipped", {"reason": "thread is escalated"}
 
-    decision = decide(format_thread(thread, gmail.address), has_attachments(message))
+    decision = decide(
+        format_thread(thread, gmail.address),
+        has_attachments(message),
+        thread_id=message["threadId"],
+    )
 
     sent = gmail.send_reply(message, decision.reply)
     db.save_message(ticket_id, sent["id"], "out", gmail.address, decision.reply)
@@ -67,3 +71,38 @@ def process(gmail: Gmail, message_id: str) -> tuple[str, dict]:
     else:
         db.update_ticket(ticket_id, "answered", decision.section)
     return "processed", decision.model_dump()
+
+
+def resume_approval_flow(
+    approval_id: str,
+    approved: bool,
+    reviewer: str,
+    edited_reply: str | None = None,
+    notes: str | None = None,
+) -> dict:
+    """Resume a LangGraph execution thread paused on an approval interrupt."""
+    from app.ai.agent import support_graph
+    from langgraph.types import Command
+
+    try:
+        db.resolve_approval(approval_id, "approved" if approved else "rejected", reviewer)
+    except Exception as e:
+        logger.warning("Could not update approval in DB: %s", e)
+
+    config = {"configurable": {"thread_id": approval_id}}
+    try:
+        res = support_graph.invoke(
+            Command(
+                resume={
+                    "approved": approved,
+                    "reviewer": reviewer,
+                    "notes": notes,
+                    "edited_reply": edited_reply,
+                }
+            ),
+            config=config,
+        )
+        return {"status": "resumed", "action": res.get("action", "reply")}
+    except Exception as e:
+        logger.info("Graph state not in active memory checkpointer: %s", e)
+        return {"status": "resolved", "approved": approved}
