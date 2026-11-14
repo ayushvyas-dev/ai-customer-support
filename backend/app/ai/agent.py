@@ -376,7 +376,9 @@ def validate_reply_node(state: SupportState) -> dict:
         }
 
     # Guardrail 1: Hallucination Prevention & Context Grounding Verification
-    is_grounded, grounding_msg = verify_grounding(reply, docs, section)
+    is_grounded, grounding_msg = verify_grounding(
+        reply, docs, section, executed_tools=state.get("executed_tools")
+    )
     if not is_grounded:
         logger.warning(
             "Grounding check failed: %s (attempt %d/%d)",
@@ -393,7 +395,9 @@ def validate_reply_node(state: SupportState) -> dict:
         }
 
     # Guardrail 4: Deterministic Business Rule & Commitment Check
-    has_unauthorized_commitment, commitment_msg = detect_unauthorized_commitments(reply)
+    has_unauthorized_commitment, commitment_msg = detect_unauthorized_commitments(
+        reply, executed_tools=state.get("executed_tools")
+    )
     if has_unauthorized_commitment:
         logger.warning("Unauthorized commitment detected: %s", commitment_msg)
         return {

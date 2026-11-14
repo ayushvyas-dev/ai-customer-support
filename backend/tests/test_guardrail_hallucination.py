@@ -87,6 +87,23 @@ class TestHallucinationGuardrail(unittest.TestCase):
         self.assertFalse(is_grounded)
         self.assertIn("Hallucinated product model", msg)
 
+    def test_verify_grounding_passes_with_tool_tracking_number(self):
+        """Tracking numbers confirmed by tool output must pass grounding verification."""
+        reply = "Your order has shipped via FedEx with tracking number TRK-992144.\n\nNexa Mobile Support"
+        docs = ["## Shipping details\nStandard delivery via FedEx."]
+        executed_tools = [{"tool": "tool_track_package", "result": '{"tracking_number": "TRK-992144", "status": "delivered"}'}]
+        is_grounded, msg = verify_grounding(reply, docs, "shipping", executed_tools=executed_tools)
+        self.assertTrue(is_grounded, f"Grounded tracking number was falsely rejected: {msg}")
+
+    def test_verify_grounding_fails_with_invented_tracking_number(self):
+        """Hallucinated tracking numbers absent from tool output must be rejected."""
+        reply = "Your package has tracking number TRK-FAKE999999.\n\nNexa Mobile Support"
+        docs = ["## Shipping details\nStandard delivery via FedEx."]
+        executed_tools = [{"tool": "tool_track_package", "result": '{"tracking_number": "TRK-992144"}'}]
+        is_grounded, msg = verify_grounding(reply, docs, "shipping", executed_tools=executed_tools)
+        self.assertFalse(is_grounded)
+        self.assertIn("Hallucinated tracking number", msg)
+
 
 if __name__ == "__main__":
     unittest.main()

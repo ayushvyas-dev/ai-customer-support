@@ -270,10 +270,21 @@ def grade_documents(query: str, docs: list[str]) -> bool:
     return matches >= 2 or match_ratio >= 0.25
 
 
-def verify_grounding(reply: str, retrieved_docs: list[str], section: str) -> tuple[bool, str]:
+def verify_grounding(
+    reply: str,
+    retrieved_docs: list[str],
+    section: str,
+    executed_tools: list[dict] | None = None,
+) -> tuple[bool, str]:
     """Verify that generated reply does not contain factual hallucinations or invented policies."""
     reply_lower = reply.lower()
-    docs_text = "\n".join(retrieved_docs).lower()
+
+    all_context = list(retrieved_docs)
+    if executed_tools:
+        for ex in executed_tools:
+            all_context.append(f"Tool {ex.get('tool')}: {ex.get('result')}")
+
+    docs_text = "\n".join(all_context).lower()
 
     # 1. Check for invented warranty periods
     # Factual: 1-year on smartphones, 6-month on accessories
@@ -311,6 +322,12 @@ def verify_grounding(reply: str, retrieved_docs: list[str], section: str) -> tup
     for im in INVALID_MODELS:
         if im in reply_lower:
             return False, f"Hallucinated product model: '{im}'"
+
+    # 5. Check tracking number grounding if quoted in reply
+    tracking_matches = re.findall(r"\b(?:TRK-[A-Z0-9]+|1Z[0-9A-Z]{16}|TBA[0-9]{10,})\b", reply)
+    for trk in tracking_matches:
+        if trk.lower() not in docs_text:
+            return False, f"Hallucinated tracking number not present in tool results: '{trk}'"
 
     return True, ""
 
@@ -381,14 +398,33 @@ UNAUTHORIZED_COMMITMENT_PATTERNS = [
 ]
 
 
-def detect_unauthorized_commitments(reply: str) -> tuple[bool, str]:
-    """Deterministically check if a reply makes unauthorized business commitments."""
+def detect_unauthorized_commitments(
+    reply: str, executed_tools: list[dict] | None = None
+) -> tuple[bool, str]:
+    """Deterministically check if a reply makes unauthorized business commitments.
+
+    If an action was authorized and executed via tool invocation (e.g. tool_request_refund
+    or tool_dispatch_replacement), that specific commitment is permitted.
+    """
     if not reply:
         return False, ""
+
+    executed_names = set()
+    if executed_tools:
+        for ex in executed_tools:
+            if ex.get("status") != "rejected":
+                executed_names.add(ex.get("tool"))
 
     for pattern, description in UNAUTHORIZED_COMMITMENT_PATTERNS:
         match = pattern.search(reply)
         if match:
+            # Check if commitment was authorized by confirmed tool execution
+            if "refund" in description.lower() and "tool_request_refund" in executed_names:
+                continue
+            if "replacement" in description.lower() and "tool_dispatch_replacement" in executed_names:
+                continue
+            if "cancellation" in description.lower() and "tool_cancel_order" in executed_names:
+                continue
             return True, f"{description}: '{match.group(0)}'"
 
     return False, ""

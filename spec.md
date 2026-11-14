@@ -644,8 +644,8 @@ Build a supervisor review interface in the Next.js dashboard:
   - If a promise (e.g. "We have issued a refund", "Your replacement is on the way") is accompanied by a confirmed tool execution or approved HITL status in state, permit it as an **authorized commitment**.
   - If no tool was executed and no approval was granted, flag as an **unauthorized commitment** and block the message.
 
-- [ ] Update commitment check in `app/guards.py` to inspect `executed_tools` in state
-- [ ] Verify test suite passes without flagging authorized refunds or replacement dispatches
+- [x] Update commitment check in `app/guards.py` to inspect `executed_tools` in state
+- [x] Verify test suite passes without flagging authorized refunds or replacement dispatches
 
 ### Task 11.2: Tool-Aware Context Grounding
 **Files:**
@@ -655,8 +655,8 @@ Build a supervisor review interface in the Next.js dashboard:
 **Details:**
 - Update `verify_grounding`: Grounding context should combine both retrieved KB documentation chunks *and* structured output from executed enterprise tools (e.g. tracking numbers, order totals, item names).
 
-- [ ] Update `verify_grounding` signature and prompt in `app/guards.py`
-- [ ] Ensure replies containing real tracking numbers obtained from `tool_track_package` pass grounding checks with 100% score
+- [x] Update `verify_grounding` signature and prompt in `app/guards.py`
+- [x] Ensure replies containing real tracking numbers obtained from `tool_track_package` pass grounding checks with 100% score
 
 ---
 

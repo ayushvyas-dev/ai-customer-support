@@ -93,6 +93,27 @@ class TestBusinessRulesGuardrail(unittest.TestCase):
             has_commitment, reason = detect_unauthorized_commitments(resp)
             self.assertFalse(has_commitment, f"Legitimate response was falsely flagged: {resp} (Reason: {reason})")
 
+    def test_authorized_refund_with_executed_tool_is_permitted(self):
+        """When tool_request_refund has executed, refund statements are permitted as authorized commitments."""
+        reply = "We have processed a courtesy refund of $25.00 for your order NX-1001.\n\nNexa Mobile Support"
+        executed_tools = [{"tool": "tool_request_refund", "result": '{"status": "processed"}'}]
+        has_commitment, reason = detect_unauthorized_commitments(reply, executed_tools=executed_tools)
+        self.assertFalse(has_commitment, f"Authorized refund was falsely flagged: {reason}")
+
+    def test_authorized_replacement_with_executed_tool_is_permitted(self):
+        """When tool_dispatch_replacement has executed, replacement dispatch statements are permitted."""
+        reply = "Your replacement unit has been dispatched and is on the way via FedEx.\n\nNexa Mobile Support"
+        executed_tools = [{"tool": "tool_dispatch_replacement", "result": '{"status": "dispatched"}'}]
+        has_commitment, reason = detect_unauthorized_commitments(reply, executed_tools=executed_tools)
+        self.assertFalse(has_commitment, f"Authorized replacement was falsely flagged: {reason}")
+
+    def test_rejected_tool_fails_commitment_check(self):
+        """When a refund tool was rejected by supervisor, the refund commitment remains unauthorized."""
+        reply = "We have processed a full refund to your original payment method.\n\nNexa Mobile Support"
+        executed_tools = [{"tool": "tool_request_refund", "status": "rejected"}]
+        has_commitment, reason = detect_unauthorized_commitments(reply, executed_tools=executed_tools)
+        self.assertTrue(has_commitment, "Rejected refund was improperly allowed")
+
 
 if __name__ == "__main__":
     unittest.main()
