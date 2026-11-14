@@ -108,9 +108,6 @@ export default function LoginPage() {
                   autoComplete="current-password"
                   className="h-9"
                 />
-                <p className="text-[11px] text-[#6B7280]">
-                  Configured via DASHBOARD_USERNAME and DASHBOARD_PASSWORD in .env
-                </p>
               </div>
             </CardContent>
 
