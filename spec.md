@@ -535,8 +535,8 @@ Extend `SupportState` to support multi-turn messages and tool call trajectories:
 - `pending_approval`: Optional[dict]
 - `requires_human`: bool
 
-- [ ] Update `SupportState` in `backend/app/ai/schemas.py`
-- [ ] Ensure full backward compatibility with existing fields (`reply`, `action`, `section`, `thread_text`)
+- [x] Update `SupportState` in `backend/app/ai/schemas.py`
+- [x] Ensure full backward compatibility with existing fields (`reply`, `action`, `section`, `thread_text`)
 
 ### Task 9.2: Tool-Calling Agent Loop in LangGraph
 **Files:**
@@ -554,9 +554,9 @@ Replace the fixed waterfall sequence with an agentic ReAct loop:
   - If final response ready $\rightarrow$ route to `validate_reply_node`.
 - Preserve pre-agent guardrails: `classify_node` still performs PII masking and prompt injection detection before agent execution.
 
-- [ ] Implement updated state graph in `app/ai/agent.py`
-- [ ] Add conditional edges for tool execution loop (max 4 iterations)
-- [ ] Verify test emails that only need FAQ answers call `tool_search_knowledge_base` once and return cleanly
+- [x] Implement updated state graph in `app/ai/agent.py`
+- [x] Add conditional edges for tool execution loop (max 4 iterations)
+- [x] Verify test emails that only need FAQ answers call `tool_search_knowledge_base` once and return cleanly
 
 ---
 

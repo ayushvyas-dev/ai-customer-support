@@ -1,4 +1,4 @@
-from typing import Literal, TypedDict
+from typing import Any, Literal, TypedDict
 
 from pydantic import BaseModel, Field
 
@@ -96,3 +96,13 @@ class SupportState(TypedDict, total=False):
     # Control Flow
     retry_count: int
     max_retries: int
+
+    # Agentic Tool Calling & HITL (Phases 8-10)
+    messages: list[Any]
+    order_id: str | None
+    customer_profile: dict | None
+    executed_tools: list[dict]
+    tool_call_count: int
+    pending_approval: dict | None
+    requires_human: bool
+
