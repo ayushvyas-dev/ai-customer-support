@@ -501,9 +501,9 @@ Define LangChain tools using `@tool` with Pydantic argument schemas and docstrin
 6. `tool_dispatch_replacement`: Order a warranty replacement part (e.g. charging cable, adapter).
 7. `tool_request_refund`: Request a partial or full refund for an order.
 
-- [ ] Write tests in `test_agent_tools.py` verifying each tool executes with valid inputs and handles missing orders cleanly
-- [ ] Implement tools in `backend/app/ai/tools.py` calling `app.services.enterprise`
-- [ ] Ensure tool responses return structured JSON strings suitable for LLM consumption
+- [x] Write tests in `test_agent_tools.py` verifying each tool executes with valid inputs and handles missing orders cleanly
+- [x] Implement tools in `backend/app/ai/tools.py` calling `app.services.enterprise`
+- [x] Ensure tool responses return structured JSON strings suitable for LLM consumption
 
 ### Task 8.2: Tool Execution Security & Audit Logging
 **Files:**
@@ -515,8 +515,8 @@ Define LangChain tools using `@tool` with Pydantic argument schemas and docstrin
 - Prevent destructive tool execution on unverified order numbers.
 - Log every tool call and result to Supabase `events` for auditability.
 
-- [ ] Add audit wrapper function in `app/ai/tools.py`
-- [ ] Verify logs capture input parameters and outcome timestamps without storing unmasked credit card or personal tokens
+- [x] Add audit wrapper function in `app/ai/tools.py`
+- [x] Verify logs capture input parameters and outcome timestamps without storing unmasked credit card or personal tokens
 
 ---
 
