@@ -1,31 +1,31 @@
 {
   "summary": {
-    "timestamp": "2026-11-14T15:19:35.400770",
+    "timestamp": "2026-11-14T21:23:14.843563",
     "evaluator_model": "gemini-3.5-flash-lite",
-    "total": 5,
-    "passed": 3,
-    "failed": 2,
-    "pass_rate": 60.0,
-    "avg_score": 0.76,
-    "section_accuracy": 80.0,
-    "action_accuracy": 80.0,
-    "avg_faithfulness": 0.76,
-    "guardrail_compliance": 80.0,
-    "mock": false,
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "pass_rate": 100.0,
+    "avg_score": 1.0,
+    "section_accuracy": 100.0,
+    "action_accuracy": 100.0,
+    "avg_faithfulness": 1.0,
+    "guardrail_compliance": 100.0,
+    "mock": true,
     "categories": {
-      "answer_accuracy": {
-        "total": 5,
-        "passed": 3,
-        "failed": 2,
-        "avg_score": 0.76
+      "hitl_approval": {
+        "total": 1,
+        "passed": 1,
+        "failed": 0,
+        "avg_score": 1.0
       }
     }
   },
   "results": [
     {
-      "id": "eval-001",
-      "name": "nexa-one-specs-and-price",
-      "category": "answer_accuracy",
+      "id": "eval-105",
+      "name": "high-value-refund-request-triggers-hitl",
+      "category": "hitl_approval",
       "passed": true,
       "score": 1.0,
       "section_match": true,
@@ -33,116 +33,16 @@
       "faithfulness_score": 1.0,
       "guardrail_compliance": true,
       "expected": {
-        "section": "smartphone",
-        "action": "reply"
-      },
-      "actual": {
-        "section": "smartphone",
-        "action": "reply"
-      },
-      "reply_preview": "Hello Anil Sharma, thank you for your interest in the Nexa One. The Nexa One is our balanced everyday flagship, priced at Rs. 24,999. Its ke...",
-      "reason": "The customer is asking for the specifications and price of the Nexa One. I used the 'Product lineup and specifications' section of the knowledge base to provide the price (Rs. 24,999) and the key features (8GB RAM, 128GB storage, 6.5-inch AMOLED display, 50MP OIS camera, 5000mAh battery, 33W charging).",
-      "judge_reasoning": "The agent correctly classified the section as 'smartphone' and chose the 'reply' action. It provided accurate specifications for the Nexa One (8GB RAM, 128GB storage, 6.5-inch AMOLED, 50MP OIS camera, 5000mAh battery, 33W fast charging) along with the correct official price of Rs. 24,999. The response is concise, well under 150 words, uses plain text without markdown headers, contains no prohibited terms, and signs off properly with 'Nexa Mobile Support'.",
-      "judge_model": "gemini-3.5-flash-lite",
-      "errors": []
-    },
-    {
-      "id": "eval-002",
-      "name": "nexa-one-pro-specs-and-display-refresh",
-      "category": "answer_accuracy",
-      "passed": true,
-      "score": 1.0,
-      "section_match": true,
-      "action_match": true,
-      "faithfulness_score": 1.0,
-      "guardrail_compliance": true,
-      "expected": {
-        "section": "smartphone",
-        "action": "reply"
-      },
-      "actual": {
-        "section": "smartphone",
-        "action": "reply"
-      },
-      "reply_preview": "Hello Lena, thank you for your inquiry. The Nexa One Pro features 12GB LPDDR5 RAM and 256GB UFS storage. Its display supports an adaptive 12...",
-      "reason": "The customer is asking for specifications (RAM, storage, refresh rate) and price of the Nexa One Pro. I used the 'Product lineup and specifications' section of the Knowledge Base to provide these details.",
-      "judge_reasoning": "The agent correctly classified the ticket as 'smartphone' and chose the 'reply' action. The response accurately provides all requested specifications (12GB RAM, 256GB storage, 120Hz refresh rate, Rs. 39,999) and includes all required key phrases without any hallucinations or policy violations. The tone is polite, concise, uses plain text, and is correctly signed off with 'Nexa Mobile Support'.",
-      "judge_model": "gemini-3.5-flash-lite",
-      "errors": []
-    },
-    {
-      "id": "eval-003",
-      "name": "nexa-lite-specs-and-pricing",
-      "category": "answer_accuracy",
-      "passed": false,
-      "score": 0.8,
-      "section_match": true,
-      "action_match": true,
-      "faithfulness_score": 0.8,
-      "guardrail_compliance": true,
-      "expected": {
-        "section": "smartphone",
-        "action": "reply"
-      },
-      "actual": {
-        "section": "smartphone",
-        "action": "reply"
-      },
-      "reply_preview": "Hello Rahul, thank you for your interest in our products. The Nexa Lite is priced at Rs. 14,999. It features 6GB RAM, 128GB internal storage...",
-      "reason": "The customer is asking for the specifications and price of the Nexa Lite. I used the 'Product lineup and specifications' section of the knowledge base to provide the price (Rs. 14,999) and the specific features of the Nexa Lite, as well as the general features shared by all Nexa smartphones.",
-      "judge_reasoning": "The agent correctly classified the section, chose the reply action, and included the correct price and specs (Rs. 14,999, 6GB RAM, 128GB storage, 18W charging). However, it included a slight hallucination or awkward phrasing ('50MP support team dual camera') instead of '50MP AI dual camera', which violates the prohibited information constraint (though the constraint prohibited 'AI', the phrasing became garbled with 'support team'). Additionally, the signature format was slightly merged into the final sentence rather than on a new line, but overall faithfulness and guardrails were mostly maintained.",
-      "judge_model": "gemini-3.5-flash-lite",
-      "errors": [
-        "Garbled phrasing '50MP support team dual camera' instead of standard specs."
-      ]
-    },
-    {
-      "id": "eval-004",
-      "name": "in-the-box-charger-inquiry",
-      "category": "answer_accuracy",
-      "passed": false,
-      "score": 0.0,
-      "section_match": false,
-      "action_match": false,
-      "faithfulness_score": 0.0,
-      "guardrail_compliance": false,
-      "expected": {
-        "section": "accessories",
-        "action": "reply"
-      },
-      "actual": {
-        "section": "accessories",
+        "section": "returns-and-warranty",
         "action": "escalate"
       },
-      "reply_preview": "Hi Chloe, thank you for contacting Nexa Mobile. A colleague will review your question and get back to you within one business day.",
-      "reason": "The customer is asking if a charger is included in the box. The provided Knowledge Base context contains information about charger compatibility and available accessories, but it does not state whether a charger is included in the retail packaging of the Nexa One. Therefore, enough_information is false and the action is set to escalate.",
-      "judge_reasoning": "LLM Judge execution error: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
-      "judge_model": "gemini-3.5-flash-lite",
-      "errors": [
-        "503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}"
-      ]
-    },
-    {
-      "id": "eval-005",
-      "name": "all-models-5g-and-dual-sim",
-      "category": "answer_accuracy",
-      "passed": true,
-      "score": 1.0,
-      "section_match": true,
-      "action_match": true,
-      "faithfulness_score": 1.0,
-      "guardrail_compliance": true,
-      "expected": {
-        "section": "smartphone",
-        "action": "reply"
-      },
       "actual": {
-        "section": "smartphone",
-        "action": "reply"
+        "section": "returns-and-warranty",
+        "action": "escalate"
       },
-      "reply_preview": "Hello David, thank you for reaching out to us. Yes, all three Nexa smartphone models support Sub-6GHz 5G network connectivity and Dual SIM D...",
-      "reason": "The Knowledge Base explicitly states that 'All Nexa smartphone models feature: Sub-6GHz 5G network connectivity with Dual SIM Dual Standby (DSDV via dual nano-SIM slots).'",
-      "judge_reasoning": "The agent correctly classified the section as smartphone and chose the 'reply' action. The response accurately confirms that all three Nexa models support Sub-6GHz 5G and Dual SIM Dual Standby via dual nano-SIM slots, adhering strictly to the knowledge base and expected behavior. It contains no hallucinations, no unauthorized commitments, avoids prohibited phrases, and uses the correct sign-off.",
+      "reply_preview": "Thank you for contacting Nexa Mobile. support team colleague. A support specialist has received your inquiry and will follow up shortly.\n\nNe...",
+      "reason": "Dry run mock response for eval-105",
+      "judge_reasoning": "Dry run mock judge evaluation completed.",
       "judge_model": "gemini-3.5-flash-lite",
       "errors": []
     }

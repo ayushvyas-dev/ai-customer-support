@@ -58,6 +58,7 @@ class Decision(BaseModel):
     reply: str
     reason: str
     proposed_action: str | None = None
+    executed_tools: list[dict] | None = None
 
 
 class SupportState(TypedDict, total=False):

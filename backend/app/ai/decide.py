@@ -36,4 +36,5 @@ def decide(thread: str, has_attachments: bool = False, thread_id: str | None = N
         reply=reply,
         reason=reason,
         proposed_action=proposed_action,
+        executed_tools=final_state.get("executed_tools", []),
     )

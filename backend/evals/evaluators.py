@@ -214,6 +214,16 @@ def mock_evaluate_case(case: dict[str, Any], decision: Any) -> JudgeEvaluation:
         if re.search(rf"\b{re.escape(proh)}\b", actual_reply, re.IGNORECASE):
             errors.append(f"Contains prohibited phrase: '{proh}'")
 
+    # Evaluate expected tool calls
+    expected_tools = expected_out.get("expected_tool_calls", [])
+    actual_tools = getattr(decision, "executed_tools", []) or []
+    act_tool_names = {t.get("tool") if isinstance(t, dict) else str(t) for t in actual_tools}
+
+    for exp_t in expected_tools:
+        t_name = exp_t.get("tool")
+        if t_name and t_name not in act_tool_names:
+            errors.append(f"Expected tool '{t_name}' was not invoked.")
+
     phrases_ok = len(errors) == 0
     overall_passed = section_ok and action_ok and phrases_ok
     score = 1.0 if overall_passed else (0.5 if (section_ok and action_ok) else 0.0)

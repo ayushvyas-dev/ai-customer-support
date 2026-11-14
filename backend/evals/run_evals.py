@@ -36,12 +36,20 @@ logger = logging.getLogger("evals")
 class MockDecision:
     """Mock decision object used during dry-run (--mock)."""
 
-    def __init__(self, section: str, action: str, reply: str = "", reason: str = "Mock execution"):
+    def __init__(
+        self,
+        section: str,
+        action: str,
+        reply: str = "",
+        reason: str = "Mock execution",
+        executed_tools: list[dict] | None = None,
+    ):
         self.section = section
         self.action = action
         self.reply = reply
         self.reason = reason
         self.proposed_action = None
+        self.executed_tools = executed_tools or []
 
 
 class CachedDecision:
@@ -53,6 +61,7 @@ class CachedDecision:
         self.reply = data.get("reply", "")
         self.reason = data.get("reason", "")
         self.proposed_action = data.get("proposed_action", None)
+        self.executed_tools = data.get("executed_tools", [])
 
 
 def format_case_email(case: dict[str, Any]) -> tuple[str, bool]:
@@ -92,6 +101,7 @@ def create_mock_decision(case: dict[str, Any]) -> MockDecision:
         action=action,
         reply=reply,
         reason=f"Dry run mock response for {case.get('id', case.get('name', 'test'))}",
+        executed_tools=expected.get("expected_tool_calls", []),
     )
 
 
@@ -114,6 +124,7 @@ def generate_single_output(case: dict[str, Any], mock: bool = False) -> dict[str
                 "reply": decision.reply,
                 "reason": decision.reason,
                 "proposed_action": getattr(decision, "proposed_action", None),
+                "executed_tools": getattr(decision, "executed_tools", []),
                 "latency_seconds": round(t_elapsed, 3),
             },
         }
@@ -134,6 +145,7 @@ def generate_single_output(case: dict[str, Any], mock: bool = False) -> dict[str
                 "reply": decision.reply,
                 "reason": decision.reason,
                 "proposed_action": getattr(decision, "proposed_action", None),
+                "executed_tools": getattr(decision, "executed_tools", []),
                 "latency_seconds": round(t_elapsed, 3),
             },
         }

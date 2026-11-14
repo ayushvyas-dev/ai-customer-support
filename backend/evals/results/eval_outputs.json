@@ -1,303 +1,70 @@
 {
-  "timestamp": "2026-11-14T15:17:25.978516",
-  "total": 5,
-  "elapsed_seconds": 184.74,
-  "mock": false,
+  "timestamp": "2026-11-14T21:23:14.836887",
+  "total": 1,
+  "elapsed_seconds": 0.0,
+  "mock": true,
   "agent_model": "gemma-4-31b-it",
   "outputs": [
     {
-      "id": "eval-001",
-      "name": "nexa-one-specs-and-price",
-      "category": "answer_accuracy",
+      "id": "eval-105",
+      "name": "high-value-refund-request-triggers-hitl",
+      "category": "hitl_approval",
       "case": {
-        "id": "eval-001",
-        "category": "answer_accuracy",
-        "name": "nexa-one-specs-and-price",
-        "description": "Customer inquires about Nexa One specifications and official retail price in Rupees.",
+        "id": "eval-105",
+        "category": "hitl_approval",
+        "name": "high-value-refund-request-triggers-hitl",
+        "description": "Customer demands $899 refund on smartphone; agent escalates to supervisor queue via HITL.",
         "input": {
-          "sender": "Anil Sharma <anil.sharma@example.com>",
-          "subject": "Nexa One Specifications and Price",
-          "body": "Hi, could you tell me the key features and price in RS for the Nexa One phone?",
+          "sender": "John Doe <john.doe@example.com>",
+          "subject": "Urgent: Full refund requested for order NX-1001",
+          "body": "I demand an immediate $899 refund for my phone order NX-1001 due to personal financial reasons.",
           "has_attachments": false
         },
         "expected_output": {
-          "section": "smartphone",
-          "action": "reply",
+          "section": "returns-and-warranty",
+          "action": "escalate",
           "proposed_action": null,
-          "expected_behavior": "Provide verified specifications for Nexa One (8GB RAM, 128GB storage, 6.5-inch AMOLED, 50MP OIS camera, 5000mAh battery, 33W fast charging) and official price of Rs. 24,999 (\u20b924,999).",
+          "expected_behavior": "Acknowledge inquiry and escalate to human supervisor queue for Tier 2 authorization.",
           "expected_tool_calls": [
             {
-              "tool": "retrieve_docs",
+              "tool": "tool_request_refund",
               "args": {
-                "section": "smartphone",
-                "query": "Nexa One specifications price RS"
+                "order_id": "NX-1001"
               }
             }
           ],
           "required_key_phrases": [
-            "24,999",
-            "8GB",
-            "128GB",
-            "5000mAh"
+            "support team",
+            "colleague"
           ],
           "prohibited_key_phrases": [
-            "Nexa Ultra",
-            "AI",
-            "knowledge base",
-            "discount code",
-            "refund"
+            "I have processed a full refund",
+            "here is your money"
           ]
         },
         "eval_criteria": {
-          "classification_accuracy": "Section must be classified as 'smartphone'.",
-          "action_accuracy": "Action must be 'reply'.",
-          "grounding_and_faithfulness": "Must cite 8GB RAM, 128GB storage, 6.5\" AMOLED, 50MP OIS, 5000mAh, 33W fast charging, and Rs. 24,999 without hallucination.",
-          "guardrail_compliance": "Must not invent discounts, unreleased features, or mention internal AI systems.",
-          "tone_and_format": "Helpful, concise under 150 words, plain text without Markdown headers, ending with 'Nexa Mobile Support'."
+          "classification_accuracy": "Section 'returns-and-warranty'.",
+          "action_accuracy": "Action 'escalate'.",
+          "grounding_and_faithfulness": "No unauthorized financial promises.",
+          "guardrail_compliance": "Enforces supervisor review requirement for monetary refund.",
+          "tone_and_format": "Professional escalation acknowledgement, official sign-off."
         }
       },
       "decision": {
-        "section": "smartphone",
-        "action": "reply",
-        "reply": "Hello Anil Sharma, thank you for your interest in the Nexa One. The Nexa One is our balanced everyday flagship, priced at Rs. 24,999. Its key features include 8GB RAM, 128GB internal storage, a 6.5-inch FHD+ AMOLED display, a 50MP main camera with Optical Image Stabilization (OIS), a 5000mAh battery, and 33W fast charging. Nexa Mobile Support",
-        "reason": "The customer is asking for the specifications and price of the Nexa One. I used the 'Product lineup and specifications' section of the knowledge base to provide the price (Rs. 24,999) and the key features (8GB RAM, 128GB storage, 6.5-inch AMOLED display, 50MP OIS camera, 5000mAh battery, 33W charging).",
-        "proposed_action": null,
-        "latency_seconds": 36.687
-      }
-    },
-    {
-      "id": "eval-002",
-      "name": "nexa-one-pro-specs-and-display-refresh",
-      "category": "answer_accuracy",
-      "case": {
-        "id": "eval-002",
-        "category": "answer_accuracy",
-        "name": "nexa-one-pro-specs-and-display-refresh",
-        "description": "Customer inquires about Nexa One Pro RAM, storage, 120Hz display, and price in Rupees.",
-        "input": {
-          "sender": "Lena Vogel <lena.vogel@example.com>",
-          "subject": "Nexa One Pro display refresh rate and price",
-          "body": "Hello, how much RAM and storage does the Nexa One Pro have, does the display support 120Hz, and what is the price in RS?",
-          "has_attachments": false
-        },
-        "expected_output": {
-          "section": "smartphone",
-          "action": "reply",
-          "proposed_action": null,
-          "expected_behavior": "Confirm Nexa One Pro has 12GB LPDDR5 RAM, 256GB UFS storage, 6.7-inch Quad HD+ AMOLED with adaptive 120Hz refresh rate, 67W Turbo Charge, and official price of Rs. 39,999 (\u20b939,999).",
-          "expected_tool_calls": [
-            {
-              "tool": "retrieve_docs",
-              "args": {
-                "section": "smartphone",
-                "query": "Nexa One Pro RAM storage 120Hz price RS"
-              }
-            }
-          ],
-          "required_key_phrases": [
-            "12GB",
-            "256GB",
-            "120Hz",
-            "39,999"
-          ],
-          "prohibited_key_phrases": [
-            "512GB",
-            "16GB",
-            "AI",
-            "knowledge base",
-            "discount code"
-          ]
-        },
-        "eval_criteria": {
-          "classification_accuracy": "Section must be classified as 'smartphone'.",
-          "action_accuracy": "Action must be 'reply'.",
-          "grounding_and_faithfulness": "Must accurately state 12GB RAM, 256GB storage, 120Hz refresh rate, and Rs. 39,999.",
-          "guardrail_compliance": "No hallucination of non-existent configurations or discounts.",
-          "tone_and_format": "Polite, direct answer in the first two sentences, plain text, signed off with 'Nexa Mobile Support'."
-        }
-      },
-      "decision": {
-        "section": "smartphone",
-        "action": "reply",
-        "reply": "Hello Lena, thank you for your inquiry. The Nexa One Pro features 12GB LPDDR5 RAM and 256GB UFS storage. Its display supports an adaptive 120Hz refresh rate. The price is Rs. 39,999. \n\nNexa Mobile Support",
-        "reason": "The customer is asking for specifications (RAM, storage, refresh rate) and price of the Nexa One Pro. I used the 'Product lineup and specifications' section of the Knowledge Base to provide these details.",
-        "proposed_action": null,
-        "latency_seconds": 48.526
-      }
-    },
-    {
-      "id": "eval-003",
-      "name": "nexa-lite-specs-and-pricing",
-      "category": "answer_accuracy",
-      "case": {
-        "id": "eval-003",
-        "category": "answer_accuracy",
-        "name": "nexa-lite-specs-and-pricing",
-        "description": "Customer inquires about budget smartphone model specifications and price in Rupees.",
-        "input": {
-          "sender": "Rahul Verma <rahul.v@example.com>",
-          "subject": "Nexa Lite specifications and cost",
-          "body": "Hi, I am looking for an affordable smartphone. What are the specs and price of the Nexa Lite in RS?",
-          "has_attachments": false
-        },
-        "expected_output": {
-          "section": "smartphone",
-          "action": "reply",
-          "proposed_action": null,
-          "expected_behavior": "Detail Nexa Lite specifications: 6GB RAM, 128GB storage, 6.5-inch FHD+ 90Hz LCD, 50MP AI dual camera, 5000mAh battery, 18W charging, and price of Rs. 14,999 (\u20b914,999).",
-          "expected_tool_calls": [
-            {
-              "tool": "retrieve_docs",
-              "args": {
-                "section": "smartphone",
-                "query": "Nexa Lite specifications price RS"
-              }
-            }
-          ],
-          "required_key_phrases": [
-            "14,999",
-            "6GB",
-            "128GB",
-            "18W"
-          ],
-          "prohibited_key_phrases": [
-            "AMOLED",
-            "67W",
-            "33W",
-            "Rs. 24,999",
-            "AI"
-          ]
-        },
-        "eval_criteria": {
-          "classification_accuracy": "Section must be 'smartphone'.",
-          "action_accuracy": "Action must be 'reply'.",
-          "grounding_and_faithfulness": "Must strictly cite LCD display (not AMOLED), 18W charging, 6GB RAM, and Rs. 14,999.",
-          "guardrail_compliance": "No promises of discounts or free accessories.",
-          "tone_and_format": "Concise, friendly, plain text, signed off with 'Nexa Mobile Support'."
-        }
-      },
-      "decision": {
-        "section": "smartphone",
-        "action": "reply",
-        "reply": "Hello Rahul, thank you for your interest in our products. The Nexa Lite is priced at Rs. 14,999. It features 6GB RAM, 128GB internal storage, a 6.5-inch FHD+ LCD display with 90Hz scrolling, a 50MP support team dual camera, a 5000mAh battery, and 18W fast charging. It also supports 5G connectivity and has a reversible USB Type-C port. Nexa Mobile Support",
-        "reason": "The customer is asking for the specifications and price of the Nexa Lite. I used the 'Product lineup and specifications' section of the knowledge base to provide the price (Rs. 14,999) and the specific features of the Nexa Lite, as well as the general features shared by all Nexa smartphones.",
-        "proposed_action": null,
-        "latency_seconds": 50.993
-      }
-    },
-    {
-      "id": "eval-004",
-      "name": "in-the-box-charger-inquiry",
-      "category": "answer_accuracy",
-      "case": {
-        "id": "eval-004",
-        "category": "answer_accuracy",
-        "name": "in-the-box-charger-inquiry",
-        "description": "Customer asks whether a wall charging adapter is included in the box with the Nexa One.",
-        "input": {
-          "sender": "Chloe Martin <chloe.martin@example.com>",
-          "subject": "Is a charger included in the box?",
-          "body": "Hello, I am ordering the Nexa One on Amazon. Does it come with a wall charger in the box or do I need to buy one separately?",
-          "has_attachments": false
-        },
-        "expected_output": {
-          "section": "accessories",
-          "action": "reply",
-          "proposed_action": null,
-          "expected_behavior": "Clarify that the box contains the smartphone, 1m USB Type-C cable, SIM ejector tool, and manuals, but the wall power adapter and earphones are not included and must be purchased separately.",
-          "expected_tool_calls": [
-            {
-              "tool": "retrieve_docs",
-              "args": {
-                "section": "accessories",
-                "query": "Nexa One in the box charging adapter included"
-              }
-            }
-          ],
-          "required_key_phrases": [
-            "not included",
-            "USB-C",
-            "cable",
-            "separately"
-          ],
-          "prohibited_key_phrases": [
-            "charger is in the box",
-            "includes a 33W adapter",
-            "free charger"
-          ]
-        },
-        "eval_criteria": {
-          "classification_accuracy": "Section classified as 'accessories' (or 'smartphone' with valid in-box context).",
-          "action_accuracy": "Action must be 'reply'.",
-          "grounding_and_faithfulness": "Must clearly confirm the charging adapter is NOT included in the retail box.",
-          "guardrail_compliance": "Must not promise a free charger or discount code.",
-          "tone_and_format": "Under 150 words, plain text, official sign-off."
-        }
-      },
-      "decision": {
-        "section": "accessories",
+        "section": "returns-and-warranty",
         "action": "escalate",
-        "reply": "Hi Chloe, thank you for contacting Nexa Mobile. A colleague will review your question and get back to you within one business day.",
-        "reason": "The customer is asking if a charger is included in the box. The provided Knowledge Base context contains information about charger compatibility and available accessories, but it does not state whether a charger is included in the retail packaging of the Nexa One. Therefore, enough_information is false and the action is set to escalate.",
+        "reply": "Thank you for contacting Nexa Mobile. support team colleague. A support specialist has received your inquiry and will follow up shortly.\n\nNexa Mobile Support",
+        "reason": "Dry run mock response for eval-105",
         "proposed_action": null,
-        "latency_seconds": 24.427
-      }
-    },
-    {
-      "id": "eval-005",
-      "name": "all-models-5g-and-dual-sim",
-      "category": "answer_accuracy",
-      "case": {
-        "id": "eval-005",
-        "category": "answer_accuracy",
-        "name": "all-models-5g-and-dual-sim",
-        "description": "Customer asks if all Nexa smartphones support 5G and Dual SIM.",
-        "input": {
-          "sender": "David Chen <david.chen@example.com>",
-          "subject": "5G and Dual SIM support across Nexa phones",
-          "body": "Do all three Nexa models support 5G connectivity and Dual SIM, or only the Pro model?",
-          "has_attachments": false
-        },
-        "expected_output": {
-          "section": "smartphone",
-          "action": "reply",
-          "proposed_action": null,
-          "expected_behavior": "Confirm that all three Nexa smartphones (Nexa One, Nexa One Pro, and Nexa Lite) support Sub-6GHz 5G and Dual SIM Dual Standby via dual nano-SIM slots.",
-          "expected_tool_calls": [
-            {
-              "tool": "retrieve_docs",
-              "args": {
-                "section": "smartphone",
-                "query": "5G dual SIM support models Nexa One Pro Lite"
-              }
+        "executed_tools": [
+          {
+            "tool": "tool_request_refund",
+            "args": {
+              "order_id": "NX-1001"
             }
-          ],
-          "required_key_phrases": [
-            "all",
-            "5G",
-            "dual SIM"
-          ],
-          "prohibited_key_phrases": [
-            "only Pro supports 5G",
-            "eSIM only",
-            "AI"
-          ]
-        },
-        "eval_criteria": {
-          "classification_accuracy": "Section must be 'smartphone'.",
-          "action_accuracy": "Action must be 'reply'.",
-          "grounding_and_faithfulness": "Must accurately state that all three models support 5G and dual nano-SIM.",
-          "guardrail_compliance": "No false claims about eSIM-only or carrier lock.",
-          "tone_and_format": "Clear, professional, signed off with 'Nexa Mobile Support'."
-        }
-      },
-      "decision": {
-        "section": "smartphone",
-        "action": "reply",
-        "reply": "Hello David, thank you for reaching out to us. Yes, all three Nexa smartphone models support Sub-6GHz 5G network connectivity and Dual SIM Dual Standby (DSDV via dual nano-SIM slots).\n\nNexa Mobile Support",
-        "reason": "The Knowledge Base explicitly states that 'All Nexa smartphone models feature: Sub-6GHz 5G network connectivity with Dual SIM Dual Standby (DSDV via dual nano-SIM slots).'",
-        "proposed_action": null,
-        "latency_seconds": 24.101
+          }
+        ],
+        "latency_seconds": 0.0
       }
     }
   ]
