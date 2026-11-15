@@ -1,6 +1,10 @@
 from app.ai.agent import support_graph
 from app.ai.schemas import Decision, SupportState
-from app.guards import DEFAULT_ESCALATION_ACKNOWLEDGEMENT
+from app.guards import (
+    DEFAULT_ESCALATION_ACKNOWLEDGEMENT,
+    extract_text_from_content,
+    sanitize_output,
+)
 
 
 def decide(thread: str, has_attachments: bool = False, thread_id: str | None = None) -> Decision:
@@ -19,9 +23,12 @@ def decide(thread: str, has_attachments: bool = False, thread_id: str | None = N
 
     action = final_state.get("action", "reply")
     section = final_state.get("section", "other")
-    reply = final_state.get("reply", "")
+    raw_reply = final_state.get("reply", "")
+    reply = extract_text_from_content(raw_reply)
     if action == "escalate" and not reply.strip():
         reply = DEFAULT_ESCALATION_ACKNOWLEDGEMENT
+    elif reply.strip():
+        reply = sanitize_output(reply)
     reason = (
         final_state.get("escalation_reason")
         or final_state.get("reasoning")

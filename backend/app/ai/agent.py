@@ -23,6 +23,7 @@ from app.guards import (
     DEFAULT_ESCALATION_ACKNOWLEDGEMENT,
     detect_prompt_injection,
     detect_unauthorized_commitments,
+    extract_text_from_content,
     grade_documents,
     mask_pii,
     sanitize_for_prompt,
@@ -189,7 +190,7 @@ def agent_reason_node(state: SupportState) -> dict:
         }
 
     # Final text response generated
-    reply_text = str(response.content).strip()
+    reply_text = extract_text_from_content(response.content)
     return {
         "messages": new_messages,
         "reply": reply_text,

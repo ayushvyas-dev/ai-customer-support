@@ -443,31 +443,79 @@ PLACEHOLDER_PATTERN = re.compile(
 )
 
 
-def validate_output(reply: str) -> tuple[bool, str]:
+def extract_text_from_content(content: Any) -> str:
+    """Extract clean text string from model response content (str, list, dict, or stringified list)."""
+    if isinstance(content, str):
+        trimmed = content.strip()
+        # Handle stringified list of dicts, e.g. "[{'type': 'text', 'text': '...'}]"
+        if trimmed.startswith("[") and trimmed.endswith("]"):
+            try:
+                import ast
+
+                parsed = ast.literal_eval(trimmed)
+                if isinstance(parsed, list):
+                    return extract_text_from_content(parsed)
+            except Exception:
+                pass
+        return trimmed
+
+    if isinstance(content, list):
+        text_parts = []
+        for part in content:
+            if isinstance(part, str):
+                text_parts.append(part)
+            elif isinstance(part, dict):
+                # Ignore internal thinking tokens
+                if part.get("type") == "thought":
+                    continue
+                if part.get("type") == "text" and "text" in part:
+                    text_parts.append(str(part["text"]))
+                elif "text" in part and part.get("type") != "thought":
+                    text_parts.append(str(part["text"]))
+            elif hasattr(part, "text"):
+                text_parts.append(str(part.text))
+        return "\n\n".join(tp for tp in text_parts if tp.strip()).strip()
+
+    if isinstance(content, dict):
+        if content.get("type") == "thought":
+            return ""
+        if "text" in content:
+            return str(content["text"]).strip()
+
+    return str(content).strip()
+
+
+def validate_output(reply: Any) -> tuple[bool, str]:
     """Validate that the generated response satisfies quality, formatting, and safety standards."""
-    if not reply or len(reply.strip()) < 15:
+    clean_text = extract_text_from_content(reply)
+    if not clean_text or len(clean_text.strip()) < 15:
         return False, "Reply is too short or empty"
 
+    # Check for raw structural dictionary/list leakage
+    if clean_text.startswith(("{'type'", '{"type"', "[{'type'", '[{"type"')):
+        return False, "Raw structured payload detected in reply"
+
     # Check for unresolved template placeholders
-    placeholder_match = PLACEHOLDER_PATTERN.search(reply)
+    placeholder_match = PLACEHOLDER_PATTERN.search(clean_text)
     if placeholder_match:
         return False, f"Unresolved placeholder detected: '{placeholder_match.group(0)}'"
 
     # Check for sensitive PII leaks in outbound reply
-    detected_pii = detect_pii(reply)
+    detected_pii = detect_pii(clean_text)
     if detected_pii:
         return False, f"Outbound reply contains sensitive PII: {[d['type'] for d in detected_pii]}"
 
     return True, ""
 
 
-def sanitize_output(reply: str) -> str:
+def sanitize_output(reply: Any) -> str:
     """Sanitize reply to remove forbidden internal mentions and ensure corporate sign-off."""
-    if not reply:
-        return reply
+    clean_text = extract_text_from_content(reply)
+    if not clean_text:
+        return ""
 
     # Replace forbidden terms like "AI" or "knowledge base"
-    cleaned = FORBIDDEN_TERMS_PATTERN.sub("support team", reply)
+    cleaned = FORBIDDEN_TERMS_PATTERN.sub("support team", clean_text)
 
     # Ensure clean sign-off
     required_signoff = "Nexa Mobile Support"

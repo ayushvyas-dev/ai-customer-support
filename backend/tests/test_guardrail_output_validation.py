@@ -7,6 +7,7 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 from app.guards import (
     DEFAULT_ESCALATION_ACKNOWLEDGEMENT,
+    extract_text_from_content,
     sanitize_output,
     validate_output,
 )
@@ -81,6 +82,53 @@ class TestOutputValidationGuardrail(unittest.TestCase):
         self.assertIn("one business day", DEFAULT_ESCALATION_ACKNOWLEDGEMENT)
         self.assertIn("Nexa Mobile Support", DEFAULT_ESCALATION_ACKNOWLEDGEMENT)
         self.assertNotIn("AI", DEFAULT_ESCALATION_ACKNOWLEDGEMENT)
+
+
+    def test_extract_text_from_content_with_list_of_blocks(self):
+        """LangChain content blocks from Gemini/multimodal LLMs must be cleanly parsed to text."""
+        raw_blocks = [
+            {
+                "type": "text",
+                "text": "Hello Ayush,\n\nTo return your smartphone, please follow the Amazon return portal.\n\nNexa Mobile Support",
+                "extras": {"signature": "abc123xyz"},
+            }
+        ]
+        extracted = extract_text_from_content(raw_blocks)
+        self.assertNotIn("type", extracted)
+        self.assertNotIn("signature", extracted)
+        self.assertIn("Hello Ayush,", extracted)
+        self.assertTrue(extracted.endswith("Nexa Mobile Support"))
+
+    def test_extract_text_from_content_with_stringified_list(self):
+        """Stringified representations of content blocks must also be unpacked cleanly."""
+        stringified_raw = "[{'type': 'text', 'text': 'Hello Ayush,\\n\\nTo return your smartphone.\\n\\nNexa Mobile Support', 'extras': {'signature': '123'}}]"
+        extracted = extract_text_from_content(stringified_raw)
+        self.assertNotIn("{'type'", extracted)
+        self.assertNotIn("'signature'", extracted)
+        self.assertIn("Hello Ayush,", extracted)
+
+    def test_extract_text_from_content_ignores_internal_thought_blocks(self):
+        """Thinking tokens from reasoning models must never be included in outbound customer text."""
+        raw_blocks_with_thought = [
+            {"type": "thought", "thought": "The user wants a return. Looking up return policy."},
+            {"type": "text", "text": "Hello customer, here is how you return.\n\nNexa Mobile Support"},
+        ]
+        extracted = extract_text_from_content(raw_blocks_with_thought)
+        self.assertNotIn("Looking up return policy", extracted)
+        self.assertIn("Hello customer, here is how you return.", extracted)
+
+    def test_sanitize_output_cleans_structured_payloads(self):
+        """Sanitizing a structured payload directly returns clean customer email prose."""
+        raw_blocks = [
+            {
+                "type": "text",
+                "text": "Hello Ayush,\n\nPlease follow the steps in your Amazon account.",
+            }
+        ]
+        sanitized = sanitize_output(raw_blocks)
+        self.assertNotIn("{'type'", sanitized)
+        self.assertIn("Hello Ayush,", sanitized)
+        self.assertTrue(sanitized.endswith("Nexa Mobile Support"))
 
 
 if __name__ == "__main__":

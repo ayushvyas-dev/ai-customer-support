@@ -12,7 +12,7 @@ from app.gmail import (
     get_headers,
     has_attachments,
 )
-from app.guards import mask_pii, skip_reason
+from app.guards import mask_pii, sanitize_output, skip_reason
 
 logger = logging.getLogger(__name__)
 MAX_ATTEMPTS = 3
@@ -63,8 +63,9 @@ def process(gmail: Gmail, message_id: str) -> tuple[str, dict]:
         thread_id=message["threadId"],
     )
 
-    sent = gmail.send_reply(message, decision.reply)
-    db.save_message(ticket_id, sent["id"], "out", gmail.address, decision.reply)
+    reply_to_send = sanitize_output(decision.reply)
+    sent = gmail.send_reply(message, reply_to_send)
+    db.save_message(ticket_id, sent["id"], "out", gmail.address, reply_to_send)
     if decision.action == "escalate":
         gmail.add_label(message_id, ESCALATED_LABEL)
         db.update_ticket(ticket_id, "escalated", decision.section, decision.proposed_action)
