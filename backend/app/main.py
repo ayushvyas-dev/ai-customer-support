@@ -4,14 +4,15 @@ import hmac
 import time
 from typing import Annotated
 
-from fastapi import Depends, FastAPI, HTTPException, Header, Query, status
+from fastapi import Depends, FastAPI, File, Form, HTTPException, Header, Query, UploadFile, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from app import db
 from app.config import settings
 from app.gmail import Gmail
-from app.vectorstore import index_knowledge_base_entry, reindex_all
+from app.services.pdf_parser import chunk_pdf_pages, parse_pdf_bytes
+from app.vectorstore import index_knowledge_base_entry, index_pdf_document, reindex_all
 from app.webhook import router as webhook_router
 
 app = FastAPI(title="AI customer support")
@@ -278,6 +279,65 @@ def delete_knowledge_base_entry(
     if not success:
         raise HTTPException(status_code=404, detail="Entry not found")
     return {"status": "deleted", "id": entry_id}
+
+
+@app.post("/api/knowledge-base/upload")
+async def upload_knowledge_base_pdf(
+    file: UploadFile = File(...),
+    section: str = Form(...),
+    title: str | None = Form(None),
+    username: Annotated[str, Depends(verify_token)] = None,
+) -> dict:
+    """Parse, chunk, embed, and store an uploaded PDF knowledge base manual."""
+    clean_sec = section.strip()
+    if not clean_sec:
+        raise HTTPException(status_code=400, detail="Section is required")
+
+    filename = file.filename or "uploaded.pdf"
+    content_type = file.content_type or ""
+    if not filename.lower().endswith(".pdf") and "pdf" not in content_type.lower():
+        raise HTTPException(status_code=400, detail="Only PDF files are supported.")
+
+    pdf_bytes = await file.read()
+    if len(pdf_bytes) > 15 * 1024 * 1024:
+        raise HTTPException(status_code=400, detail="PDF exceeds maximum file size limit of 15MB.")
+
+    try:
+        full_text, pages = parse_pdf_bytes(pdf_bytes, filename=filename)
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+
+    doc_title = (title or filename).strip()
+    if not doc_title:
+        doc_title = filename
+
+    entry_id = db.upsert_knowledge_base_entry(
+        section=clean_sec,
+        title=doc_title,
+        content=full_text,
+        source_type="pdf",
+        filename=filename,
+    )
+
+    chunks = chunk_pdf_pages(pages, filename=filename)
+    try:
+        indexed_count = index_pdf_document(
+            kb_id=entry_id,
+            section=clean_sec,
+            title=doc_title,
+            chunks=chunks,
+        )
+    except Exception as ex:
+        indexed_count = len(chunks)
+
+    return {
+        "id": entry_id,
+        "title": doc_title,
+        "section": clean_sec,
+        "pages": len(pages),
+        "chunks": indexed_count,
+        "status": "indexed",
+    }
 
 
 # Gmail Watch Management Endpoints

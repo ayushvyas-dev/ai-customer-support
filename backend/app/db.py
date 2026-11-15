@@ -263,7 +263,7 @@ def get_knowledge_base_entries(
 
         where_clause = f"where {' and '.join(conditions)}" if conditions else ""
         query = f"""
-            select id, section, title, content, updated_at
+            select id, section, title, content, coalesce(source_type, 'text') as source_type, filename, updated_at
             from knowledge_base
             {where_clause}
             order by section asc, title asc
@@ -274,37 +274,46 @@ def get_knowledge_base_entries(
 def get_knowledge_base_entry(entry_id: int) -> dict | None:
     with connect() as conn:
         return conn.execute(
-            "select id, section, title, content, updated_at from knowledge_base where id = %s",
+            """
+            select id, section, title, content, coalesce(source_type, 'text') as source_type, filename, updated_at
+            from knowledge_base where id = %s
+            """,
             (entry_id,),
         ).fetchone()
 
 
 def upsert_knowledge_base_entry(
-    section: str, title: str, content: str, entry_id: int | None = None
+    section: str,
+    title: str,
+    content: str,
+    entry_id: int | None = None,
+    source_type: str = "text",
+    filename: str | None = None,
 ) -> int:
     with connect() as conn:
         if entry_id:
             row = conn.execute(
                 """
                 update knowledge_base
-                set section = %s, title = %s, content = %s, updated_at = now()
+                set section = %s, title = %s, content = %s, source_type = %s, filename = %s, updated_at = now()
                 where id = %s
                 returning id
                 """,
-                (section, title, content, entry_id),
+                (section, title, content, source_type, filename, entry_id),
             ).fetchone()
             if row:
                 return row["id"]
 
         row = conn.execute(
             """
-            insert into knowledge_base (section, title, content)
-            values (%s, %s, %s)
+            insert into knowledge_base (section, title, content, source_type, filename)
+            values (%s, %s, %s, %s, %s)
             on conflict (section, title) do update
-            set content = excluded.content, updated_at = now()
+            set content = excluded.content, source_type = excluded.source_type,
+                filename = excluded.filename, updated_at = now()
             returning id
             """,
-            (section, title, content),
+            (section, title, content, source_type, filename),
         ).fetchone()
         return row["id"]
 

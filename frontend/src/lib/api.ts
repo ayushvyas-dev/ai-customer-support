@@ -40,6 +40,8 @@ export interface KnowledgeBaseItem {
   section: string;
   title: string;
   content: string;
+  source_type?: string;
+  filename?: string;
   updated_at: string;
 }
 
@@ -99,7 +101,9 @@ export async function request<T>(
 ): Promise<T> {
   const token = getToken();
   const headers = new Headers(options.headers || {});
-  headers.set("Content-Type", "application/json");
+  if (!(options.body instanceof FormData)) {
+    headers.set("Content-Type", "application/json");
+  }
 
   if (token) {
     headers.set("Authorization", `Bearer ${token}`);
@@ -239,6 +243,20 @@ export const api = {
   async deleteKnowledgeBase(id: number): Promise<{ status: string; id: number }> {
     return request(`/api/knowledge-base/${id}`, {
       method: "DELETE",
+    });
+  },
+
+  async uploadKnowledgeBasePdf(formData: FormData): Promise<{
+    id: number;
+    title: string;
+    section: string;
+    pages: number;
+    chunks: number;
+    status: string;
+  }> {
+    return request("/api/knowledge-base/upload", {
+      method: "POST",
+      body: formData,
     });
   },
 };

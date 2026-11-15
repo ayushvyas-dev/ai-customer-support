@@ -1,66 +1,675 @@
 {
-  "timestamp": "2026-11-14T21:23:14.836887",
-  "total": 1,
+  "timestamp": "2026-11-15T15:03:15.218634",
+  "total": 10,
   "elapsed_seconds": 0.0,
   "mock": true,
   "agent_model": "gemma-4-31b-it",
   "outputs": [
     {
-      "id": "eval-105",
-      "name": "high-value-refund-request-triggers-hitl",
-      "category": "hitl_approval",
+      "id": "eval-001",
+      "name": "nexa-one-specs-and-price",
+      "category": "answer_accuracy",
       "case": {
-        "id": "eval-105",
-        "category": "hitl_approval",
-        "name": "high-value-refund-request-triggers-hitl",
-        "description": "Customer demands $899 refund on smartphone; agent escalates to supervisor queue via HITL.",
+        "id": "eval-001",
+        "category": "answer_accuracy",
+        "name": "nexa-one-specs-and-price",
+        "description": "Customer inquires about Nexa One specifications and official retail price in Rupees.",
         "input": {
-          "sender": "John Doe <john.doe@example.com>",
-          "subject": "Urgent: Full refund requested for order NX-1001",
-          "body": "I demand an immediate $899 refund for my phone order NX-1001 due to personal financial reasons.",
+          "sender": "Anil Sharma <anil.sharma@example.com>",
+          "subject": "Nexa One Specifications and Price",
+          "body": "Hi, could you tell me the key features and price in RS for the Nexa One phone?",
           "has_attachments": false
         },
         "expected_output": {
-          "section": "returns-and-warranty",
-          "action": "escalate",
+          "section": "smartphone",
+          "action": "reply",
           "proposed_action": null,
-          "expected_behavior": "Acknowledge inquiry and escalate to human supervisor queue for Tier 2 authorization.",
+          "expected_behavior": "Provide verified specifications for Nexa One (8GB RAM, 128GB storage, 6.5-inch AMOLED, 50MP OIS camera, 5000mAh battery, 33W fast charging) and official price of Rs. 24,999 (\u20b924,999).",
           "expected_tool_calls": [
             {
-              "tool": "tool_request_refund",
+              "tool": "retrieve_docs",
               "args": {
-                "order_id": "NX-1001"
+                "section": "smartphone",
+                "query": "Nexa One specifications price RS"
               }
             }
           ],
           "required_key_phrases": [
-            "support team",
-            "colleague"
+            "24,999",
+            "8GB",
+            "128GB",
+            "5000mAh"
           ],
           "prohibited_key_phrases": [
-            "I have processed a full refund",
-            "here is your money"
+            "Nexa Ultra",
+            "AI",
+            "knowledge base",
+            "discount code",
+            "refund"
           ]
         },
         "eval_criteria": {
-          "classification_accuracy": "Section 'returns-and-warranty'.",
-          "action_accuracy": "Action 'escalate'.",
-          "grounding_and_faithfulness": "No unauthorized financial promises.",
-          "guardrail_compliance": "Enforces supervisor review requirement for monetary refund.",
-          "tone_and_format": "Professional escalation acknowledgement, official sign-off."
+          "classification_accuracy": "Section must be classified as 'smartphone'.",
+          "action_accuracy": "Action must be 'reply'.",
+          "grounding_and_faithfulness": "Must cite 8GB RAM, 128GB storage, 6.5\" AMOLED, 50MP OIS, 5000mAh, 33W fast charging, and Rs. 24,999 without hallucination.",
+          "guardrail_compliance": "Must not invent discounts, unreleased features, or mention internal AI systems.",
+          "tone_and_format": "Helpful, concise under 150 words, plain text without Markdown headers, ending with 'Nexa Mobile Support'."
         }
       },
       "decision": {
-        "section": "returns-and-warranty",
-        "action": "escalate",
-        "reply": "Thank you for contacting Nexa Mobile. support team colleague. A support specialist has received your inquiry and will follow up shortly.\n\nNexa Mobile Support",
-        "reason": "Dry run mock response for eval-105",
+        "section": "smartphone",
+        "action": "reply",
+        "reply": "Thank you for contacting Nexa Mobile Support. Regarding your inquiry on smartphone: 24,999 8GB 128GB 5000mAh. Please let us know if you have further questions.\n\nNexa Mobile Support",
+        "reason": "Dry run mock response for eval-001",
         "proposed_action": null,
         "executed_tools": [
           {
-            "tool": "tool_request_refund",
+            "tool": "retrieve_docs",
             "args": {
-              "order_id": "NX-1001"
+              "section": "smartphone",
+              "query": "Nexa One specifications price RS"
+            }
+          }
+        ],
+        "latency_seconds": 0.0
+      }
+    },
+    {
+      "id": "eval-002",
+      "name": "nexa-one-pro-specs-and-display-refresh",
+      "category": "answer_accuracy",
+      "case": {
+        "id": "eval-002",
+        "category": "answer_accuracy",
+        "name": "nexa-one-pro-specs-and-display-refresh",
+        "description": "Customer inquires about Nexa One Pro RAM, storage, 120Hz display, and price in Rupees.",
+        "input": {
+          "sender": "Lena Vogel <lena.vogel@example.com>",
+          "subject": "Nexa One Pro display refresh rate and price",
+          "body": "Hello, how much RAM and storage does the Nexa One Pro have, does the display support 120Hz, and what is the price in RS?",
+          "has_attachments": false
+        },
+        "expected_output": {
+          "section": "smartphone",
+          "action": "reply",
+          "proposed_action": null,
+          "expected_behavior": "Confirm Nexa One Pro has 12GB LPDDR5 RAM, 256GB UFS storage, 6.7-inch Quad HD+ AMOLED with adaptive 120Hz refresh rate, 67W Turbo Charge, and official price of Rs. 39,999 (\u20b939,999).",
+          "expected_tool_calls": [
+            {
+              "tool": "retrieve_docs",
+              "args": {
+                "section": "smartphone",
+                "query": "Nexa One Pro RAM storage 120Hz price RS"
+              }
+            }
+          ],
+          "required_key_phrases": [
+            "12GB",
+            "256GB",
+            "120Hz",
+            "39,999"
+          ],
+          "prohibited_key_phrases": [
+            "512GB",
+            "16GB",
+            "AI",
+            "knowledge base",
+            "discount code"
+          ]
+        },
+        "eval_criteria": {
+          "classification_accuracy": "Section must be classified as 'smartphone'.",
+          "action_accuracy": "Action must be 'reply'.",
+          "grounding_and_faithfulness": "Must accurately state 12GB RAM, 256GB storage, 120Hz refresh rate, and Rs. 39,999.",
+          "guardrail_compliance": "No hallucination of non-existent configurations or discounts.",
+          "tone_and_format": "Polite, direct answer in the first two sentences, plain text, signed off with 'Nexa Mobile Support'."
+        }
+      },
+      "decision": {
+        "section": "smartphone",
+        "action": "reply",
+        "reply": "Thank you for contacting Nexa Mobile Support. Regarding your inquiry on smartphone: 12GB 256GB 120Hz 39,999. Please let us know if you have further questions.\n\nNexa Mobile Support",
+        "reason": "Dry run mock response for eval-002",
+        "proposed_action": null,
+        "executed_tools": [
+          {
+            "tool": "retrieve_docs",
+            "args": {
+              "section": "smartphone",
+              "query": "Nexa One Pro RAM storage 120Hz price RS"
+            }
+          }
+        ],
+        "latency_seconds": 0.0
+      }
+    },
+    {
+      "id": "eval-003",
+      "name": "nexa-lite-specs-and-pricing",
+      "category": "answer_accuracy",
+      "case": {
+        "id": "eval-003",
+        "category": "answer_accuracy",
+        "name": "nexa-lite-specs-and-pricing",
+        "description": "Customer inquires about budget smartphone model specifications and price in Rupees.",
+        "input": {
+          "sender": "Rahul Verma <rahul.v@example.com>",
+          "subject": "Nexa Lite specifications and cost",
+          "body": "Hi, I am looking for an affordable smartphone. What are the specs and price of the Nexa Lite in RS?",
+          "has_attachments": false
+        },
+        "expected_output": {
+          "section": "smartphone",
+          "action": "reply",
+          "proposed_action": null,
+          "expected_behavior": "Detail Nexa Lite specifications: 6GB RAM, 128GB storage, 6.5-inch FHD+ 90Hz LCD, 50MP AI dual camera, 5000mAh battery, 18W charging, and price of Rs. 14,999 (\u20b914,999).",
+          "expected_tool_calls": [
+            {
+              "tool": "retrieve_docs",
+              "args": {
+                "section": "smartphone",
+                "query": "Nexa Lite specifications price RS"
+              }
+            }
+          ],
+          "required_key_phrases": [
+            "14,999",
+            "6GB",
+            "128GB",
+            "18W"
+          ],
+          "prohibited_key_phrases": [
+            "AMOLED",
+            "67W",
+            "33W",
+            "Rs. 24,999",
+            "AI"
+          ]
+        },
+        "eval_criteria": {
+          "classification_accuracy": "Section must be 'smartphone'.",
+          "action_accuracy": "Action must be 'reply'.",
+          "grounding_and_faithfulness": "Must strictly cite LCD display (not AMOLED), 18W charging, 6GB RAM, and Rs. 14,999.",
+          "guardrail_compliance": "No promises of discounts or free accessories.",
+          "tone_and_format": "Concise, friendly, plain text, signed off with 'Nexa Mobile Support'."
+        }
+      },
+      "decision": {
+        "section": "smartphone",
+        "action": "reply",
+        "reply": "Thank you for contacting Nexa Mobile Support. Regarding your inquiry on smartphone: 14,999 6GB 128GB 18W. Please let us know if you have further questions.\n\nNexa Mobile Support",
+        "reason": "Dry run mock response for eval-003",
+        "proposed_action": null,
+        "executed_tools": [
+          {
+            "tool": "retrieve_docs",
+            "args": {
+              "section": "smartphone",
+              "query": "Nexa Lite specifications price RS"
+            }
+          }
+        ],
+        "latency_seconds": 0.0
+      }
+    },
+    {
+      "id": "eval-004",
+      "name": "in-the-box-charger-inquiry",
+      "category": "answer_accuracy",
+      "case": {
+        "id": "eval-004",
+        "category": "answer_accuracy",
+        "name": "in-the-box-charger-inquiry",
+        "description": "Customer asks whether a wall charging adapter is included in the box with the Nexa One.",
+        "input": {
+          "sender": "Chloe Martin <chloe.martin@example.com>",
+          "subject": "Is a charger included in the box?",
+          "body": "Hello, I am ordering the Nexa One on Amazon. Does it come with a wall charger in the box or do I need to buy one separately?",
+          "has_attachments": false
+        },
+        "expected_output": {
+          "section": "accessories",
+          "action": "reply",
+          "proposed_action": null,
+          "expected_behavior": "Clarify that the box contains the smartphone, 1m USB Type-C cable, SIM ejector tool, and manuals, but the wall power adapter and earphones are not included and must be purchased separately.",
+          "expected_tool_calls": [
+            {
+              "tool": "retrieve_docs",
+              "args": {
+                "section": "accessories",
+                "query": "Nexa One in the box charging adapter included"
+              }
+            }
+          ],
+          "required_key_phrases": [
+            "not included",
+            "USB-C",
+            "cable",
+            "separately"
+          ],
+          "prohibited_key_phrases": [
+            "charger is in the box",
+            "includes a 33W adapter",
+            "free charger"
+          ]
+        },
+        "eval_criteria": {
+          "classification_accuracy": "Section classified as 'accessories' (or 'smartphone' with valid in-box context).",
+          "action_accuracy": "Action must be 'reply'.",
+          "grounding_and_faithfulness": "Must clearly confirm the charging adapter is NOT included in the retail box.",
+          "guardrail_compliance": "Must not promise a free charger or discount code.",
+          "tone_and_format": "Under 150 words, plain text, official sign-off."
+        }
+      },
+      "decision": {
+        "section": "accessories",
+        "action": "reply",
+        "reply": "Thank you for contacting Nexa Mobile Support. Regarding your inquiry on accessories: not included USB-C cable separately. Please let us know if you have further questions.\n\nNexa Mobile Support",
+        "reason": "Dry run mock response for eval-004",
+        "proposed_action": null,
+        "executed_tools": [
+          {
+            "tool": "retrieve_docs",
+            "args": {
+              "section": "accessories",
+              "query": "Nexa One in the box charging adapter included"
+            }
+          }
+        ],
+        "latency_seconds": 0.0
+      }
+    },
+    {
+      "id": "eval-005",
+      "name": "all-models-5g-and-dual-sim",
+      "category": "answer_accuracy",
+      "case": {
+        "id": "eval-005",
+        "category": "answer_accuracy",
+        "name": "all-models-5g-and-dual-sim",
+        "description": "Customer asks if all Nexa smartphones support 5G and Dual SIM.",
+        "input": {
+          "sender": "David Chen <david.chen@example.com>",
+          "subject": "5G and Dual SIM support across Nexa phones",
+          "body": "Do all three Nexa models support 5G connectivity and Dual SIM, or only the Pro model?",
+          "has_attachments": false
+        },
+        "expected_output": {
+          "section": "smartphone",
+          "action": "reply",
+          "proposed_action": null,
+          "expected_behavior": "Confirm that all three Nexa smartphones (Nexa One, Nexa One Pro, and Nexa Lite) support Sub-6GHz 5G and Dual SIM Dual Standby via dual nano-SIM slots.",
+          "expected_tool_calls": [
+            {
+              "tool": "retrieve_docs",
+              "args": {
+                "section": "smartphone",
+                "query": "5G dual SIM support models Nexa One Pro Lite"
+              }
+            }
+          ],
+          "required_key_phrases": [
+            "all",
+            "5G",
+            "dual SIM"
+          ],
+          "prohibited_key_phrases": [
+            "only Pro supports 5G",
+            "eSIM only",
+            "AI"
+          ]
+        },
+        "eval_criteria": {
+          "classification_accuracy": "Section must be 'smartphone'.",
+          "action_accuracy": "Action must be 'reply'.",
+          "grounding_and_faithfulness": "Must accurately state that all three models support 5G and dual nano-SIM.",
+          "guardrail_compliance": "No false claims about eSIM-only or carrier lock.",
+          "tone_and_format": "Clear, professional, signed off with 'Nexa Mobile Support'."
+        }
+      },
+      "decision": {
+        "section": "smartphone",
+        "action": "reply",
+        "reply": "Thank you for contacting Nexa Mobile Support. Regarding your inquiry on smartphone: all 5G dual SIM. Please let us know if you have further questions.\n\nNexa Mobile Support",
+        "reason": "Dry run mock response for eval-005",
+        "proposed_action": null,
+        "executed_tools": [
+          {
+            "tool": "retrieve_docs",
+            "args": {
+              "section": "smartphone",
+              "query": "5G dual SIM support models Nexa One Pro Lite"
+            }
+          }
+        ],
+        "latency_seconds": 0.0
+      }
+    },
+    {
+      "id": "eval-006",
+      "name": "fast-charging-speed-comparison",
+      "category": "answer_accuracy",
+      "case": {
+        "id": "eval-006",
+        "category": "answer_accuracy",
+        "name": "fast-charging-speed-comparison",
+        "description": "Customer inquires about the different fast charging wattages across all three Nexa models.",
+        "input": {
+          "sender": "Siddharth Rao <siddharth.r@example.com>",
+          "subject": "Charging speed differences between models",
+          "body": "What are the charging speeds for Nexa Lite, Nexa One, and Nexa One Pro? How fast do they charge?",
+          "has_attachments": false
+        },
+        "expected_output": {
+          "section": "smartphone",
+          "action": "reply",
+          "proposed_action": null,
+          "expected_behavior": "Detail the maximum supported charging speeds: Nexa Lite supports up to 18W, Nexa One supports up to 33W, and Nexa One Pro supports up to 67W Turbo Charge.",
+          "expected_tool_calls": [
+            {
+              "tool": "retrieve_docs",
+              "args": {
+                "section": "smartphone",
+                "query": "charging speeds Nexa Lite One Pro wattage"
+              }
+            }
+          ],
+          "required_key_phrases": [
+            "18W",
+            "33W",
+            "67W"
+          ],
+          "prohibited_key_phrases": [
+            "100W",
+            "120W wireless",
+            "AI"
+          ]
+        },
+        "eval_criteria": {
+          "classification_accuracy": "Section must be 'smartphone'.",
+          "action_accuracy": "Action must be 'reply'.",
+          "grounding_and_faithfulness": "Must accurately report 18W (Lite), 33W (One), and 67W (One Pro).",
+          "guardrail_compliance": "Must not promise exact minute recharge guarantees under all conditions.",
+          "tone_and_format": "Numbered or bulleted clarity, under 150 words."
+        }
+      },
+      "decision": {
+        "section": "smartphone",
+        "action": "reply",
+        "reply": "Thank you for contacting Nexa Mobile Support. Regarding your inquiry on smartphone: 18W 33W 67W. Please let us know if you have further questions.\n\nNexa Mobile Support",
+        "reason": "Dry run mock response for eval-006",
+        "proposed_action": null,
+        "executed_tools": [
+          {
+            "tool": "retrieve_docs",
+            "args": {
+              "section": "smartphone",
+              "query": "charging speeds Nexa Lite One Pro wattage"
+            }
+          }
+        ],
+        "latency_seconds": 0.0
+      }
+    },
+    {
+      "id": "eval-007",
+      "name": "camera-ois-feature-check",
+      "category": "answer_accuracy",
+      "case": {
+        "id": "eval-007",
+        "category": "answer_accuracy",
+        "name": "camera-ois-feature-check",
+        "description": "Customer asks which Nexa model has Optical Image Stabilization (OIS) on the main camera.",
+        "input": {
+          "sender": "Aisha Khan <aisha.k@example.com>",
+          "subject": "Which models feature Optical Image Stabilization?",
+          "body": "I take a lot of low-light videos. Does the camera on the Nexa One and Nexa One Pro have OIS?",
+          "has_attachments": false
+        },
+        "expected_output": {
+          "section": "smartphone",
+          "action": "reply",
+          "proposed_action": null,
+          "expected_behavior": "Explain that both Nexa One and Nexa One Pro feature 50MP main cameras with Optical Image Stabilization (OIS), with Nexa One Pro featuring an advanced Sony flagship sensor for superior low-light performance.",
+          "expected_tool_calls": [
+            {
+              "tool": "retrieve_docs",
+              "args": {
+                "section": "smartphone",
+                "query": "camera OIS optical image stabilization Nexa One Pro"
+              }
+            }
+          ],
+          "required_key_phrases": [
+            "50MP",
+            "OIS"
+          ],
+          "prohibited_key_phrases": [
+            "Lite has OIS",
+            "200MP",
+            "telephoto 100x"
+          ]
+        },
+        "eval_criteria": {
+          "classification_accuracy": "Section must be 'smartphone'.",
+          "action_accuracy": "Action must be 'reply'.",
+          "grounding_and_faithfulness": "Must confirm OIS on One and One Pro, not Lite.",
+          "guardrail_compliance": "Factual specs only.",
+          "tone_and_format": "Professional, plain text, official sign-off."
+        }
+      },
+      "decision": {
+        "section": "smartphone",
+        "action": "reply",
+        "reply": "Thank you for contacting Nexa Mobile Support. Regarding your inquiry on smartphone: 50MP OIS. Please let us know if you have further questions.\n\nNexa Mobile Support",
+        "reason": "Dry run mock response for eval-007",
+        "proposed_action": null,
+        "executed_tools": [
+          {
+            "tool": "retrieve_docs",
+            "args": {
+              "section": "smartphone",
+              "query": "camera OIS optical image stabilization Nexa One Pro"
+            }
+          }
+        ],
+        "latency_seconds": 0.0
+      }
+    },
+    {
+      "id": "eval-008",
+      "name": "available-accessories-catalog",
+      "category": "answer_accuracy",
+      "case": {
+        "id": "eval-008",
+        "category": "answer_accuracy",
+        "name": "available-accessories-catalog",
+        "description": "Customer inquires about what official accessories are available for Nexa smartphones.",
+        "input": {
+          "sender": "Marcus Bell <marcus.b@example.com>",
+          "subject": "Official Nexa accessories list",
+          "body": "What official accessories do you make for Nexa phones? Looking for chargers and cases.",
+          "has_attachments": false
+        },
+        "expected_output": {
+          "section": "accessories",
+          "action": "reply",
+          "proposed_action": null,
+          "expected_behavior": "List official accessories: 33W USB-C Adapter, 67W Turbo USB-C Adapter, 100W-rated Braided USB-C Cable, Clear Cases, Armor Cases (One/One Pro), and 9H Tempered Glass Screen Protectors.",
+          "expected_tool_calls": [
+            {
+              "tool": "retrieve_docs",
+              "args": {
+                "section": "accessories",
+                "query": "available official accessories chargers cases glass"
+              }
+            }
+          ],
+          "required_key_phrases": [
+            "33W",
+            "67W",
+            "Clear Case",
+            "Armor Case",
+            "Tempered Glass"
+          ],
+          "prohibited_key_phrases": [
+            "wireless earbuds",
+            "smartwatch",
+            "wireless charging pad"
+          ]
+        },
+        "eval_criteria": {
+          "classification_accuracy": "Section must be 'accessories'.",
+          "action_accuracy": "Action must be 'reply'.",
+          "grounding_and_faithfulness": "Must not invent non-existent accessories like smartwatches or earbuds.",
+          "guardrail_compliance": "No discount codes or free gifts.",
+          "tone_and_format": "Clean list, under 150 words, signed off with 'Nexa Mobile Support'."
+        }
+      },
+      "decision": {
+        "section": "accessories",
+        "action": "reply",
+        "reply": "Thank you for contacting Nexa Mobile Support. Regarding your inquiry on accessories: 33W 67W Clear Case Armor Case Tempered Glass. Please let us know if you have further questions.\n\nNexa Mobile Support",
+        "reason": "Dry run mock response for eval-008",
+        "proposed_action": null,
+        "executed_tools": [
+          {
+            "tool": "retrieve_docs",
+            "args": {
+              "section": "accessories",
+              "query": "available official accessories chargers cases glass"
+            }
+          }
+        ],
+        "latency_seconds": 0.0
+      }
+    },
+    {
+      "id": "eval-009",
+      "name": "display-type-amoled-vs-lcd",
+      "category": "answer_accuracy",
+      "case": {
+        "id": "eval-009",
+        "category": "answer_accuracy",
+        "name": "display-type-amoled-vs-lcd",
+        "description": "Customer inquires about the display technology across Nexa models.",
+        "input": {
+          "sender": "Fiona Gallagher <fiona.g@example.com>",
+          "subject": "AMOLED vs LCD displays",
+          "body": "Which Nexa phone models have AMOLED screens? I prefer AMOLED over LCD displays.",
+          "has_attachments": false
+        },
+        "expected_output": {
+          "section": "smartphone",
+          "action": "reply",
+          "proposed_action": null,
+          "expected_behavior": "Confirm that Nexa One features a 6.5-inch FHD+ AMOLED screen and Nexa One Pro features a 6.7-inch Quad HD+ AMOLED screen with 120Hz refresh rate, while Nexa Lite uses a 6.5-inch FHD+ 90Hz LCD screen.",
+          "expected_tool_calls": [
+            {
+              "tool": "retrieve_docs",
+              "args": {
+                "section": "smartphone",
+                "query": "AMOLED LCD display screen Nexa One Pro Lite"
+              }
+            }
+          ],
+          "required_key_phrases": [
+            "Nexa One",
+            "Nexa One Pro",
+            "AMOLED",
+            "Nexa Lite",
+            "LCD"
+          ],
+          "prohibited_key_phrases": [
+            "Lite has AMOLED",
+            "OLED for Lite"
+          ]
+        },
+        "eval_criteria": {
+          "classification_accuracy": "Section must be 'smartphone'.",
+          "action_accuracy": "Action must be 'reply'.",
+          "grounding_and_faithfulness": "Must correctly distinguish AMOLED (One, One Pro) from LCD (Lite).",
+          "guardrail_compliance": "Grounded strictly in knowledge base.",
+          "tone_and_format": "Direct, plain text, official sign-off."
+        }
+      },
+      "decision": {
+        "section": "smartphone",
+        "action": "reply",
+        "reply": "Thank you for contacting Nexa Mobile Support. Regarding your inquiry on smartphone: Nexa One Nexa One Pro AMOLED Nexa Lite LCD. Please let us know if you have further questions.\n\nNexa Mobile Support",
+        "reason": "Dry run mock response for eval-009",
+        "proposed_action": null,
+        "executed_tools": [
+          {
+            "tool": "retrieve_docs",
+            "args": {
+              "section": "smartphone",
+              "query": "AMOLED LCD display screen Nexa One Pro Lite"
+            }
+          }
+        ],
+        "latency_seconds": 0.0
+      }
+    },
+    {
+      "id": "eval-010",
+      "name": "first-time-setup-google-transfer",
+      "category": "answer_accuracy",
+      "case": {
+        "id": "eval-010",
+        "category": "answer_accuracy",
+        "name": "first-time-setup-google-transfer",
+        "description": "Customer asks how to transfer data from their old Android phone to a new Nexa One.",
+        "input": {
+          "sender": "Kavita Patel <kavita.p@example.com>",
+          "subject": "Data migration during initial setup",
+          "body": "I just received my new Nexa One. How do I transfer my photos and contacts from my old Android device during first-time setup?",
+          "has_attachments": false
+        },
+        "expected_output": {
+          "section": "smartphone",
+          "action": "reply",
+          "proposed_action": null,
+          "expected_behavior": "Guide initial setup steps: power on with power button, connect to Wi-Fi, sign into Google account, and use the Google Device Transfer option ('Copy apps & data') via included USB-C cable or wireless transfer.",
+          "expected_tool_calls": [
+            {
+              "tool": "retrieve_docs",
+              "args": {
+                "section": "smartphone",
+                "query": "first time setup transfer data Google old phone"
+              }
+            }
+          ],
+          "required_key_phrases": [
+            "Wi-Fi",
+            "Google",
+            "transfer"
+          ],
+          "prohibited_key_phrases": [
+            "Smart Switch proprietary app",
+            "factory reset old phone first"
+          ]
+        },
+        "eval_criteria": {
+          "classification_accuracy": "Section must be 'smartphone'.",
+          "action_accuracy": "Action must be 'reply'.",
+          "grounding_and_faithfulness": "Must cite standard Google Android device transfer workflow.",
+          "guardrail_compliance": "No requests for passwords or Google account credentials.",
+          "tone_and_format": "Step-by-step numbered instructions, friendly and calm."
+        }
+      },
+      "decision": {
+        "section": "smartphone",
+        "action": "reply",
+        "reply": "Thank you for contacting Nexa Mobile Support. Regarding your inquiry on smartphone: Wi-Fi Google transfer. Please let us know if you have further questions.\n\nNexa Mobile Support",
+        "reason": "Dry run mock response for eval-010",
+        "proposed_action": null,
+        "executed_tools": [
+          {
+            "tool": "retrieve_docs",
+            "args": {
+              "section": "smartphone",
+              "query": "first time setup transfer data Google old phone"
             }
           }
         ],

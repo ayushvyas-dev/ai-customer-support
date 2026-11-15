@@ -1,9 +1,9 @@
 {
   "summary": {
-    "timestamp": "2026-11-14T21:23:14.843563",
+    "timestamp": "2026-11-15T15:03:15.224690",
     "evaluator_model": "gemini-3.5-flash-lite",
-    "total": 1,
-    "passed": 1,
+    "total": 10,
+    "passed": 10,
     "failed": 0,
     "pass_rate": 100.0,
     "avg_score": 1.0,
@@ -13,9 +13,9 @@
     "guardrail_compliance": 100.0,
     "mock": true,
     "categories": {
-      "hitl_approval": {
-        "total": 1,
-        "passed": 1,
+      "answer_accuracy": {
+        "total": 10,
+        "passed": 10,
         "failed": 0,
         "avg_score": 1.0
       }
@@ -23,9 +23,9 @@
   },
   "results": [
     {
-      "id": "eval-105",
-      "name": "high-value-refund-request-triggers-hitl",
-      "category": "hitl_approval",
+      "id": "eval-001",
+      "name": "nexa-one-specs-and-price",
+      "category": "answer_accuracy",
       "passed": true,
       "score": 1.0,
       "section_match": true,
@@ -33,15 +33,231 @@
       "faithfulness_score": 1.0,
       "guardrail_compliance": true,
       "expected": {
-        "section": "returns-and-warranty",
-        "action": "escalate"
+        "section": "smartphone",
+        "action": "reply"
       },
       "actual": {
-        "section": "returns-and-warranty",
-        "action": "escalate"
+        "section": "smartphone",
+        "action": "reply"
       },
-      "reply_preview": "Thank you for contacting Nexa Mobile. support team colleague. A support specialist has received your inquiry and will follow up shortly.\n\nNe...",
-      "reason": "Dry run mock response for eval-105",
+      "reply_preview": "Thank you for contacting Nexa Mobile Support. Regarding your inquiry on smartphone: 24,999 8GB 128GB 5000mAh. Please let us know if you have...",
+      "reason": "Dry run mock response for eval-001",
+      "judge_reasoning": "Dry run mock judge evaluation completed.",
+      "judge_model": "gemini-3.5-flash-lite",
+      "errors": []
+    },
+    {
+      "id": "eval-002",
+      "name": "nexa-one-pro-specs-and-display-refresh",
+      "category": "answer_accuracy",
+      "passed": true,
+      "score": 1.0,
+      "section_match": true,
+      "action_match": true,
+      "faithfulness_score": 1.0,
+      "guardrail_compliance": true,
+      "expected": {
+        "section": "smartphone",
+        "action": "reply"
+      },
+      "actual": {
+        "section": "smartphone",
+        "action": "reply"
+      },
+      "reply_preview": "Thank you for contacting Nexa Mobile Support. Regarding your inquiry on smartphone: 12GB 256GB 120Hz 39,999. Please let us know if you have ...",
+      "reason": "Dry run mock response for eval-002",
+      "judge_reasoning": "Dry run mock judge evaluation completed.",
+      "judge_model": "gemini-3.5-flash-lite",
+      "errors": []
+    },
+    {
+      "id": "eval-003",
+      "name": "nexa-lite-specs-and-pricing",
+      "category": "answer_accuracy",
+      "passed": true,
+      "score": 1.0,
+      "section_match": true,
+      "action_match": true,
+      "faithfulness_score": 1.0,
+      "guardrail_compliance": true,
+      "expected": {
+        "section": "smartphone",
+        "action": "reply"
+      },
+      "actual": {
+        "section": "smartphone",
+        "action": "reply"
+      },
+      "reply_preview": "Thank you for contacting Nexa Mobile Support. Regarding your inquiry on smartphone: 14,999 6GB 128GB 18W. Please let us know if you have fur...",
+      "reason": "Dry run mock response for eval-003",
+      "judge_reasoning": "Dry run mock judge evaluation completed.",
+      "judge_model": "gemini-3.5-flash-lite",
+      "errors": []
+    },
+    {
+      "id": "eval-004",
+      "name": "in-the-box-charger-inquiry",
+      "category": "answer_accuracy",
+      "passed": true,
+      "score": 1.0,
+      "section_match": true,
+      "action_match": true,
+      "faithfulness_score": 1.0,
+      "guardrail_compliance": true,
+      "expected": {
+        "section": "accessories",
+        "action": "reply"
+      },
+      "actual": {
+        "section": "accessories",
+        "action": "reply"
+      },
+      "reply_preview": "Thank you for contacting Nexa Mobile Support. Regarding your inquiry on accessories: not included USB-C cable separately. Please let us know...",
+      "reason": "Dry run mock response for eval-004",
+      "judge_reasoning": "Dry run mock judge evaluation completed.",
+      "judge_model": "gemini-3.5-flash-lite",
+      "errors": []
+    },
+    {
+      "id": "eval-005",
+      "name": "all-models-5g-and-dual-sim",
+      "category": "answer_accuracy",
+      "passed": true,
+      "score": 1.0,
+      "section_match": true,
+      "action_match": true,
+      "faithfulness_score": 1.0,
+      "guardrail_compliance": true,
+      "expected": {
+        "section": "smartphone",
+        "action": "reply"
+      },
+      "actual": {
+        "section": "smartphone",
+        "action": "reply"
+      },
+      "reply_preview": "Thank you for contacting Nexa Mobile Support. Regarding your inquiry on smartphone: all 5G dual SIM. Please let us know if you have further ...",
+      "reason": "Dry run mock response for eval-005",
+      "judge_reasoning": "Dry run mock judge evaluation completed.",
+      "judge_model": "gemini-3.5-flash-lite",
+      "errors": []
+    },
+    {
+      "id": "eval-006",
+      "name": "fast-charging-speed-comparison",
+      "category": "answer_accuracy",
+      "passed": true,
+      "score": 1.0,
+      "section_match": true,
+      "action_match": true,
+      "faithfulness_score": 1.0,
+      "guardrail_compliance": true,
+      "expected": {
+        "section": "smartphone",
+        "action": "reply"
+      },
+      "actual": {
+        "section": "smartphone",
+        "action": "reply"
+      },
+      "reply_preview": "Thank you for contacting Nexa Mobile Support. Regarding your inquiry on smartphone: 18W 33W 67W. Please let us know if you have further ques...",
+      "reason": "Dry run mock response for eval-006",
+      "judge_reasoning": "Dry run mock judge evaluation completed.",
+      "judge_model": "gemini-3.5-flash-lite",
+      "errors": []
+    },
+    {
+      "id": "eval-007",
+      "name": "camera-ois-feature-check",
+      "category": "answer_accuracy",
+      "passed": true,
+      "score": 1.0,
+      "section_match": true,
+      "action_match": true,
+      "faithfulness_score": 1.0,
+      "guardrail_compliance": true,
+      "expected": {
+        "section": "smartphone",
+        "action": "reply"
+      },
+      "actual": {
+        "section": "smartphone",
+        "action": "reply"
+      },
+      "reply_preview": "Thank you for contacting Nexa Mobile Support. Regarding your inquiry on smartphone: 50MP OIS. Please let us know if you have further questio...",
+      "reason": "Dry run mock response for eval-007",
+      "judge_reasoning": "Dry run mock judge evaluation completed.",
+      "judge_model": "gemini-3.5-flash-lite",
+      "errors": []
+    },
+    {
+      "id": "eval-008",
+      "name": "available-accessories-catalog",
+      "category": "answer_accuracy",
+      "passed": true,
+      "score": 1.0,
+      "section_match": true,
+      "action_match": true,
+      "faithfulness_score": 1.0,
+      "guardrail_compliance": true,
+      "expected": {
+        "section": "accessories",
+        "action": "reply"
+      },
+      "actual": {
+        "section": "accessories",
+        "action": "reply"
+      },
+      "reply_preview": "Thank you for contacting Nexa Mobile Support. Regarding your inquiry on accessories: 33W 67W Clear Case Armor Case Tempered Glass. Please le...",
+      "reason": "Dry run mock response for eval-008",
+      "judge_reasoning": "Dry run mock judge evaluation completed.",
+      "judge_model": "gemini-3.5-flash-lite",
+      "errors": []
+    },
+    {
+      "id": "eval-009",
+      "name": "display-type-amoled-vs-lcd",
+      "category": "answer_accuracy",
+      "passed": true,
+      "score": 1.0,
+      "section_match": true,
+      "action_match": true,
+      "faithfulness_score": 1.0,
+      "guardrail_compliance": true,
+      "expected": {
+        "section": "smartphone",
+        "action": "reply"
+      },
+      "actual": {
+        "section": "smartphone",
+        "action": "reply"
+      },
+      "reply_preview": "Thank you for contacting Nexa Mobile Support. Regarding your inquiry on smartphone: Nexa One Nexa One Pro AMOLED Nexa Lite LCD. Please let u...",
+      "reason": "Dry run mock response for eval-009",
+      "judge_reasoning": "Dry run mock judge evaluation completed.",
+      "judge_model": "gemini-3.5-flash-lite",
+      "errors": []
+    },
+    {
+      "id": "eval-010",
+      "name": "first-time-setup-google-transfer",
+      "category": "answer_accuracy",
+      "passed": true,
+      "score": 1.0,
+      "section_match": true,
+      "action_match": true,
+      "faithfulness_score": 1.0,
+      "guardrail_compliance": true,
+      "expected": {
+        "section": "smartphone",
+        "action": "reply"
+      },
+      "actual": {
+        "section": "smartphone",
+        "action": "reply"
+      },
+      "reply_preview": "Thank you for contacting Nexa Mobile Support. Regarding your inquiry on smartphone: Wi-Fi Google transfer. Please let us know if you have fu...",
+      "reason": "Dry run mock response for eval-010",
       "judge_reasoning": "Dry run mock judge evaluation completed.",
       "judge_model": "gemini-3.5-flash-lite",
       "errors": []

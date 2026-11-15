@@ -35,7 +35,10 @@ import {
   Folder,
   Clock,
   AlertCircle,
+  FileUp,
+  FileText,
 } from "lucide-react";
+import { UploadPdfDialog } from "@/components/UploadPdfDialog";
 
 export default function KnowledgeBasePage() {
   const [data, setData] = React.useState<KnowledgeBaseResponse | null>(null);
@@ -51,6 +54,9 @@ export default function KnowledgeBasePage() {
   const [formContent, setFormContent] = React.useState("");
   const [saving, setSaving] = React.useState(false);
   const [errorMsg, setErrorMsg] = React.useState<string | null>(null);
+
+  // PDF Upload Modal State
+  const [pdfDialogOpen, setPdfDialogOpen] = React.useState(false);
 
   // Delete Confirmation State
   const [deletingId, setDeletingId] = React.useState<number | null>(null);
@@ -175,6 +181,16 @@ export default function KnowledgeBasePage() {
 
           <Button
             size="sm"
+            onClick={() => setPdfDialogOpen(true)}
+            variant="outline"
+            className="h-8 text-xs font-medium border-blue-200 bg-blue-50/50 text-blue-700 hover:bg-blue-100 hover:text-blue-800 dark:border-blue-900 dark:bg-blue-950/30 dark:text-blue-400"
+          >
+            <FileUp className="mr-1.5 h-3.5 w-3.5 text-blue-600" />
+            Upload PDF
+          </Button>
+
+          <Button
+            size="sm"
             onClick={handleOpenCreate}
             className="h-8 text-xs font-medium bg-[#111111] text-white hover:bg-[#222222] border border-[#111111]"
           >
@@ -240,10 +256,18 @@ export default function KnowledgeBasePage() {
             >
               <CardHeader className="p-4 pb-2">
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="inline-flex items-center space-x-1 rounded bg-[#F5F5F5] border border-[#E5E7EB] px-2 py-0.5 text-[11px] font-mono uppercase text-[#333333]">
-                    <Folder className="h-3 w-3" />
-                    <span>{item.section}</span>
-                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="inline-flex items-center space-x-1 rounded bg-[#F5F5F5] border border-[#E5E7EB] px-2 py-0.5 text-[11px] font-mono uppercase text-[#333333]">
+                      <Folder className="h-3 w-3" />
+                      <span>{item.section}</span>
+                    </span>
+                    {item.source_type === "pdf" && (
+                      <span className="inline-flex items-center space-x-1 rounded bg-red-50 border border-red-200 px-1.5 py-0.5 text-[10px] font-medium text-red-600 dark:bg-red-950/30 dark:border-red-900 dark:text-red-400">
+                        <FileText className="h-2.5 w-2.5" />
+                        <span>PDF</span>
+                      </span>
+                    )}
+                  </div>
                   <span className="text-[11px] font-mono text-[#6B7280] flex items-center space-x-1">
                     <Clock className="h-3 w-3" />
                     <span>{formatDate(item.updated_at)}</span>
@@ -382,6 +406,15 @@ export default function KnowledgeBasePage() {
           </DialogFooter>
         </form>
       </Dialog>
+
+      {/* PDF Upload Dialog */}
+      <UploadPdfDialog
+        open={pdfDialogOpen}
+        onOpenChange={setPdfDialogOpen}
+        sections={sections}
+        activeSection={activeSection}
+        onSuccess={fetchKnowledgeBase}
+      />
     </div>
   );
 }

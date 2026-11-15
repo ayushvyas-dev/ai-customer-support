@@ -1,10 +1,10 @@
 # AI Customer Support Agent - LLM Judge Evaluation Report
 
-- **Generated At:** 2026-11-14T21:23:14.843563
+- **Generated At:** 2026-11-15T15:03:15.224690
 - **Evaluator Model (LLM Judge):** `gemini-3.5-flash-lite`
 - **Execution Mode:** Mock (Dry-Run)
-- **Total Test Cases:** 1
-- **Passed:** 1 (100.0%)
+- **Total Test Cases:** 10
+- **Passed:** 10 (100.0%)
 - **Failed:** 0
 - **Average Quality Score:** 1.00 / 1.0
 - **Section Classification Accuracy:** 100.0%
@@ -16,10 +16,19 @@
 
 | Category | Total | Passed | Failed | Pass Rate | Avg Score |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| hitl_approval | 1 | 1 | 0 | 100.0% | 1.00 |
+| answer_accuracy | 10 | 10 | 0 | 100.0% | 1.00 |
 
 ## Detailed Results
 
 | ID | Name | Category | Status | Score | Expected | Actual | Judge Reasoning / Flaws |
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- |
-| eval-105 | high-value-refund-request-triggers-hitl | hitl_approval | PASSED | 1.00 | `returns-and-warranty/escalate` | `returns-and-warranty/escalate` | Dry run mock judge evaluation completed. |
+| eval-001 | nexa-one-specs-and-price | answer_accuracy | PASSED | 1.00 | `smartphone/reply` | `smartphone/reply` | Dry run mock judge evaluation completed. |
+| eval-002 | nexa-one-pro-specs-and-display-refresh | answer_accuracy | PASSED | 1.00 | `smartphone/reply` | `smartphone/reply` | Dry run mock judge evaluation completed. |
+| eval-003 | nexa-lite-specs-and-pricing | answer_accuracy | PASSED | 1.00 | `smartphone/reply` | `smartphone/reply` | Dry run mock judge evaluation completed. |
+| eval-004 | in-the-box-charger-inquiry | answer_accuracy | PASSED | 1.00 | `accessories/reply` | `accessories/reply` | Dry run mock judge evaluation completed. |
+| eval-005 | all-models-5g-and-dual-sim | answer_accuracy | PASSED | 1.00 | `smartphone/reply` | `smartphone/reply` | Dry run mock judge evaluation completed. |
+| eval-006 | fast-charging-speed-comparison | answer_accuracy | PASSED | 1.00 | `smartphone/reply` | `smartphone/reply` | Dry run mock judge evaluation completed. |
+| eval-007 | camera-ois-feature-check | answer_accuracy | PASSED | 1.00 | `smartphone/reply` | `smartphone/reply` | Dry run mock judge evaluation completed. |
+| eval-008 | available-accessories-catalog | answer_accuracy | PASSED | 1.00 | `accessories/reply` | `accessories/reply` | Dry run mock judge evaluation completed. |
+| eval-009 | display-type-amoled-vs-lcd | answer_accuracy | PASSED | 1.00 | `smartphone/reply` | `smartphone/reply` | Dry run mock judge evaluation completed. |
+| eval-010 | first-time-setup-google-transfer | answer_accuracy | PASSED | 1.00 | `smartphone/reply` | `smartphone/reply` | Dry run mock judge evaluation completed. |
