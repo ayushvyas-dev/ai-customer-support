@@ -5,6 +5,14 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 from app.ai.decide import decide
 
-question = "My Nexa One phone is charging very slowly with the original cable. Order 112-4839201-5528341"
-decision = decide(question)
+# Test 1: Order lookup & tracking
+email_thread = "Hi, can you tell me the tracking status for my order NX-1001?"
+
+# Test 2: Accessory warranty replacement (Tier 1 autonomous)
+# email_thread = "Hi, my USB cable for order NX-1002 broke. Can you send a replacement?"
+
+# Test 3: High-value refund request (Tier 2 HITL approval)
+# email_thread = "I demand an immediate $899 refund for order NX-1001!"
+
+decision = decide(email_thread)
 print(decision.model_dump_json(indent=2))

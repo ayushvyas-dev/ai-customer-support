@@ -1,10 +1,15 @@
+import logging
 import os
 
 from langchain_core.prompts import ChatPromptTemplate
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_groq import ChatGroq
 
-from app.ai.schemas import Classification
+from app.ai.schemas import Classification, Section
 from app.config import settings
+from app.guards import DEFAULT_ESCALATION_ACKNOWLEDGEMENT
+
+logger = logging.getLogger(__name__)
 
 INSTRUCTIONS = """
 You triage customer emails for Nexa Mobile, a customer-focused smartphone brand that sells on Amazon.
@@ -36,10 +41,11 @@ Never mention AI.
 """
 
 
-def get_classifier_chain():
+def get_classifier_chain(model_name: str | None = None):
     api_key = settings.groq_api_key or os.environ.get("GROQ_API_KEY", "")
+    target_model = model_name or settings.classifier_model
     llm = ChatGroq(
-        model=settings.classifier_model,
+        model=target_model,
         temperature=0.0,
         api_key=api_key,
     )
@@ -53,9 +59,147 @@ def get_classifier_chain():
     return prompt | structured_llm
 
 
+def fallback_heuristic_classify(thread: str) -> Classification:
+    thread_lower = thread.lower()
+
+    # Always escalate checks
+    needs_human = False
+    escalate_keywords = [
+        "refund",
+        "money back",
+        "chargeback",
+        "manager",
+        "human",
+        "phone call",
+        "swollen",
+        "smoke",
+        "burning",
+        "fire",
+        "shock",
+        "injury",
+        "lawyer",
+        "legal",
+        "fraud",
+        "unauthorized",
+        "stolen",
+        "threat",
+        "sue",
+        "lawsuit",
+        "attorney",
+    ]
+    for kw in escalate_keywords:
+        if kw in thread_lower:
+            needs_human = True
+            break
+
+    # Section classification
+    if any(
+        k in thread_lower
+        for k in [
+            "track",
+            "tracking",
+            "fedex",
+            "shipment",
+            "shipping",
+            "shipped",
+            "carrier",
+            "delivery",
+            "order status",
+            "nx-",
+        ]
+    ):
+        section: Section = "shipping"
+    elif any(
+        k in thread_lower
+        for k in ["return", "warranty", "rma", "replacement", "replace", "exchange"]
+    ):
+        section = "returns-and-warranty"
+    elif any(
+        k in thread_lower
+        for k in [
+            "cable",
+            "adapter",
+            "charger",
+            "case",
+            "glass",
+            "accessory",
+            "accessories",
+        ]
+    ):
+        section = "accessories"
+    elif any(
+        k in thread_lower
+        for k in [
+            "nexa",
+            "phone",
+            "smartphone",
+            "screen",
+            "battery",
+            "display",
+            "camera",
+            "charging",
+        ]
+    ):
+        section = "smartphone"
+    else:
+        section = "other"
+
+    return Classification(
+        section=section,
+        language="English",
+        needs_human=needs_human,
+        reason=f"Fallback classification assigned to section '{section}'.",
+        acknowledgement=DEFAULT_ESCALATION_ACKNOWLEDGEMENT,
+    )
+
+
 def classify(thread: str) -> Classification:
-    chain = get_classifier_chain()
-    result = chain.invoke({"thread": thread})
-    if isinstance(result, Classification):
-        return result
-    return Classification.model_validate(result)
+    clean_thread = (thread or "").strip()
+    if not clean_thread:
+        return fallback_heuristic_classify("")
+
+    # 1. Try primary Groq classifier
+    groq_key = settings.groq_api_key or os.environ.get("GROQ_API_KEY", "")
+    if groq_key:
+        try:
+            chain = get_classifier_chain()
+            result = chain.invoke({"thread": clean_thread})
+            if isinstance(result, Classification):
+                return result
+            return Classification.model_validate(result)
+        except Exception as ex_groq:
+            logger.warning(
+                "Primary Groq classifier failed: %s. Attempting Gemini fallback.", ex_groq
+            )
+
+    # 2. Try Gemini fallback
+    gemini_key = settings.gemini_api_key or os.environ.get("GEMINI_API_KEY", "")
+    if gemini_key:
+        try:
+            models = settings.get_agent_models()
+            gemini_model = models[0] if models else "gemini-2.5-flash"
+            llm = ChatGoogleGenerativeAI(
+                model=gemini_model,
+                temperature=0.0,
+                google_api_key=gemini_key,
+                api_version="v1beta",
+                timeout=10,
+            )
+            prompt = ChatPromptTemplate.from_messages(
+                [
+                    ("system", INSTRUCTIONS),
+                    ("human", "{thread}"),
+                ]
+            )
+            gemini_chain = prompt | llm.with_structured_output(Classification)
+            result = gemini_chain.invoke({"thread": clean_thread})
+            if isinstance(result, Classification):
+                return result
+            return Classification.model_validate(result)
+        except Exception as ex_gemini:
+            logger.warning(
+                "Gemini classifier fallback failed: %s. Using heuristic fallback.", ex_gemini
+            )
+
+    # 3. Deterministic heuristic fallback
+    return fallback_heuristic_classify(thread)

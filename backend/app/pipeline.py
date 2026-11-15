@@ -91,6 +91,10 @@ def resume_approval_flow(
 
     config = {"configurable": {"thread_id": approval_id}}
     try:
+        snapshot = support_graph.get_state(config)
+        if not snapshot or not getattr(snapshot, "next", None):
+            return {"status": "resolved", "approved": approved}
+
         res = support_graph.invoke(
             Command(
                 resume={

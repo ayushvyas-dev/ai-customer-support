@@ -71,6 +71,7 @@ def get_agent_llm():
             temperature=0.1,
             google_api_key=api_key,
             api_version="v1beta",
+            timeout=15,
         )
         for m in models
     ]
@@ -139,9 +140,9 @@ def agent_reason_node(state: SupportState) -> dict:
     sanitized_thread = sanitize_for_prompt(mask_pii(thread))
 
     # Build or extend message history
-    messages: list[Any] = list(state.get("messages", []))
-    if not messages:
-        messages = [
+    existing_messages: list[Any] = list(state.get("messages", []))
+    if not existing_messages:
+        initial_prompt_messages = [
             SystemMessage(content=INSTRUCTIONS),
             HumanMessage(
                 content=(
@@ -150,19 +151,47 @@ def agent_reason_node(state: SupportState) -> dict:
                 )
             ),
         ]
+        messages_to_invoke = list(initial_prompt_messages)
+    else:
+        initial_prompt_messages = []
+        messages_to_invoke = list(existing_messages)
+        # If retrying after a failed validation where reply was cleared
+        if (
+            not state.get("reply")
+            and messages_to_invoke
+            and isinstance(messages_to_invoke[-1], AIMessage)
+            and not (hasattr(messages_to_invoke[-1], "tool_calls") and messages_to_invoke[-1].tool_calls)
+        ):
+            retry_msg = HumanMessage(
+                content="Your previous draft was incomplete or contained unresolved placeholders. Please provide a complete, finalized response without placeholders or unmasked PII."
+            )
+            messages_to_invoke.append(retry_msg)
+            initial_prompt_messages.append(retry_msg)
 
-    model = get_agent_model_with_tools()
-    response = model.invoke(messages)
+    try:
+        model = get_agent_model_with_tools()
+        response = model.invoke(messages_to_invoke)
+    except Exception as exc:
+        logger.error("Agent model invocation failed: %s", exc)
+        safe_ack = state.get("acknowledgement") or DEFAULT_ESCALATION_ACKNOWLEDGEMENT
+        return {
+            "action": "escalate",
+            "reply": safe_ack,
+            "escalation_reason": f"Agent model invocation error: {exc}",
+            "enough_information": False,
+        }
+
+    new_messages = initial_prompt_messages + [response]
 
     if hasattr(response, "tool_calls") and response.tool_calls:
         return {
-            "messages": [response],
+            "messages": new_messages,
         }
 
     # Final text response generated
     reply_text = str(response.content).strip()
     return {
-        "messages": [response],
+        "messages": new_messages,
         "reply": reply_text,
         "enough_information": True,
         "action": "reply",

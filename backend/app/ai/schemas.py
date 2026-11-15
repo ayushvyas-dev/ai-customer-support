@@ -1,5 +1,6 @@
-from typing import Any, Literal, TypedDict
+from typing import Annotated, Any, Literal, TypedDict
 
+from langgraph.graph.message import add_messages
 from pydantic import BaseModel, Field
 
 Section = Literal["smartphone", "accessories", "returns-and-warranty", "shipping", "other"]
@@ -99,7 +100,7 @@ class SupportState(TypedDict, total=False):
     max_retries: int
 
     # Agentic Tool Calling & HITL (Phases 8-10)
-    messages: list[Any]
+    messages: Annotated[list[Any], add_messages]
     order_id: str | None
     customer_profile: dict | None
     executed_tools: list[dict]
