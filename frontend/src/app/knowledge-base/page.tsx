@@ -54,6 +54,7 @@ export default function KnowledgeBasePage() {
   const [formContent, setFormContent] = React.useState("");
   const [saving, setSaving] = React.useState(false);
   const [errorMsg, setErrorMsg] = React.useState<string | null>(null);
+  const [fetchError, setFetchError] = React.useState<string | null>(null);
 
   // PDF Upload Modal State
   const [pdfDialogOpen, setPdfDialogOpen] = React.useState(false);
@@ -63,14 +64,20 @@ export default function KnowledgeBasePage() {
 
   const fetchKnowledgeBase = React.useCallback(async () => {
     setLoading(true);
+    setFetchError(null);
     try {
       const res = await api.getKnowledgeBase({
         section: activeSection,
         search: search.trim() || undefined,
       });
       setData(res);
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Failed to load knowledge base", err);
+      if (err instanceof Error) {
+        setFetchError(err.message);
+      } else {
+        setFetchError("Failed to load knowledge base from the backend server.");
+      }
     } finally {
       setLoading(false);
     }
@@ -239,6 +246,30 @@ export default function KnowledgeBasePage() {
         </div>
       </div>
 
+      {/* Error Alert */}
+      {fetchError && (
+        <div className="mb-6 flex items-center justify-between rounded-md border border-red-200 bg-red-50 p-4 text-xs text-red-700">
+          <div className="flex items-center space-x-2">
+            <AlertCircle className="h-4 w-4 shrink-0 text-red-600" />
+            <span>
+              {fetchError}. Ensure the backend server is running and accessible at{" "}
+              <code className="font-mono bg-red-100 px-1 py-0.5 rounded">
+                {process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}
+              </code>
+              .
+            </span>
+          </div>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={fetchKnowledgeBase}
+            className="h-7 text-xs border-red-300 text-red-700 hover:bg-red-100 ml-4 shrink-0"
+          >
+            Retry
+          </Button>
+        </div>
+      )}
+
       {/* Content Grid */}
       {loading && items.length === 0 ? (
         <div className="flex h-48 items-center justify-center">
@@ -247,7 +278,7 @@ export default function KnowledgeBasePage() {
             <span>Loading knowledge base...</span>
           </div>
         </div>
-      ) : items.length > 0 ? (
+      ) : fetchError && items.length === 0 ? null : items.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {items.map((item) => (
             <Card
