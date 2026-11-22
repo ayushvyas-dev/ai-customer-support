@@ -36,3 +36,9 @@ Thumbs.db
 .idea/
 .vscode/
 
+# Worktrees
+.worktrees/
+.worktrees
+worktrees/
+worktrees
+
