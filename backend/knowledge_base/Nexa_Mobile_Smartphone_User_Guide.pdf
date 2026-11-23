@@ -1,393 +1,150 @@
-%PDF-1.3
-%âãÏÓ
+%PDF-1.4
+%“Œ‹ž ReportLab Generated PDF document (opensource)
 1 0 obj
 <<
-/Producer (pypdf)
+/F1 2 0 R /F2 3 0 R
 >>
 endobj
 2 0 obj
 <<
-/Type /Pages
-/Count 5
-/Kids [ 4 0 R 5 0 R 6 0 R 7 0 R 8 0 R ]
+/BaseFont /Helvetica /Encoding /WinAnsiEncoding /Name /F1 /Subtype /Type1 /Type /Font
 >>
 endobj
 3 0 obj
 <<
-/Type /Catalog
-/Pages 2 0 R
+/BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding /Name /F2 /Subtype /Type1 /Type /Font
 >>
 endobj
 4 0 obj
 <<
-/Type /Page
-/Resources <<
-/Font <<
-/F1 <<
-/Type /Font
-/Subtype /Type1
-/BaseFont /Helvetica
->>
->>
->>
-/MediaBox [ 0.0 0.0 612 792 ]
-/Parent 2 0 R
-/Contents <<
-/Length 1668
->>
-stream
-BT
-/F1 16 Tf
-22 TL
-50 730 Td
-(NEXA MOBILE - OFFICIAL SMARTPHONE USER GUIDE (2026)) Tj
-/F1 10 Tf
-14 TL
-T*
-() Tj
-T*
-/F1 12 Tf
-(1. Brand Mission and Product Portfolio) Tj
-/F1 10 Tf
-14 TL
-T*
-(Nexa Mobile designs smartphones built for sustained performance, battery endurance,) Tj
-T*
-(and intuitive software experiences for Indian and global consumers.) Tj
-T*
-(The 2026 lineup introduces three distinct models engineered for diverse user needs:) Tj
-T*
-(- Nexa One: The balanced everyday flagship. Features a 6.5-inch FHD+ AMOLED 90Hz display,) Tj
-T*
-(  50MP Sony OIS main camera, 5000mAh battery, 33W Fast Charging, and 8GB RAM + 128GB storage.) Tj
-T*
-(  Official Price: Rs. 24,999 on Amazon India.) Tj
-T*
-(- Nexa One Pro: Engineered for power users and creators. Features a 6.7-inch Quad HD+ AMOLED) Tj
-T*
-(  120Hz dynamic refresh display, 50MP Sony flagship sensor with Night Mode 3.0, 5000mAh cell,) Tj
-T*
-(  67W Turbo Charge, and 12GB LPDDR5 RAM + 256GB UFS 3.1 storage. Price: Rs. 39,999.) Tj
-T*
-(- Nexa Lite: Essential reliability. Features a 6.5-inch 90Hz display, 50MP AI dual camera,) Tj
-T*
-(  5000mAh battery, 18W charging, and 6GB RAM + 128GB storage. Price: Rs. 14,999.) Tj
-T*
-() Tj
-T*
-/F1 12 Tf
-(2. Standard In-The-Box Contents and Eco Policy) Tj
-/F1 10 Tf
-14 TL
-T*
-(Every retail box contains: Handset with pre-applied screen protector, 1-meter USB-C to USB-C cable,) Tj
-T*
-(SIM tray ejector tool, Quick Start Guide, and Safety Warranty Card.) Tj
-T*
-(Important Eco Notice: In alignment with electronic waste reduction initiatives, dedicated wall) Tj
-T*
-(chargers are sold separately. We recommend official Nexa 33W or 67W USB-PD power adapters.) Tj
-T*
-() Tj
-ET
-endstream
+/Contents 12 0 R /MediaBox [ 0 0 612 792 ] /Parent 11 0 R /Resources <<
+/Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+>> /Rotate 0 /Trans <<
+
+>> 
+  /Type /Page
 >>
 endobj
 5 0 obj
 <<
-/Type /Page
-/Resources <<
-/Font <<
-/F1 <<
-/Type /Font
-/Subtype /Type1
-/BaseFont /Helvetica
->>
->>
->>
-/MediaBox [ 0.0 0.0 612 792 ]
-/Parent 2 0 R
-/Contents <<
-/Length 1612
->>
-stream
-BT
-/F1 16 Tf
-22 TL
-50 730 Td
-(NEXA MOBILE - BATTERY CARE AND CHARGING GUIDE) Tj
-/F1 10 Tf
-14 TL
-T*
-() Tj
-T*
-/F1 12 Tf
-(3. Battery Specifications and Fast Charging Profiles) Tj
-/F1 10 Tf
-14 TL
-T*
-(All models feature a 5000mAh high-density lithium-ion battery with smart cell protection.) Tj
-T*
-(Charging inputs: Nexa Lite up to 18W, Nexa One up to 33W 0 to 50 percent in 28 minutes,) Tj
-T*
-(and Nexa One Pro up to 67W Turbo Charge 0 to 100 percent in 42 minutes.) Tj
-T*
-(Charging Curve: Charging speed automatically tapers above 80 percent to safeguard battery chemistry.) Tj
-T*
-(Slow Charging Troubleshooting:) Tj
-T*
-(1. Verify that the cable is firmly connected to both the device and the wall adapter.) Tj
-T*
-(2. Inspect the USB-C port for pocket lint or debris using a dry, soft non-conductive brush.) Tj
-T*
-(3. Test with an alternate certified USB Type-C cable and a USB-PD compliant power source.) Tj
-T*
-(4. Avoid charging in direct sunlight or environments above 35 degrees Celsius.) Tj
-T*
-() Tj
-T*
-/F1 12 Tf
-(4. Critical Safety Warnings - Battery Hazard Protocol) Tj
-/F1 10 Tf
-14 TL
-T*
-(If a device exhibits a swollen back cover, excessive heat, smoke, popping sounds, or chemical odor:) Tj
-T*
-(- Disconnect the charger immediately if it is safe to do so.) Tj
-T*
-(- Stop using the device and move it onto a non-flammable surface tile, concrete, or stone.) Tj
-T*
-(- Keep away from beds, sofas, curtains, and children.) Tj
-T*
-(- Do not attempt to puncture, press, or pry open the battery compartment.) Tj
-T*
-(- Contact Nexa Mobile Safety Support immediately for emergency hazardous exchange.) Tj
-T*
-() Tj
-ET
-endstream
+/Contents 13 0 R /MediaBox [ 0 0 612 792 ] /Parent 11 0 R /Resources <<
+/Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+>> /Rotate 0 /Trans <<
+
+>> 
+  /Type /Page
 >>
 endobj
 6 0 obj
 <<
-/Type /Page
-/Resources <<
-/Font <<
-/F1 <<
-/Type /Font
-/Subtype /Type1
-/BaseFont /Helvetica
->>
->>
->>
-/MediaBox [ 0.0 0.0 612 792 ]
-/Parent 2 0 R
-/Contents <<
-/Length 1359
->>
-stream
-BT
-/F1 16 Tf
-22 TL
-50 730 Td
-(NEXA MOBILE - HARDWARE AND DISPLAY DIAGNOSTICS) Tj
-/F1 10 Tf
-14 TL
-T*
-() Tj
-T*
-/F1 12 Tf
-(5. Display Settings and Touchscreen Calibration) Tj
-/F1 10 Tf
-14 TL
-T*
-(Nexa One Pro supports dynamic refresh rates from 60Hz up to 120Hz for fluid scrolling.) Tj
-T*
-(To enable 120Hz: Navigate to Settings > Display > Screen Refresh Rate > Dynamic 120Hz.) Tj
-T*
-(If experiencing touch unresponsiveness or frozen screens:) Tj
-T*
-(- Perform a hardware force reboot: Press and hold Power + Volume Down together for 10 seconds.) Tj
-T*
-(- If display shows colored vertical lines or black blotches, this indicates physical panel trauma.) Tj
-T*
-(- Remove thick non-certified tempered glass screen protectors that may impair touch sensitivity.) Tj
-T*
-() Tj
-T*
-/F1 12 Tf
-(6. 50MP Camera Optimization and Lens Care) Tj
-/F1 10 Tf
-14 TL
-T*
-(The primary 50MP Sony sensor utilizes Optical Image Stabilization OIS to eliminate motion blur.) Tj
-T*
-(Best practices for clear photos:) Tj
-T*
-(- Clean the camera lens glass using a lint-free microfiber cloth.) Tj
-T*
-(- If the camera app crashes, go to Settings > Apps > Camera > Storage > Clear Cache.) Tj
-T*
-(- Close other active applications that may be accessing the camera hardware in the background.) Tj
-T*
-(- Ensure imaging firmware is up to date under Settings > System > System Update.) Tj
-T*
-() Tj
-ET
-endstream
+/Contents 14 0 R /MediaBox [ 0 0 612 792 ] /Parent 11 0 R /Resources <<
+/Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+>> /Rotate 0 /Trans <<
+
+>> 
+  /Type /Page
 >>
 endobj
 7 0 obj
 <<
-/Type /Page
-/Resources <<
-/Font <<
-/F1 <<
-/Type /Font
-/Subtype /Type1
-/BaseFont /Helvetica
->>
->>
->>
-/MediaBox [ 0.0 0.0 612 792 ]
-/Parent 2 0 R
-/Contents <<
-/Length 1306
->>
-stream
-BT
-/F1 16 Tf
-22 TL
-50 730 Td
-(NEXA MOBILE - CONNECTIVITY AND SYSTEM PERFORMANCE) Tj
-/F1 10 Tf
-14 TL
-T*
-() Tj
-T*
-/F1 12 Tf
-(7. 5G Dual SIM Setup and Network Troubleshooting) Tj
-/F1 10 Tf
-14 TL
-T*
-(All Nexa devices support Dual SIM Dual Standby DSDV on sub-6GHz 5G bands n28, n77, n78.) Tj
-T*
-(If cellular data or mobile reception drops:) Tj
-T*
-(1. Toggle Airplane Mode on for 10 seconds, then toggle off to re-register with cell towers.) Tj
-T*
-(2. Verify carrier APN settings under Settings > Network and Internet > SIMs > Access Point Names.) Tj
-T*
-(3. Eject the SIM tray using the bundled pin, inspect contacts for scratches, and re-seat firmly.) Tj
-T*
-(4. Test the SIM in another phone to rule out carrier-level network outages or deactivated accounts.) Tj
-T*
-() Tj
-T*
-/F1 12 Tf
-(8. System Performance, Safe Mode, and Data Backup) Tj
-/F1 10 Tf
-14 TL
-T*
-(To resolve system sluggishness or app freezing:) Tj
-T*
-(- Keep at least 15 percent free internal storage under Settings > Storage.) Tj
-T*
-(- Test in Safe Mode: Press and hold Power button, then touch and hold Power Off on screen until) Tj
-T*
-(  'Reboot to safe mode' appears. Safe mode disables third-party apps to isolate issues.) Tj
-T*
-(- Always back up photos, contacts, and WhatsApp data to Google Drive before system maintenance.) Tj
-T*
-() Tj
-ET
-endstream
+/Contents 15 0 R /MediaBox [ 0 0 612 792 ] /Parent 11 0 R /Resources <<
+/Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+>> /Rotate 0 /Trans <<
+
+>> 
+  /Type /Page
 >>
 endobj
 8 0 obj
 <<
-/Type /Page
-/Resources <<
-/Font <<
-/F1 <<
-/Type /Font
-/Subtype /Type1
-/BaseFont /Helvetica
->>
->>
->>
-/MediaBox [ 0.0 0.0 612 792 ]
-/Parent 2 0 R
-/Contents <<
-/Length 1333
->>
-stream
-BT
-/F1 16 Tf
-22 TL
-50 730 Td
-(NEXA MOBILE - WARRANTY AND RETURN POLICIES) Tj
-/F1 10 Tf
-14 TL
-T*
-() Tj
-T*
-/F1 12 Tf
-(9. 1-Year Limited Manufacturer Warranty Coverage) Tj
-/F1 10 Tf
-14 TL
-T*
-(Handsets: 1-Year limited manufacturer warranty against internal component defects and motherboard failure.) Tj
-T*
-(In-Box Accessories: 6-Month warranty coverage for official USB-C cables and SIM ejector pins.) Tj
-T*
-(Warranty Exclusions:) Tj
-T*
-(- Accidental damage, water immersion IP54 is splash resistant only, not waterproof, dropped screens.) Tj
-T*
-(- Unofficial rooting, bootloader unlocking, or unauthorized repair shop disassembly.) Tj
-T*
-(- Normal cosmetic wear, battery capacity decline over 300 charge cycles, and surface scratches.) Tj
-T*
-() Tj
-T*
-/F1 12 Tf
-(10. Amazon 30-Day Return Window and RMA Procedures) Tj
-/F1 10 Tf
-14 TL
-T*
-(Purchases on Amazon.in qualify for a 30-day return or replacement window from delivery date.) Tj
-T*
-(Items must be returned with all original box accessories, manuals, and undamaged packaging.) Tj
-T*
-(To generate a prepaid return label RMA: Log in to Amazon > Your Orders > Return or Replace Items.) Tj
-T*
-(Nexa Support Email: support@nexamobile.com | Customer Service Hotline: 1800-NEXA-CARE) Tj
-T*
-(Corporate Address: Nexa Mobile Technologies Pvt Ltd, Cyber City, Gurugram, India.) Tj
-T*
-() Tj
-ET
-endstream
+/Contents 16 0 R /MediaBox [ 0 0 612 792 ] /Parent 11 0 R /Resources <<
+/Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+>> /Rotate 0 /Trans <<
+
+>> 
+  /Type /Page
 >>
 endobj
+9 0 obj
+<<
+/PageMode /UseNone /Pages 11 0 R /Type /Catalog
+>>
+endobj
+10 0 obj
+<<
+/Author (\(anonymous\)) /CreationDate (D:20261122230459+05'00') /Creator (\(unspecified\)) /Keywords () /ModDate (D:20261122230459+05'00') /Producer (ReportLab PDF Library - \(opensource\)) 
+  /Subject (\(unspecified\)) /Title (\(anonymous\)) /Trapped /False
+>>
+endobj
+11 0 obj
+<<
+/Count 5 /Kids [ 4 0 R 5 0 R 6 0 R 7 0 R 8 0 R ] /Type /Pages
+>>
+endobj
+12 0 obj
+<<
+/Filter [ /ASCII85Decode /FlateDecode ] /Length 2247
+>>
+stream
+Gau0DgJZcs&:N^lqJ".+MA9DKC#91-_H+G^2H<sc]F<6@SuaR$d0N'R5CQDoL)n'?.kDK0DFo7:h:$d/%b^W"Ra36,HG?+s*uo<+=tIec/Y<fNk[\]&pOUfL3O($?,MW]qAHu)nqIJ9amDK[DS;A?A'@No`-uoOJd#pc"9<QNch+$_oioH.fqDc/Nqf@'L=.^7pLNG\"D0J;oa(L=:l,E=b2mi?HMdP.ichQ>d@M6Y^(QV9N!?5F!Nl)&Q`t.Mr,0PVN?9hQX3l*(rT/;uhQRYiVUCWbp<GT"9X%I+fX]6k.depg718j.fWH22Z@8pCV0=6h_\ki^)RVu`2TV8nomI`F1XJ#7=_9!_#rI47+B:#M$7It1fIdH&"92DMYh-Qr>3$H*#'\HiIPdm=FL#2F#E4dO:@?V&=U7!X_3\`J)Q24P'3tashTcC,-1*XnP9%/dLLpL3+Yj@9+M#H2<*W$n)bUN,;'KHl6!',)i(\k7pUY#E#kuk)6?-'4$5*fB#"8Grcd:+Mg<&*gmDb/'2Q5*:sOhi7]<>6Y!,aD"PjB"-DaeEbr)Y3GgiJK0eWfU+'*fJ;P$*Da[*)\bJ^2[$d9=:cWK"k5r9o7@(fuDY+2TE"CIrneg\l:+=PO?j1fndf)YTrMe:&4H6l+/8[7M]NL[5N5l59DE;aJX+M/c2g$R`eYG[n;tjf4O(%i;Kt,1-.#1'd>eZ".jRC'3P@Ke+5RRl_8*/f@l_=+FYN(aIs8e1<0k4('pL)][,o8XBmts\.riocu,sK^kq.WGCOr>TFLp78B!3mD5-gK4p\/l)(]]+,[$[Y.bacG%/P3<ZV90'glr^9+0B[Rj4LCHRqh^R>F25*='d_SkZ$]E:imk<P0.7(9"%EKB/")]9)enTDY1\rIe)%1+pEeoEbXrpQ?6*g\M@DdO!$ZhKbeVK[g/.U0;T`<KH`kBW-EU<)[)KcA[[jl"7YU+H?d5J*kM6!2PV):]bJ';N8CLQ?5@.Dh,>V`=t=Yi)e"mePc$:SC?:.Pi\3j9a$OLmS1Y;ThsA>4O2Lu<f0?)al$ZTi(=WAq8!qTK>R6<]'TD!FXg5+[Ht*UtX`QV\#gJM#X:M'\ZWK/$/o?Y?#>.Y@'nCQ4Xc]$qV9o]_]*@t='Qq=YH[4PacGX]S<#S+'.!4K5*U70p2459cKF7g7\>e5>M`H.4FR*RF%X`;,mg!+XWTjTe"h'IcK*%]Ar-Dbi+X\&c2mPTj>9',Pgcs^kg'9aPHbeTt)(s\$?[b:J3;Ll!Nk-A2Dr,ce5&HDL?F:`ng+5*dYMj$9pqCBe=;,jJ=F,rgRI*I(k;I(Q'%8EXGD?kiM(B#kP\7>cG_*86m3s9^k&"%f9/IPZkbt!%4\Il&7]:,6.>-2ZW0nagZHi^a!ejWS@26LD2a)I9=JlQ#ael@ZZ>E!TPHA,[T50Q8B\5-p`$X#DKt&@$ScT?>X^,GYpDaLAEA9[B,-T(%=k79(geo&Wd5hmb5^)e(^d_d[3S#-)-1Ta*l,R`>=?/gRLF4E[]BJ5L`U%?#fbW!!2#ocDT];n(25Kh1U7/Br;r.:eA"MWXl"n'ke'BW^rjr[s9Y$n2?PQ4mVBX]F1J,rDgWJ:Rho'ddn@J@[F.&B9oC_><nGG]T#NIH>kWXbD0K=L,P6fIoA.;^(Xu=K@riS[N:=c-fA4E2'a2aO_+)icW)aOH!bm(g$,I.Ai"IS9,.eDItK'<\"=n?lHMC2HNc^,E@_<t)A'VNp`&E3M5WqgdL]G-X)Wt3GH*D3jH1P*Cr:h-tGL8k9H>\9^6;tYa;'6:cf!p=5KW_-86\c<%Qj7u0uU,*Yc$$6ZnHE)rqjL?@qFP;-%%V8&%lC@>NWk`+@,tfi:h3oXX$Y,P\(c>W24:1Lh,BB'rNCa$MAOOZ-X/=K`=LXYUi[3\OPa2)?gqSN0s7:a]PnaPXj7=%O/2L[aeoao(!Z\S5m;'i9VGaApc^aSg4>$W'-iEi^s'H8;0P9T<<oaF%$r@k^iUOWMZZjgGW4X8iI)[*>rK[W1llCqrF\dAWnWV2&3[r>YWBEf>#AMfu_Zq'(;_,aW0*=.JAN1Pa`kB7!P<!N>Cp6_&=mso(%[E&'7>s<8DjcdMnR`54VVgJfB_QP/42<^n6f-+>!1'_=B1f`=*seq)^_]Cd_Uc..NiSbp$#ateqR>'gf*S:];Kr52h&;28RFIs\>2k`t@IZP40>*RVd0er)hesfc>J1\RG1<"KTq=T+(Tq/D*pDNh8V8$o~>endstream
+endobj
+13 0 obj
+<<
+/Filter [ /ASCII85Decode /FlateDecode ] /Length 2220
+>>
+stream
+Gau0DgN"Ju&q0LUjND_n1Jh<MbO-$%[-\=XFp%0sf\f3$&tnJU@O.4U*;f8i;H3b3d65+C$/9$VPfc*LR<`<R>l8j?B>+F,S\j8KH/SKPSV%_>+\YB[S=]Xui\`N%(D8C<aZ/F-?4r#"3*tquBaB_@GX2sm>b%H1Deg;oXO+*\?=<.I`bHl?i'rTBK/&=^2qJU%/e"+NQXg1sRP23"`FAENVSC%@(ZWCLr&jQq:;+XX+1I9Ibf/IjrHdRWQTA"2Ka4#k1uVRrVFq746F%uTiO77!!977?U<9G:N@uTk(M0G2i'_H*G#H)qGeShGbGFFaQ+X"`)bL(pH8HU,;9.(<Jh"4epjOi+)bR$f\QGu1=>@ei!^rjm+XF"DQY`qV:soNZ@jTSC+M<4EJWN-;gkk)2@gRq#VHcJ@.FCI3k9*H\$.o<e#73jAer]Md1GUQOFNhP!`lK:p-Eb^`GtA'\7rtPNAnOe;"-W>&5e05]s3]&*luaH?iY6!UTA]^B$Z#H,9*MZIQ\lJr1&)L"DXGY3!mtZi.W["$[3Tc%OgeW'V@r5UbW7[AQa;`W%,,[W`55=-`kkB0#"?9LCX)8rGSa.3hiBM?M^Q^<=)\R+S03f7$#iE*n&QJD5s6om09LjDP#Y)=.e2_b1WHHVJC6jGdXM!W2QCuGgZ3Vd6YG!7?Om^mC(4?3m>Whc+17mp$;2XMD_;>[0$kQO367sF97@5aT'NmmP,;>Q*r[NH7htkgGY[3"11^:i_b4<89$9r4Unf^?'Qt_Q"jXK,;WOWAVNC7Y.?ps6/pQ3ZSTKGQ_l5Jl`t;so&d:^%?(>6G5'?sf@G0Z!g/qN`#GSlc^fO4hL@i!0kPbfKQ(#s#:(3$k@i<>eG;]pi'II?cZ']oho9(Np$:2Fboc$JBo@m8<#5UhY3>S*9XUHF*$8B0l$KEFD]JS$]99t(*dS-Mk@Q)b5dp-D=]6hdmPtQ_YmU<+O,VbUi1Ej<^jW)H_=d%K5kfX^HeF&hpJ&Ch*k9N"JG[@+]"1k:1V14GEjOYfp*;>(Ecu6Kqh4o-VlhsihS^;pq;"kGG39K9N'.^(/b>f?*'^IZ`kkB.L9Jng\o-H0m<Kb)^Gn`RVDQD<=<m/b[3.o9]OYRfK!qTboS1HB'!@LOr+S3kHe.8;@K#k&1"E(Q]1Xt0np0YQ5J\CEC\bIg]$XV,&/LYa?[fXOV*Sc,r:GB*DNC3C)?KZV$Z)3KdB\\9dr]sNf'/6ERe4+/`HM<6.+EIJY%>T>I32P%WJ"I>:^_p8gWrNu:mo(1chfa1`N=\D:Kq#VZ()riuM&X4X6%1>:Fq.Xc4.jk/.bEmDL.P-"Vt*>tqr,lEY@&`mT'qT.^I1)h1+>&bflKS'iLFoolHWb7']Zkr<.V'_q^58d(CSN[YXoVYLb5o9A&5%RCWc0JD@'oYV[ZFq*H3%[NP`*93!=,B6u5H?YRc_/IndcU!OUN7O@B0Bg7jG^@ZRTA^C$oN-KEbNc(B/KK.<NH]k=d75#IQRp!gU^TPZt@'hVu=Ru2[q`qXd4DDQCUo9.nD?TMs6j(!U!TS847;>Ns.$%+&?8O+_.4<S`r8\<hHN1kF&F2-05X9^0]e5omZER<m&'Pth4$/RE3i`&%7Lu5;A=@f`(,1..jH!GOndGTh:C+?4825Z5/G)>f#XMIbA`N0<P=k0UjB@$<]\3i*;;/7LWD<(@15L0A\#eMI\JPm?r&U1Ol1R%02_s4J??AWM[GLROVM.VUHjEO"4<Z]-MG`_pE,W0VUBd.1<-M-uT9F^5@&3['/(m=?>p$ajD0-!j>H7br$arfs9#"F7E=VnO.([ip4?mP65JSUhnd*o:p=pR6NdBKl63Xaf#l!O5aqh^MI7\bKt#*Ft3bd"95JFWFAHMk"t.kBB7bu4o^46e_6m^!LLDbg9)oh$HARaGfXg8LBNeDH6tm9m@AMqbL]2\rc15s&]TD/AsMT3;c>1^Gqt,W3VOhUgc*6%S&b.,Dc&Cni\)Zh25iU52@eFZeF(kM`m6>[3=Cs*ah`DF`/q+0Qp'lc1\!>YZrU5N?;b09uq":537<^V(Tq;):m`L1cjF0$jB+`anO[&HCBY,1K`).u*(pTb3K8k@+&o6PF=$g*[Q`:FusLAedLs7F)&Cr&Plt3NiPm)S5gl%OrF-\^q=MFQ(#b0N%V8'rIg8g3t_7#h1%t'=n,rTRHE<ij`^7`=8,,n3P8AHH&T;q%H$Dh$!~>endstream
+endobj
+14 0 obj
+<<
+/Filter [ /ASCII85Decode /FlateDecode ] /Length 1877
+>>
+stream
+Gau0CgJ[&k&:Ml+FR?u1B8RPJGOHIi!b=6O$jjOE;gC+&P'G-X4L,B+C-R/OZCM@H^fJ^AJsa!BmQQ'q+pnH;<<&M%!.R]$oR[.P@(H@'QjufFd%>KqGA+>2,N)K:(S_C?e'.p'1^!$D%At!X:g4rK;X/UhO5D#K!s_NCVRCDq=G#M#0G]&Pathq$PenQ$Q:\fD%koJD1.Onhb*[umZ7[HH5/Qq29KstA53$;%+toUs7Abbg>ULflD<i9C[;RE%9NRX^r!_,NE`?1YoQZ_aBED[q`UK89'sKNW%!Z8X=g3/aV+E,Z'9F^K='R"8GReqs6p$UPJOkT1%5I:!@%mcQ.L)`Nie2NB,)R6P.kWhG(9;TDPnD7E02%,L'Gaq&9@4Nc.UaJ[ip(%lA82QQ"\9,h6Vnt0b4K-);06%J>h`u>3?!lPXqob8\AWqN%7)[MI-R)mYL!D.%#>p-l8u4dGI,+0o`gmB)j!,UBjQS@hnF*#pZcJdo=%,7=GKtAQKVFSLQk59K>?Wf4\Ag.,:j*=7aRS92$'n+>c$d8`7/tT*??dR?(\U,TJ6S.X%:0i&\9erlrkOZ,j%J)QNfm#T-+d\<Z]Qg#Siip3"m*Z`V>UXd*P_]G'r;_hs[g8/rMUbP9=(BL5"u`I=/s4d!:*Jg=m=s=)8Ih4bcOmPnbXo?o%$?LI8QiLF80Q@`a.l;Nj/V6-8\\M\B4Ns'>\&_1\lm4+UcJb;@(0_Ybj*&oU[lb2_oQjY5)/]9?7#O>%SH?GY-4rZ@k=cOM(/+t;]f?ncG]G%91K^eB%Z`88gjf[U9!Hjt_o07b(4@,a<!7B3J25<-uR)!-r*RPX`="cH=6,Weg=kYVQI<KqZN:c),h<!?'=p4m8O.gXlKf"NYQNX#Uo?%onZZQJ+/(J@0i4l!GP9&19"eqOWq0>cTHg[^M2QI]co/1bS%[d6jo[RaL="(/i2_B'GhefL^9>[l;MZBn6M<(W+pTW3:=0UZk5TM]ocqK7`K.E^ho99]ZGY;fbmSkDbO'O>EVoGd<!1j$3WCpG"M^T_]/MA!);D\:KdEL96bNM]%og-mr]Yq,2EAgqt)FN`AS*L[GO9o*+pm8*ZYehR,"F\sgpgU49\RC\a<E-p8(7ijT02:HD84f'j[;UWY-SqQI3WS\cb<"6=!>2.kA.h&mBYEaB;RGH$P<^s2&_kY0C;lf6UiJ?UHmHp=k$/IO1Mo-u`4!3&FU>_Ne_mq;8@PNYQ<=J3X8-c6:Z_EVoNaQ_8@$-?..ub+*Gh)oUE5nZ(;Vn6B0T@"Uf%^X?@GZt>5%o)]DS=I(G"JS@rk2I^S7TK)KqfV6h>9UWE-/Wd9k_P[H]ANcF[::VCjLc/2er[O(`$5AA.43:e(3p;#p\JU,&n%9QcE`("c5s'0dLCSjgn]lA*="!;FtgeT'UWP".2",ca)6F@*Z**A4&/)T+,1.O4i?R4lB.rK0e6s&>C)o\5ESPJFejR3G*MmP<0Sd">2r=H2]-mK`#;`DV.kj2p$*jh?3$n_uVpNfK#*IHRa9>=Hg'`?k+_;F_-/FS`;#le1fh5/##OI=-es/GY:jR=sB2m.oe\*Nq*1M.Z^jp&F9mg<_pfc4AK$<ebeJkNtX[A*l?J:hgr(7Q&p=e2K?C-/sZU;_8CD#&dH\)!T$OuQRG[iS,Sa1\/O05^5d*hDE,<m;fa=k4QrCJVM!:@lm'_*bD3]$rt[6U#3UDNnrn(.2n0^scI@a-3=^tPBDF1:0Mj9#4>V(YJ_DQu9"3iZK'3F88_(LuD0+KE(I"clq[V:[m>hVD2+Nt4JT&9FH-2I5^Vfh4RP9u2$3+IGb83_,>iMRm]trGW#)l-D]Q[W64eDKs$!J'R2.kNVP]6Ak!hK>k_K#ms~>endstream
+endobj
+15 0 obj
+<<
+/Filter [ /ASCII85Decode /FlateDecode ] /Length 2072
+>>
+stream
+Gatm;BiF(^')g+Za=h_DD-H-eFsAmHpFo9&0Z--hj4N9_+]Z!d<nBkgE,Y*(pIedZF*e-Q5U*h#XB.&^Am/a)@s*:]SESQ>*PAl&Z>$]nb;EO.S^>c!n*?Q&N:]gO/.[AA_e<gh!(1h5!hOB#hBpG),n.s(HoJji2hTI'_fdRYE2_X?/250&2bc(m9^+lT.P?YT6IaUu6,*c/A\Fo^iJIAu5&;`P02bYcjA3/Z6E?a3Vbd*SpuR93n!@Hm,L;?C4ItmF)t&#fKndVXo4]Fujl<Z8ZV(a7ri:nc$!ETh-"8mle0:%LS\1CsW;5H<-S"1HBQYOkAhqq[RE0!4F=QO$3/35f-#[<]U**U[HF'G9(6-aH.b>A&hKZ'RkOd\CT;oK8;$jiWs,:Nc<EY-:m!0e`e!dR5g0,2q,ZTrAG'J[pS`^]bU1mS:4:.;9P%TIN<)6iI?GV7WO$(mf\J7snC&RXp&HrRp),Y'.Oj25!G._O@j56=+2W6H@%>+M[oqLrdjau^bXTjr1iuR`reXZNoRN5d!Fh4e24.b(8K*(*gHU+JDGN`Y"CpPQ1fOf8B4"G5\9c*2>ZYd(nT=cu'nVmKtQ^*NY6H((pmo%aeAgSkS723)pX=i*SPKhRmKgUp+AU8k@6noq8ML6b2)jpWjI5rm#`H3/2Hm'&1#_eV*DSJBFm;K8C]6C/3`.E%fe(]`l62Vdc[i^@"]bXcuYhk<3<,L(Z(pupcZ?\"-N'rZXed2/]IR]gB*;b`R].]!0pp7!Rj-Kb9>ked/cR#q,6=uB5&M-/Npk4;.D7+3ZfpaS"[j*;V0;r`TB'"?@@YLjIQ%'-%(8i]`3(!QPE1ukm\9WUaJHF)cM>8ei2JrF6Lg@Af<S"aT:WfP>C^R.A9HmE),+""\gX2pDN5hpO%ZKh/mk\&3POH4#_#VtFZ;o`%$*Y4bReH^jS;mqrNNKq2n4Cmb19ZdB@AbFg[D!BEfsa`i1"dmu@2T_u$l@)j@5\0EOZ*VMZ,RW\6m8mL5]\pX^C>"SS=Pn`"s-#TcJeVX'Q`&"8h%sJGNkI.K@Q^se*ORZ-j?uB$2ppZD\dX`:b"o2;ZNN-1R&Frf'nd&I30B;DBW>7pee\`)>U>$r7\.iOYJFR5kc)K!lTh/PXMHd;Wq9<aCi'YL8\u?'Jn*n]ZX6D/7/DLoi)o.I`TKG+/m-2jh^K?,peA!=D(jVW_U`<;iO$.:Xpb0S`9ZD3`Td^(RUtci^DB-h":U+7e?iCFfVgDXWBLJDts::B*8g5A7U@RB1KbAX(3225Mh%![o7R<G=;nSATZ=&c,"#[=Nij:qJRJ$jQ^TdibbuqBH+$t)m-'_H6Z`c)sX]bL6p<MNuRoPr,G2q1YOBA_WA&5IiH)toWZR6bcZ-&B6CK@)`/k76-E_9ZQQ"mil&"2;L`uSLM03ILeo%pm&X)fk=B3?YGqT\MX*KG&1n+oEO\!;fW[sP;YEBu4VRBf<Y/*:*M9AOg&$S'1'`*XlZ7n@5]`"UO(%+Rk):(]enV<0)!eISPW>CN>IG!CEV'r+$XTl]>c=c,%r;@""#3)Pn0G`c+h\D+0qNhVbH-6r6'&R'&rbl"/ICHILW76G&dZ$rR(a;'&RB'!Ea7aF;W#%G#8hmIMQ^J=i+BNll`U*m-M@/`'>+GZ:c&YA+`TjWOF5'I6;qRk\pS)d_qW&<&(b<a3)T0)-uVWqbNu7gjt!-N>b]t9.EdSaAXPij*h`),.t(>n+L@7&Nc%8($q`s;%87Cgee:'5CVChuQTdbQ]-K-ufZE8>rC>#q:4f!<Z`ZaBOQNK]"\0;5bH/?&f6S@Q$+lm0$e\\6OhOaMcjO"u,2O=_nQaCnDXF;(oYlAo19Rt4UH]7Q_oMB1^H\=<jiQfc&/nrG[SKE^QE0,f;i&5SD$P0.EHFsrQcjSC+OnB`d:2p#\N&X^(O(7ZG5HI@TcM+TO?Fh/=bH-U3Uc@HXGU?:]s7@GC7=GtZeSkAG7WcerHYp4rk5s6QUb=;=D$ZL$`:6LD:",7%/M'K]ND4fMZmA6NuT&QMCL4C]=lnRjfQ=K((XW>$'Z&Thm9e5/%#$eaVLLW~>endstream
+endobj
+16 0 obj
+<<
+/Filter [ /ASCII85Decode /FlateDecode ] /Length 2064
+>>
+stream
+Gau0D?!#c?&:N_CbYq<k'%`aq]Pi1N1qS<8&l/2fiC2BkU>f:X/179,J,EX+:.TniG*dmb&[J4#\T:8^NC,V<Sa(F3+?H+@LGO]*QR5XOI*8G0OF!+CY6Rh/Z=?hs"B^UCXEHK,@-N95ctrJrk*"bm,:pkA4+<"3NZE:kZ<Y`G6BBWT>*27KXF86X,3F!`^G.bfd'sdYe!oXkd?o=)VFr5!1=fn`o_i!_I%eYDj3f<&n$pp43ji1X$Tin]g%b3>0A,$%f'-@hn^dm_RA#Jg\DGpp/2GI_MJ6Bn_Kela(=,Fh.HO67,+Fu(OqK+iHWj!`2biD632Bg$QktHZ;"1Otn=3E[E.t-W&^Rg\**ZrCHHt+S[8ImK'S\(s<^P,DWQbI#3@Is<#tO7o?o1ViRGb&JE`H4g;=Q_DP(c`'XpMl1R#+CdC`*e=2',cWT#6Xn2bk2fA^9AH>1jfgVl>5YB];-_BhB&XZ6Ej`aR$BJEH>rSXuK)/=tDYtQ#*YV4Y7s(DJRq.#,E>!"(9:7&n_<8Zlg,7=VTp#Pd5++Z5GFH+LQr3*De9Hg>morR:X$>c[MNl_hi$!nnY8<$<AN@`@3_`*.pZLr!>K<XO&NI`biu8kn94_MSab:;Vm[!j`8<T:[%MDqGPUX=J%67-Kp%mE^Nu[B0D"1\Y+R'Hp6aqj9M^]SBXGq4iL)0TUo$=j-V'p]l,pSP%RV<4AEd'[=Ua(WBc,:*L>@cka:jBHoG!0bS&&q!]!.%'m#[?'o4)+nS)b/N[IW40i`7&Lo"\-+#4PZ/DnX3T[W_oTrN"H;dS6nRA6@Z]-k[ie9!SW!^4'9bafo74D"6jR)8'5I,$n/%n?FY,F<:OE3+PY(H68H.M]/g8SX8;b#F;m8n:2Hr'(bRa6ug.8fDVW\]@G"gj34"=j6WX't?,+O69g;)&WBBqf$A0qPh+2!%1u.IRp)"qb0h"36!EdiSNoQ\,r/ZHQ%sb5BK!VaU@LDHTsE;OI>3T'\GS^++\5bI<T'fTuf)n;:kLcf6haI>ZU/"DR\K\g!'`A&8;#%HMmDhj#VN_o=D^#>kD^C?"$Y*bt8W$<KhNs$3K;2XV'<4Y`i46h.g6\2QbQ0>4$Lek_q<'.fR?@3*p!0R<m.FII+D5`ZJrT626,4"Jcmn^8NYT&-l:!QEa,A+#=dcDluXS%KIE7?q7X=FUU)(d-ggZ`4npc->;04H"#_r#b,,SPG[._:`lr#rO1@'Z[cAu'oh32=3.UoCMqLSa(Rqr)-='$b+.L(6-h,NJnLJ.BUDmgO.\)nJMV[:1tRG1e*>X>WqD\8]R9h'n5YQLU.34X55meJIQH!Ypq?)ASnle8reT_GoM3eoHopW#596<D!^a="Z0kILB6R>9S1!N:3UZMKOFbra0'teeqQC.bEE[B7-(GJsrriQ(f0Jg>Ju/u63:3*9!B_hHMclb<<_8TV,??-XRf9Gu7h'R%g2.*$27oc\]WKWP^qp<O4lEm-.m_d/TSLDP?]8?lkDf"u+a!H&3*#ll=^<5k.dE[V3MrMAIMa&&IlP#!)NQU\WCXRqT(BZ4YX:J6i`)4cljV_m]<!@="^;I3p(S%cr^qE@VpP2*caZ!8$G'qWIm/=dCAn0mf9s-Xm?fCUV?6<#<`,M6Y9Zt]?HEs&Whu?IDA392Zc#ONj>CP,meAqe-XP-ef&S=s9L498R<_r7VOn1QGPlhKYenJ[#I:pIi'm^LlFJ$Boag!<C83$i<VnWuOK"\VRlPh.`njlt5CL,l#`WF3U\/H1Sr=`Q3pX?%_jn3-o,d%e$CV'lB$PB@,fWri7r/!oReRiPco!7+cYM'=6$YEj,aI8_1%58arp6Ko1+WiMPK26Cn'<6T34^%+27fIHiT080P]:QL6bUsbA2(TFWkEE.&@/ch7K)PgC!Z"WbMLA!CiFE*<bth^d-nJQ!:^/l#fhgM,P&:K@;PhTM)OQu,88R&D=`Bl(C"L#DEuQ#<BNb/T?CG<,Y`MGcX\M<!\ZHu95W'Q-PlYtjQmQa!`FW$Di@6'lT`upD?'KCqfjKqm-`TG-2K9@P+5FS_b)ub#OO='bl~>endstream
+endobj
 xref
-0 9
+0 17
 0000000000 65535 f 
-0000000015 00000 n 
-0000000054 00000 n 
-0000000137 00000 n 
-0000000186 00000 n 
-0000002066 00000 n 
-0000003890 00000 n 
-0000005461 00000 n 
-0000006979 00000 n 
+0000000061 00000 n 
+0000000102 00000 n 
+0000000209 00000 n 
+0000000321 00000 n 
+0000000516 00000 n 
+0000000711 00000 n 
+0000000906 00000 n 
+0000001101 00000 n 
+0000001296 00000 n 
+0000001365 00000 n 
+0000001646 00000 n 
+0000001730 00000 n 
+0000004069 00000 n 
+0000006381 00000 n 
+0000008350 00000 n 
+0000010514 00000 n 
 trailer
 <<
-/Size 9
-/Root 3 0 R
-/Info 1 0 R
+/ID 
+[<4d099b65316e14e08807f27a1e13c5d9><4d099b65316e14e08807f27a1e13c5d9>]
+% ReportLab generated PDF document -- digest (opensource)
+
+/Info 10 0 R
+/Root 9 0 R
+/Size 17
 >>
 startxref
-8524
+12670
 %%EOF

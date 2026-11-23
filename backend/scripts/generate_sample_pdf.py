@@ -1,232 +1,376 @@
-"""Generates a comprehensive multi-page PDF document for Nexa Mobile smartphones.
+"""Generates a professional, human-readable multi-page PDF document for Nexa Mobile smartphones.
 
-Used to test the PDF upload feature and hybrid RAG retrieval.
+Uses ReportLab to produce a standard, beautifully formatted PDF document that opens cleanly
+in any PDF viewer (Adobe Acrobat, Chrome, Firefox, Evince, Preview, VS Code).
 """
 
 from pathlib import Path
-from pypdf import PdfWriter
-from pypdf.generic import DecodedStreamObject, DictionaryObject, NameObject
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+from reportlab.lib.units import inch
+from reportlab.pdfgen import canvas
+from reportlab.platypus import (
+    HRFlowable,
+    KeepTogether,
+    PageBreak,
+    Paragraph,
+    SimpleDocTemplate,
+    Spacer,
+    Table,
+    TableStyle,
+)
 
 
-def add_text_page(writer: PdfWriter, title: str, sections: list[tuple[str, list[str]]]):
-    """Adds a page with formatted headers and body paragraphs."""
-    page = writer.add_blank_page(width=612, height=792)
+class NumberedCanvas(canvas.Canvas):
+    """Two-pass canvas to dynamically compute and draw total page count and footer."""
 
-    stream_lines = [
-        "BT",
-        "/F1 16 Tf",
-        "22 TL",
-        "50 730 Td",
-        f"({title}) Tj",
-        "/F1 10 Tf",
-        "14 TL",
-        "T*",
-        "() Tj",
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._saved_page_states = []
+
+    def showPage(self):
+        self._saved_page_states.append(dict(self.__dict__))
+        self._startPage()
+
+    def save(self):
+        num_pages = len(self._saved_page_states)
+        for state in self._saved_page_states:
+            self.__dict__.update(state)
+            self.draw_page_decorations(num_pages)
+            super().showPage()
+        super().save()
+
+    def draw_page_decorations(self, total_pages: int):
+        self.saveState()
+        self.setFont("Helvetica", 8)
+        self.setFillColor(colors.HexColor("#64748B"))
+
+        # Header (pages after page 1)
+        if self._pageNumber > 1:
+            self.drawString(54, 750, "NEXA HORIZON ULTRA (2026 EDITION) — USER GUIDE & SPECIFICATIONS")
+            self.setStrokeColor(colors.HexColor("#E2E8F0"))
+            self.setLineWidth(0.5)
+            self.line(54, 744, 558, 744)
+
+        # Footer (all pages)
+        self.setStrokeColor(colors.HexColor("#E2E8F0"))
+        self.setLineWidth(0.5)
+        self.line(54, 45, 558, 45)
+
+        footer_left = "Nexa Mobile Technologies Pvt. Ltd. | Confidential & Proprietary"
+        footer_right = f"Page {self._pageNumber} of {total_pages}"
+        self.drawString(54, 32, footer_left)
+        self.drawRightString(558, 32, footer_right)
+
+        self.restoreState()
+
+
+def build_pdf(output_path: Path):
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    doc = SimpleDocTemplate(
+        str(output_path),
+        pagesize=letter,
+        leftMargin=54,
+        rightMargin=54,
+        topMargin=54,
+        bottomMargin=54,
+    )
+
+    styles = getSampleStyleSheet()
+
+    # Custom styles
+    title_style = ParagraphStyle(
+        "DocTitle",
+        parent=styles["Normal"],
+        fontName="Helvetica-Bold",
+        fontSize=20,
+        leading=24,
+        textColor=colors.HexColor("#0F172A"),
+        spaceAfter=4,
+    )
+
+    subtitle_style = ParagraphStyle(
+        "DocSubtitle",
+        parent=styles["Normal"],
+        fontName="Helvetica-Bold",
+        fontSize=11,
+        leading=15,
+        textColor=colors.HexColor("#2563EB"),
+        spaceAfter=14,
+    )
+
+    h1_style = ParagraphStyle(
+        "SectionH1",
+        parent=styles["Normal"],
+        fontName="Helvetica-Bold",
+        fontSize=13,
+        leading=17,
+        textColor=colors.HexColor("#1E293B"),
+        spaceBefore=12,
+        spaceAfter=6,
+    )
+
+    body_style = ParagraphStyle(
+        "BodyDark",
+        parent=styles["Normal"],
+        fontName="Helvetica",
+        fontSize=9.5,
+        leading=14,
+        textColor=colors.HexColor("#334155"),
+        spaceAfter=8,
+    )
+
+    bullet_style = ParagraphStyle(
+        "BulletDark",
+        parent=styles["Normal"],
+        fontName="Helvetica",
+        fontSize=9,
+        leading=13.5,
+        textColor=colors.HexColor("#334155"),
+        leftIndent=14,
+        firstLineIndent=-10,
+        spaceAfter=4,
+    )
+
+    table_header_style = ParagraphStyle(
+        "TableHeader",
+        parent=styles["Normal"],
+        fontName="Helvetica-Bold",
+        fontSize=8.5,
+        leading=11,
+        textColor=colors.white,
+    )
+
+    table_cell_bold = ParagraphStyle(
+        "TableCellBold",
+        parent=styles["Normal"],
+        fontName="Helvetica-Bold",
+        fontSize=8.5,
+        leading=11,
+        textColor=colors.HexColor("#0F172A"),
+    )
+
+    table_cell_body = ParagraphStyle(
+        "TableCellBody",
+        parent=styles["Normal"],
+        fontName="Helvetica",
+        fontSize=8.5,
+        leading=11,
+        textColor=colors.HexColor("#334155"),
+    )
+
+    story = []
+
+    # ================= PAGE 1 =================
+    story.append(Paragraph("NEXA HORIZON ULTRA (2026 EDITION)", title_style))
+    story.append(Paragraph("Official Flagship User Guide, System Documentation & Technical Specifications", subtitle_style))
+    story.append(HRFlowable(width="100%", thickness=1.5, color=colors.HexColor("#2563EB"), spaceAfter=14))
+
+    story.append(Paragraph("1. Product Overview and Pre-installed Operating System", h1_style))
+    story.append(Paragraph(
+        "The Nexa Horizon Ultra (2026 Edition) represents the pinnacle of next-generation mobile engineering. "
+        "It arrives pre-configured with certified <b>Android 16</b> out of the box, running the lightweight <b>NexaOS 4.0</b> "
+        "user environment with full Google Mobile Services (GMS) certification.",
+        body_style,
+    ))
+    story.append(Paragraph("&bull; <b>Pre-installed Android 16 & GMS:</b> Certified out of the box with the full Google Mobile Services suite, including Google Play Store, Chrome, Google Maps, Google Photos, and Google Gemini Nano on-device AI integration.", bullet_style))
+    story.append(Paragraph("&bull; <b>Extended Software Commitment:</b> Guaranteed 5 major Android OS version upgrades (Android 16 through Android 21) and 7 years of bi-monthly security patches delivered over-the-air (OTA).", bullet_style))
+    story.append(Paragraph("&bull; <b>Zero Bloatware Guarantee:</b> Pure clean OS build with zero third-party pre-installed trialware, adware, or intrusive telemetry services.", bullet_style))
+
+    story.append(Spacer(1, 10))
+    story.append(Paragraph("2. Core Hardware Architecture and Computational Engine", h1_style))
+
+    spec_data_p1 = [
+        [Paragraph("Specification Component", table_header_style), Paragraph("Hardware Configuration & Details", table_header_style)],
+        [Paragraph("Processor / SoC", table_cell_bold), Paragraph("Qualcomm Snapdragon 8 Gen 5 Extreme Edition (TSMC 3nm foundry process, octa-core architecture up to 4.4 GHz)", table_cell_body)],
+        [Paragraph("AI Engine (NPU)", table_cell_bold), Paragraph("Dual-Core Nexa Neural Core v4 with 65 TOPS on-device INT4/FP16 neural inference acceleration", table_cell_body)],
+        [Paragraph("System Memory (RAM)", table_cell_bold), Paragraph("16 GB or 24 GB high-speed quad-channel LPDDR5X (8,533 Mbps transfer rate)", table_cell_body)],
+        [Paragraph("Internal Storage", table_cell_bold), Paragraph("512 GB or 1 TB ultra-fast UFS 4.1 dual-lane non-volatile flash storage", table_cell_body)],
+        [Paragraph("Chassis Materials", table_cell_bold), Paragraph("Aerospace-grade Grade 5 Titanium perimeter frame with matte anti-glare ceramic back panel", table_cell_body)],
+        [Paragraph("Available Colorways", table_cell_bold), Paragraph("Cosmic Titanium, Stellar Nebula Blue, and Obsidian Satin Black", table_cell_body)],
     ]
 
-    for section_heading, body_lines in sections:
-        stream_lines.append("T*")
-        stream_lines.append("/F1 12 Tf")
-        clean_heading = section_heading.replace("(", "").replace(")", "")
-        stream_lines.append(f"({clean_heading}) Tj")
-        stream_lines.append("/F1 10 Tf")
-        stream_lines.append("14 TL")
+    t1 = Table(spec_data_p1, colWidths=[1.8 * inch, 5.2 * inch])
+    t1.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#1E293B")),
+        ("ALIGN", (0, 0), (-1, -1), "LEFT"),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+        ("TOPPADDING", (0, 0), (-1, -1), 4),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+        ("LEFTPADDING", (0, 0), (-1, -1), 6),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 6),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.HexColor("#F8FAFC"), colors.white]),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#CBD5E1")),
+    ]))
+    story.append(t1)
 
-        for line in body_lines:
-            clean_line = line.replace("(", "").replace(")", "")
-            stream_lines.append("T*")
-            stream_lines.append(f"({clean_line}) Tj")
+    story.append(PageBreak())
 
-        stream_lines.append("T*")
-        stream_lines.append("() Tj")
+    # ================= PAGE 2 =================
+    story.append(Paragraph("3. ProXDR LTPO 4.0 Display Technology", h1_style))
+    story.append(Paragraph(
+        "The Horizon Ultra introduces the revolutionary 6.82-inch micro-curved ProXDR AMOLED display, "
+        "designed for uncompromising outdoor sunlight legibility and color accuracy for content creators.",
+        body_style,
+    ))
+    story.append(Paragraph("&bull; <b>Resolution and Density:</b> 3168 &times; 1440 pixels (Quad HD+ resolution) at an ultra-sharp 510 pixels per inch (PPI).", bullet_style))
+    story.append(Paragraph("&bull; <b>Adaptive 1Hz–144Hz LTPO:</b> Dynamic LTPO 4.0 backplane switches seamlessly from 1Hz for static Always-On Display (AOD) up to 144Hz for extreme high-frame gaming.", bullet_style))
+    story.append(Paragraph("&bull; <b>Luminance & HDR:</b> Industry-leading 4,500 nits local peak HDR luminance, 1,800 nits High Brightness Mode (HBM), with Dolby Vision and HDR10+ certification.", bullet_style))
+    story.append(Paragraph("&bull; <b>Eye Safety & Glass:</b> 2,160Hz PWM high-frequency dimming with TUV Rheinland flicker-free certification. Protected by scratch-resistant Corning Gorilla Glass Armor with 75% surface reflection reduction.", bullet_style))
 
-    stream_lines.append("ET")
+    story.append(Spacer(1, 10))
+    story.append(Paragraph("4. 3D Ultrasonic Biometrics, Security & Acoustic Architecture", h1_style))
 
-    content_stream = "\n".join(stream_lines).encode("latin1")
-    stream_obj = DecodedStreamObject()
-    stream_obj.set_data(content_stream)
-    page[NameObject("/Contents")] = stream_obj
+    spec_data_p2 = [
+        [Paragraph("Security & Audio Subsystem", table_header_style), Paragraph("Engineering Architecture & Capabilities", table_header_style)],
+        [Paragraph("Fingerprint Scanner", table_cell_bold), Paragraph("Qualcomm 3D Sonic Max Gen 3 ultrasonic in-display scanner; recognizes dry, damp, wet, and oily fingers in 0.12 seconds", table_cell_body)],
+        [Paragraph("Facial Recognition", table_cell_bold), Paragraph("Sub-surface 3D structured light infrared face scanner providing zero-light biometric authentication", table_cell_body)],
+        [Paragraph("Security Enclave", table_cell_bold), Paragraph("Dedicated Nexa Vault hardware chip providing isolated key management and Android StrongBox cryptographic storage", table_cell_body)],
+        [Paragraph("Stereo Acoustic Sound", table_cell_bold), Paragraph("Dual symmetrical 1216 box speakers with 1.2cc equivalent sound chambers and Dolby Atmos spatial audio profile", table_cell_body)],
+        [Paragraph("Wireless Audio Codecs", table_cell_bold), Paragraph("Certified Hi-Res Wireless Audio support for Sony LDAC, Qualcomm aptX Lossless, and Bluetooth LE Audio LC3", table_cell_body)],
+    ]
 
-    font_dict = DictionaryObject({
-        NameObject("/Type"): NameObject("/Font"),
-        NameObject("/Subtype"): NameObject("/Type1"),
-        NameObject("/BaseFont"): NameObject("/Helvetica"),
-    })
-    page[NameObject("/Resources")] = DictionaryObject({
-        NameObject("/Font"): DictionaryObject({
-            NameObject("/F1"): font_dict,
-        })
-    })
+    t2 = Table(spec_data_p2, colWidths=[1.8 * inch, 5.2 * inch])
+    t2.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#1E293B")),
+        ("ALIGN", (0, 0), (-1, -1), "LEFT"),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+        ("TOPPADDING", (0, 0), (-1, -1), 4),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+        ("LEFTPADDING", (0, 0), (-1, -1), 6),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 6),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.HexColor("#F8FAFC"), colors.white]),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#CBD5E1")),
+    ]))
+    story.append(t2)
 
+    story.append(PageBreak())
 
-def generate_nexa_smartphone_guide(output_path: Path):
-    writer = PdfWriter()
+    # ================= PAGE 3 =================
+    story.append(Paragraph("5. Professional Imaging & Optical Camera System", h1_style))
+    story.append(Paragraph(
+        "Co-engineered with elite optical specialists, the Horizon Ultra imaging array delivers true studio-grade "
+        "photography across all focal lengths from 14mm macro up to 240mm telephoto.",
+        body_style,
+    ))
 
-    # --- Page 1: Brand Overview & Flagship Lineup ---
-    add_text_page(
-        writer,
-        title="NEXA MOBILE - OFFICIAL SMARTPHONE USER GUIDE (2026)",
-        sections=[
-            (
-                "1. Brand Mission and Product Portfolio",
-                [
-                    "Nexa Mobile designs smartphones built for sustained performance, battery endurance,",
-                    "and intuitive software experiences for Indian and global consumers.",
-                    "The 2026 lineup introduces three distinct models engineered for diverse user needs:",
-                    "- Nexa One: The balanced everyday flagship. Features a 6.5-inch FHD+ AMOLED 90Hz display,",
-                    "  50MP Sony OIS main camera, 5000mAh battery, 33W Fast Charging, and 8GB RAM + 128GB storage.",
-                    "  Official Price: Rs. 24,999 on Amazon India.",
-                    "- Nexa One Pro: Engineered for power users and creators. Features a 6.7-inch Quad HD+ AMOLED",
-                    "  120Hz dynamic refresh display, 50MP Sony flagship sensor with Night Mode 3.0, 5000mAh cell,",
-                    "  67W Turbo Charge, and 12GB LPDDR5 RAM + 256GB UFS 3.1 storage. Price: Rs. 39,999.",
-                    "- Nexa Lite: Essential reliability. Features a 6.5-inch 90Hz display, 50MP AI dual camera,",
-                    "  5000mAh battery, 18W charging, and 6GB RAM + 128GB storage. Price: Rs. 14,999.",
-                ],
-            ),
-            (
-                "2. Standard In-The-Box Contents and Eco Policy",
-                [
-                    "Every retail box contains: Handset with pre-applied screen protector, 1-meter USB-C to USB-C cable,",
-                    "SIM tray ejector tool, Quick Start Guide, and Safety Warranty Card.",
-                    "Important Eco Notice: In alignment with electronic waste reduction initiatives, dedicated wall",
-                    "chargers are sold separately. We recommend official Nexa 33W or 67W USB-PD power adapters.",
-                ],
-            ),
-        ],
-    )
+    cam_data = [
+        [Paragraph("Camera Module", table_header_style), Paragraph("Hardware Specifications & Optical Capabilities", table_header_style)],
+        [Paragraph("Primary Wide (24mm)", table_cell_bold), Paragraph("200MP Samsung ISOCELL HP9, large 1/1.14\" sensor, f/1.68 aperture, 8P glass lens with 2nd-gen Sensor-Shift OIS", table_cell_body)],
+        [Paragraph("Periscope Telephoto (120mm)", table_cell_bold), Paragraph("50MP Sony IMX858, 10x true optical zoom, 100x Space Zoom, f/3.0 aperture, prism Dual-OIS image stabilization", table_cell_body)],
+        [Paragraph("Ultra-Wide & Macro (14mm)", table_cell_bold), Paragraph("50MP sensor, 122&deg; ultra-wide field of view, f/2.0 aperture, active laser autofocus with 2.5cm macro focus distance", table_cell_body)],
+        [Paragraph("Front Selfie Camera", table_cell_bold), Paragraph("50MP autofocus lens with 4K 60fps HDR video capture, f/2.2 aperture, and 90&deg; group-selfie field of view", table_cell_body)],
+    ]
 
-    # --- Page 2: Battery Technology, Fast Charging & Thermal Safety ---
-    add_text_page(
-        writer,
-        title="NEXA MOBILE - BATTERY CARE AND CHARGING GUIDE",
-        sections=[
-            (
-                "3. Battery Specifications and Fast Charging Profiles",
-                [
-                    "All models feature a 5000mAh high-density lithium-ion battery with smart cell protection.",
-                    "Charging inputs: Nexa Lite up to 18W, Nexa One up to 33W (0 to 50 percent in 28 minutes),",
-                    "and Nexa One Pro up to 67W Turbo Charge (0 to 100 percent in 42 minutes).",
-                    "Charging Curve: Charging speed automatically tapers above 80 percent to safeguard battery chemistry.",
-                    "Slow Charging Troubleshooting:",
-                    "1. Verify that the cable is firmly connected to both the device and the wall adapter.",
-                    "2. Inspect the USB-C port for pocket lint or debris using a dry, soft non-conductive brush.",
-                    "3. Test with an alternate certified USB Type-C cable and a USB-PD compliant power source.",
-                    "4. Avoid charging in direct sunlight or environments above 35 degrees Celsius.",
-                ],
-            ),
-            (
-                "4. Critical Safety Warnings - Battery Hazard Protocol",
-                [
-                    "If a device exhibits a swollen back cover, excessive heat, smoke, popping sounds, or chemical odor:",
-                    "- Disconnect the charger immediately if it is safe to do so.",
-                    "- Stop using the device and move it onto a non-flammable surface (tile, concrete, or stone).",
-                    "- Keep away from beds, sofas, curtains, and children.",
-                    "- Do not attempt to puncture, press, or pry open the battery compartment.",
-                    "- Contact Nexa Mobile Safety Support immediately for emergency hazardous exchange.",
-                ],
-            ),
-        ],
-    )
+    t3 = Table(cam_data, colWidths=[1.8 * inch, 5.2 * inch])
+    t3.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#1E293B")),
+        ("ALIGN", (0, 0), (-1, -1), "LEFT"),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+        ("TOPPADDING", (0, 0), (-1, -1), 4),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+        ("LEFTPADDING", (0, 0), (-1, -1), 6),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 6),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.HexColor("#F8FAFC"), colors.white]),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#CBD5E1")),
+    ]))
+    story.append(t3)
 
-    # --- Page 3: Display, Camera and Hardware Diagnostics ---
-    add_text_page(
-        writer,
-        title="NEXA MOBILE - HARDWARE AND DISPLAY DIAGNOSTICS",
-        sections=[
-            (
-                "5. Display Settings and Touchscreen Calibration",
-                [
-                    "Nexa One Pro supports dynamic refresh rates from 60Hz up to 120Hz for fluid scrolling.",
-                    "To enable 120Hz: Navigate to Settings > Display > Screen Refresh Rate > Dynamic 120Hz.",
-                    "If experiencing touch unresponsiveness or frozen screens:",
-                    "- Perform a hardware force reboot: Press and hold Power + Volume Down together for 10 seconds.",
-                    "- If display shows colored vertical lines or black blotches, this indicates physical panel trauma.",
-                    "- Remove thick non-certified tempered glass screen protectors that may impair touch sensitivity.",
-                ],
-            ),
-            (
-                "6. 50MP Camera Optimization and Lens Care",
-                [
-                    "The primary 50MP Sony sensor utilizes Optical Image Stabilization (OIS) to eliminate motion blur.",
-                    "Best practices for clear photos:",
-                    "- Clean the camera lens glass using a lint-free microfiber cloth.",
-                    "- If the camera app crashes, go to Settings > Apps > Camera > Storage > Clear Cache.",
-                    "- Close other active applications that may be accessing the camera hardware in the background.",
-                    "- Ensure imaging firmware is up to date under Settings > System > System Update.",
-                ],
-            ),
-        ],
-    )
+    story.append(Spacer(1, 10))
+    story.append(Paragraph("6. Cinematic Videography and Computational Features", h1_style))
+    story.append(Paragraph("&bull; <b>8K 60fps HDR Video:</b> Full 10-bit LOG video capture across both wide and periscope lenses with real-time LUT monitoring.", bullet_style))
+    story.append(Paragraph("&bull; <b>Active Gyroscopic Action Stabilization:</b> Hardware gyroscope combined with AI horizon-leveling stabilizes video during vigorous sports or running.", bullet_style))
+    story.append(Paragraph("&bull; <b>Nexa Nightography Ultra:</b> Multi-exposure neural fusion synthesizes 12 raw exposures into pristine night photographs under 0.05 lux candle-light conditions.", bullet_style))
 
-    # --- Page 4: Connectivity, SIM and System Performance ---
-    add_text_page(
-        writer,
-        title="NEXA MOBILE - CONNECTIVITY AND SYSTEM PERFORMANCE",
-        sections=[
-            (
-                "7. 5G Dual SIM Setup and Network Troubleshooting",
-                [
-                    "All Nexa devices support Dual SIM Dual Standby (DSDV) on sub-6GHz 5G bands (n28, n77, n78).",
-                    "If cellular data or mobile reception drops:",
-                    "1. Toggle Airplane Mode on for 10 seconds, then toggle off to re-register with cell towers.",
-                    "2. Verify carrier APN settings under Settings > Network and Internet > SIMs > Access Point Names.",
-                    "3. Eject the SIM tray using the bundled pin, inspect contacts for scratches, and re-seat firmly.",
-                    "4. Test the SIM in another phone to rule out carrier-level network outages or deactivated accounts.",
-                ],
-            ),
-            (
-                "8. System Performance, Safe Mode, and Data Backup",
-                [
-                    "To resolve system sluggishness or app freezing:",
-                    "- Keep at least 15 percent free internal storage under Settings > Storage.",
-                    "- Test in Safe Mode: Press and hold Power button, then touch and hold Power Off on screen until",
-                    "  'Reboot to safe mode' appears. Safe mode disables third-party apps to isolate issues.",
-                    "- Always back up photos, contacts, and WhatsApp data to Google Drive before system maintenance.",
-                ],
-            ),
-        ],
-    )
+    story.append(PageBreak())
 
-    # --- Page 5: Warranty Terms, Amazon Returns and Support Contact ---
-    add_text_page(
-        writer,
-        title="NEXA MOBILE - WARRANTY AND RETURN POLICIES",
-        sections=[
-            (
-                "9. 1-Year Limited Manufacturer Warranty Coverage",
-                [
-                    "Handsets: 1-Year limited manufacturer warranty against internal component defects and motherboard failure.",
-                    "In-Box Accessories: 6-Month warranty coverage for official USB-C cables and SIM ejector pins.",
-                    "Warranty Exclusions:",
-                    "- Accidental damage, water immersion (IP54 is splash resistant only, not waterproof), dropped screens.",
-                    "- Unofficial rooting, bootloader unlocking, or unauthorized repair shop disassembly.",
-                    "- Normal cosmetic wear, battery capacity decline over 300 charge cycles, and surface scratches.",
-                ],
-            ),
-            (
-                "10. Amazon 30-Day Return Window and RMA Procedures",
-                [
-                    "Purchases on Amazon.in qualify for a 30-day return or replacement window from delivery date.",
-                    "Items must be returned with all original box accessories, manuals, and undamaged packaging.",
-                    "To generate a prepaid return label (RMA): Log in to Amazon > Your Orders > Return or Replace Items.",
-                    "Nexa Support Email: support@nexamobile.com | Customer Service Hotline: 1800-NEXA-CARE",
-                    "Corporate Address: Nexa Mobile Technologies Pvt Ltd, Cyber City, Gurugram, India.",
-                ],
-            ),
-        ],
-    )
+    # ================= PAGE 4 =================
+    story.append(Paragraph("7. 6,000mAh Silicon-Carbon Battery & 120W HyperCharge", h1_style))
+    story.append(Paragraph(
+        "Utilizing aerospace-grade Silicon-Carbon (Si-C) negative electrodes, the battery achieves an energy density of 795 Wh/L, "
+        "providing exceptional 2-day battery endurance in a thin 8.2mm chassis.",
+        body_style,
+    ))
 
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(output_path, "wb") as f:
-        writer.write(f)
+    batt_data = [
+        [Paragraph("Power Subsystem", table_header_style), Paragraph("Technical Metrics and Charging Profiles", table_header_style)],
+        [Paragraph("Nominal Battery Capacity", table_cell_bold), Paragraph("6,000 mAh (typical) / 5,880 mAh (rated) Silicon-Carbon high-density dual-cell architecture", table_cell_body)],
+        [Paragraph("120W HyperCharge (Wired)", table_cell_bold), Paragraph("Reaches 0 to 50% in 8 minutes; 0 to 100% in 19 minutes using official Nexa GaN charger", table_cell_body)],
+        [Paragraph("50W Wireless Charging", table_cell_bold), Paragraph("Supports Qi2 magnetic alignment wireless charging (0 to 100% in 48 minutes)", table_cell_body)],
+        [Paragraph("10W Reverse Wireless", table_cell_bold), Paragraph("Enables charging Qi-compatible smartwatches, earbuds, and accessories on device rear panel", table_cell_body)],
+        [Paragraph("Battery Longevity Rating", table_cell_bold), Paragraph("Guaranteed &gt;85% health retention after 1,600 full charge cycles (equivalent to 4+ years of daily use)", table_cell_body)],
+        [Paragraph("Bypass Gaming Power", table_cell_bold), Paragraph("Powers CPU/GPU directly without routing power through battery cells, eliminating gaming heat buildup", table_cell_body)],
+    ]
 
-    print(f"Successfully generated 5-page PDF: {output_path} ({output_path.stat().st_size} bytes)")
+    t4 = Table(batt_data, colWidths=[1.8 * inch, 5.2 * inch])
+    t4.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#1E293B")),
+        ("ALIGN", (0, 0), (-1, -1), "LEFT"),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+        ("TOPPADDING", (0, 0), (-1, -1), 4),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+        ("LEFTPADDING", (0, 0), (-1, -1), 6),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 6),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.HexColor("#F8FAFC"), colors.white]),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#CBD5E1")),
+    ]))
+    story.append(t4)
+
+    story.append(Spacer(1, 10))
+    story.append(Paragraph("8. Ingress Protection (IP68 & IP69) and Thermal Architecture", h1_style))
+    story.append(Paragraph("&bull; <b>IP68 Submersion Resistance:</b> Certified for continuous freshwater immersion up to 2.0 meters for 30 minutes without seal degradation.", bullet_style))
+    story.append(Paragraph("&bull; <b>IP69 Steam & Jet Protection:</b> High-pressure thermal jet water resistance tested up to 100 bar pressure at 80&deg;C.", bullet_style))
+    story.append(Paragraph("&bull; <b>10,000 sq mm Ice-Loop Cooling:</b> Dual-channel 3D vapor chamber dissipates up to 14 Watts of thermal power, keeping frame temperature below 41&deg;C.", bullet_style))
+
+    story.append(PageBreak())
+
+    # ================= PAGE 5 =================
+    story.append(Paragraph("9. On-Device Nexa AI Suite & NexaOS 4.0 Productivity", h1_style))
+    story.append(Paragraph(
+        "NexaOS 4.0 integrates deep machine learning into daily workflows, processing sensitive user data entirely "
+        "on the local device without sending private data to cloud servers.",
+        body_style,
+    ))
+    story.append(Paragraph("&bull; <b>Offline Live Call Translation:</b> Real-time two-way voice-to-voice translation in phone calls across 35 languages without network connectivity.", bullet_style))
+    story.append(Paragraph("&bull; <b>Circle to Search:</b> Instant contextual visual lookup powered by Google Gemini Nano integration.", bullet_style))
+    story.append(Paragraph("&bull; <b>AI Magic Eraser Pro & Scene Expand:</b> Intelligently eliminates unwanted background persons, shadows, and reflections from photos with one tap.", bullet_style))
+    story.append(Paragraph("&bull; <b>Nexa Desktop Link:</b> Connect to external displays via USB-C 3.2 Gen 2 (10 Gbps) for an instant multi-window 4K 60Hz desktop computing interface.", bullet_style))
+
+    story.append(Spacer(1, 10))
+    story.append(Paragraph("10. Global Connectivity, Wi-Fi 7 & Satellite Emergency SOS", h1_style))
+
+    comm_data = [
+        [Paragraph("Connectivity Feature", table_header_style), Paragraph("Standard & Operational Protocols", table_header_style)],
+        [Paragraph("Satellite Emergency SOS", table_cell_bold), Paragraph("Two-way direct-to-satellite messaging via L-band satellite constellations when outside cell coverage", table_cell_body)],
+        [Paragraph("Wi-Fi 7 (802.11be)", table_cell_bold), Paragraph("Tri-band 2.4 / 5 / 6 GHz with 320 MHz channels, 4096-QAM modulation, and peak speeds up to 5.8 Gbps", table_cell_body)],
+        [Paragraph("Bluetooth 5.4", table_cell_bold), Paragraph("Dual-mode Bluetooth 5.4 with Auracast broadcast audio sharing and low-energy sub-band channels", table_cell_body)],
+        [Paragraph("Global Satellite GNSS", table_cell_bold), Paragraph("Dual-frequency GNSS (GPS L1+L5, GLONASS, Galileo E1+E5a, BeiDou B1I+B2a, and NavIC)", table_cell_body)],
+        [Paragraph("Ultra-Wideband (UWB)", table_cell_bold), Paragraph("FiRa-certified UWB chip for centimeter-precise digital car key unlocking and smart tag tracking", table_cell_body)],
+    ]
+
+    t5 = Table(comm_data, colWidths=[1.8 * inch, 5.2 * inch])
+    t5.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#1E293B")),
+        ("ALIGN", (0, 0), (-1, -1), "LEFT"),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+        ("TOPPADDING", (0, 0), (-1, -1), 4),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+        ("LEFTPADDING", (0, 0), (-1, -1), 6),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 6),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.HexColor("#F8FAFC"), colors.white]),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#CBD5E1")),
+    ]))
+    story.append(t5)
+
+    doc.build(story, canvasmaker=NumberedCanvas)
+    print(f"Successfully generated human-readable PDF: {output_path} ({output_path.stat().st_size} bytes)")
 
 
 if __name__ == "__main__":
     kb_pdf = Path(__file__).resolve().parents[1] / "knowledge_base" / "Nexa_Mobile_Smartphone_User_Guide.pdf"
     root_pdf = Path(__file__).resolve().parents[2] / "Nexa_Mobile_Smartphone_User_Guide.pdf"
 
-    generate_nexa_smartphone_guide(kb_pdf)
-    generate_nexa_smartphone_guide(root_pdf)
-
+    build_pdf(kb_pdf)
+    build_pdf(root_pdf)
